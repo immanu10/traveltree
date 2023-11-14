@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
 
-export default function Home() {
+export default function LandingPage() {
   return (
     <div className="container flex min-h-screen justify-between">
       <div className="hidden xl:block min-h-screen w-96 bg-black relative">
