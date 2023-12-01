@@ -1,7 +1,7 @@
 import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
+import SigninForm from "@/components/form/signin";
 
 export default function LandingPage() {
   return (
@@ -28,9 +28,7 @@ export default function LandingPage() {
             places from the community, create, track, and share your travel tree
             with the world.
           </p>
-          <Button variant="outline">
-            <Icons.google className="mr-2 w-4 h-4" /> Sign in with Google
-          </Button>
+          <SigninForm />
         </main>
         <footer className="flex gap-2 items-center justify-center sm:justify-start">
           <p className="text-xs">Made with ❤️ in Bengaluru, India</p>
