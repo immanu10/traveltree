@@ -1,9 +1,19 @@
 import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
-import SigninForm from "@/components/form/signin";
+import { SigninForm, Logout } from "@/components/form/signin";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   return (
     <div className="container flex min-h-screen justify-between">
       <div className="hidden xl:block min-h-screen w-96 bg-black relative">
@@ -28,7 +38,19 @@ export default function LandingPage() {
             places from the community, create, track, and share your travel tree
             with the world.
           </p>
-          <SigninForm />
+          {session ? (
+            <div className="flex gap-4">
+              <Link
+                href="/explore"
+                className={cn(buttonVariants({ variant: "outline" }))}
+              >
+                Explore Travel Post
+              </Link>
+              <Logout />
+            </div>
+          ) : (
+            <SigninForm />
+          )}
         </main>
         <footer className="flex gap-2 items-center justify-center sm:justify-start">
           <p className="text-xs">Made with ❤️ in Bengaluru, India</p>
