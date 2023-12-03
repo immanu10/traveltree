@@ -4,7 +4,7 @@ import { Github, Linkedin } from "lucide-react";
 import { SigninForm, Logout } from "@/components/form/signin";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default async function LandingPage() {
@@ -25,7 +25,7 @@ export default async function LandingPage() {
       </div>
       <div className="flex flex-col my-8 justify-between">
         <header className="">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="inline-block">
             <Icons.logo />
           </Link>
         </header>
@@ -38,19 +38,12 @@ export default async function LandingPage() {
             places from the community, create, track, and share your travel tree
             with the world.
           </p>
-          {session ? (
-            <div className="flex gap-4">
-              <Link
-                href="/explore"
-                className={cn(buttonVariants({ variant: "outline" }))}
-              >
-                Explore Travel Post
-              </Link>
-              <Logout />
-            </div>
-          ) : (
-            <SigninForm />
-          )}
+          <div className="flex gap-4">
+            <Link href="/explore" className={cn(buttonVariants())}>
+              Go To Explore
+            </Link>
+            {session ? <Logout /> : <SigninForm />}
+          </div>
         </main>
         <footer className="flex gap-2 items-center justify-center sm:justify-start">
           <p className="text-xs">Made with ❤️ in Bengaluru, India</p>

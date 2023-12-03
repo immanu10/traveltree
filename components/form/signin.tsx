@@ -11,7 +11,7 @@ export function SigninForm() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${location.origin}/api/auth/callback?next=/explore`,
+        redirectTo: `${location.origin}/api/auth/callback`,
       },
     });
   };
@@ -31,8 +31,8 @@ export function Logout() {
     router.refresh();
   };
   return (
-    <Button onClick={handleLogout}>
-      <Icons.google className="mr-2 w-4 h-4" /> Log Out
+    <Button variant="secondary" onClick={handleLogout}>
+      Log Out
     </Button>
   );
 }
