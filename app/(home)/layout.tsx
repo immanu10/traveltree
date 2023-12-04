@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import { MainNav } from "@/components/main-nav";
 import { buttonVariants } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { cn } from "@/lib/utils";
@@ -12,7 +13,7 @@ export default function HomeLayout({
 }) {
   return (
     <div className={cn("max-w-2xl px-4 flex flex-col container")}>
-      <header className="flex items-center h-16 border-b">
+      <header className="flex items-center h-16">
         <Link href="/" className="inline-block">
           <Icons.logo />
         </Link>
@@ -27,6 +28,7 @@ export default function HomeLayout({
           <UserNav />
         </div>
       </header>
+      <MainNav />
       {children}
     </div>
   );
