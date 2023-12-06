@@ -19,7 +19,7 @@ export default function HomeLayout({
         </Link>
         <div className="ml-auto flex items-center space-x-4">
           <Link
-            href="/create-post"
+            href="/post/new"
             className={cn(buttonVariants({ variant: "ghost" }))}
           >
             <PlusIcon className="mr-2 w-4 h-4" />
