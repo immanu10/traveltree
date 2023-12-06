@@ -15,15 +15,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Textarea } from "../ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { Checkbox } from "../ui/checkbox";
 import { cn } from "@/lib/utils";
 
@@ -79,7 +70,7 @@ const items = [
 ] as const;
 
 const formSchema = z.object({
-  title: z.string(),
+  title: z.string().max(42).min(2),
   description: z.string(),
   googleurl: z.string(),
   besttime: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -138,7 +129,7 @@ export function NewPostForm() {
               </div>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself"
+                  placeholder="Share little bit more about the place"
                   className="resize-none"
                   {...field}
                 />
@@ -154,9 +145,9 @@ export function NewPostForm() {
           name="besttime"
           render={() => (
             <FormItem>
-              <div className="mb-4">
-                <FormLabel className="text-base">Best time to visit</FormLabel>
-              </div>
+              {/* <div className="mb-4"> */}
+              <FormLabel className="text-base">Best time to visit</FormLabel>
+              {/* </div> */}
               <div className="flex gap-2 flex-wrap">
                 {items.map((item) => (
                   <FormField
@@ -165,13 +156,10 @@ export function NewPostForm() {
                     name="besttime"
                     render={({ field }) => {
                       return (
-                        <FormItem
-                          key={item.id}
-                          // className="flex flex-row items-start space-x-3 space-y-0"
-                        >
+                        <FormItem key={item.id}>
                           <FormLabel
                             className={cn(
-                              "transition-colors text-black font-normal inline-flex items-center border-2 border-muted rounded-3xl px-4 py-2 cursor-pointer hover:bg-accent",
+                              "transition-colors font-normal inline-flex items-center border-2 border-muted rounded-md px-4 py-2 cursor-pointer hover:bg-accent",
                               {
                                 "border-primary": field.value?.includes(
                                   item.id
@@ -195,15 +183,6 @@ export function NewPostForm() {
                               />
                             </FormControl>
                             {item.label}
-                            {/* <span
-                              className={`text-gray-700 ${
-                                field.value?.includes(item.id)
-                                  ? "bg-blue-500 text-white"
-                                  : ""
-                              } px-3 py-1 rounded-lg`}
-                            >
-                              {item.label}
-                            </span> */}
                           </FormLabel>
                         </FormItem>
                       );
@@ -221,7 +200,7 @@ export function NewPostForm() {
           name="googleurl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Google map link</FormLabel>
+              <FormLabel className="text-base">Google map link</FormLabel>
               <FormControl>
                 <Input placeholder="google map link" {...field} />
               </FormControl>
