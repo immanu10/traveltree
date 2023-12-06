@@ -24,12 +24,67 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Checkbox } from "../ui/checkbox";
+import { cn } from "@/lib/utils";
+
+const items = [
+  {
+    id: "jan",
+    label: "Jan",
+  },
+  {
+    id: "feb",
+    label: "Feb",
+  },
+  {
+    id: "mar",
+    label: "Mar",
+  },
+  {
+    id: "apr",
+    label: "Apr",
+  },
+  {
+    id: "may",
+    label: "May",
+  },
+  {
+    id: "jun",
+    label: "Jun",
+  },
+  {
+    id: "jul",
+    label: "Jul",
+  },
+  {
+    id: "aug",
+    label: "Aug",
+  },
+  {
+    id: "sep",
+    label: "Sep",
+  },
+  {
+    id: "oct",
+    label: "Oct",
+  },
+  {
+    id: "nov",
+    label: "Nov",
+  },
+  {
+    id: "dec",
+    label: "Dec",
+  },
+] as const;
 
 const formSchema = z.object({
   title: z.string(),
   description: z.string(),
   googleurl: z.string(),
-  besttime: z.string(),
+  besttime: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
 });
 
 export function NewPostForm() {
@@ -39,7 +94,7 @@ export function NewPostForm() {
       title: "",
       description: "",
       googleurl: "",
-      besttime: "",
+      besttime: [],
     },
   });
 
@@ -55,13 +110,16 @@ export function NewPostForm() {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <div className="mb-4">
+                <FormLabel className="text-base">Title/ Place Name</FormLabel>
+                <FormDescription>
+                  Short title which fits the place or just put a name of the
+                  place.
+                </FormDescription>
+              </div>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Manali" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -71,7 +129,13 @@ export function NewPostForm() {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <div className="mb-4">
+                <FormLabel className="text-base">Description</FormLabel>
+                <FormDescription>
+                  Brief info about the place, helpful tips and guide when
+                  visiting this place.
+                </FormDescription>
+              </div>
               <FormControl>
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
@@ -79,61 +143,93 @@ export function NewPostForm() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="flex">
-          <FormField
-            control={form.control}
-            name="besttime"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a best time" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="jan">Jan</SelectItem>
-                    <SelectItem value="feb">Feb</SelectItem>
-                    <SelectItem value="mar">Mar</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  You can manage verified email addresses in your{" "}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          <FormField
-            control={form.control}
-            name="googleurl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Google map link</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="besttime"
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-base">Best time to visit</FormLabel>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {items.map((item) => (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name="besttime"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={item.id}
+                          // className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormLabel
+                            className={cn(
+                              "transition-colors text-black font-normal inline-flex items-center border-2 border-muted rounded-3xl px-4 py-2 cursor-pointer hover:bg-accent",
+                              {
+                                "border-primary": field.value?.includes(
+                                  item.id
+                                ),
+                              }
+                            )}
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(item.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, item.id])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item.id
+                                        )
+                                      );
+                                }}
+                                className="peer sr-only"
+                              />
+                            </FormControl>
+                            {item.label}
+                            {/* <span
+                              className={`text-gray-700 ${
+                                field.value?.includes(item.id)
+                                  ? "bg-blue-500 text-white"
+                                  : ""
+                              } px-3 py-1 rounded-lg`}
+                            >
+                              {item.label}
+                            </span> */}
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="googleurl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Google map link</FormLabel>
+              <FormControl>
+                <Input placeholder="google map link" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
