@@ -29,7 +29,7 @@ export default function HomeLayout({
         </div>
       </header>
       <MainNav />
-      {children}
+      <div>{children}</div>
     </div>
   );
 }
