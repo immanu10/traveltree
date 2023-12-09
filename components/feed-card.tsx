@@ -1,10 +1,11 @@
-import { DotIcon, MountainIcon } from "lucide-react";
+import { CopyIcon, DotIcon, MapIcon, MountainIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
 
 export function FeedCard() {
   return (
-    <div className="border-b py-2 flex flex-col gap-2">
+    <div className="border-b py-3 flex flex-col gap-4">
       <div>
         <p className="inline-flex items-center text-sm  text-gray-500">
           <span>Posted by</span>
@@ -18,13 +19,22 @@ export function FeedCard() {
           <DotIcon className="w-3 h-3" />
           <p>Best Time: Apr, May</p>
         </div>
-        <Link
-          href="https://maps.app.goo.gl/gyagcBYHCd77PxgH7"
-          className="text-sm text-blue-600 my-2"
-        >
-          https://maps.app.goo.gl/gyagcBYHCd77PxgH7
-        </Link>
-        <div className="text-sm my-2 w-full">
+        <div className="my-2 py-2 rounded-sm flex space-x-2 h-8 items-center text-xs">
+          <MapIcon className="w-3 h-3 text-blue-500" />
+          <Separator orientation="vertical" />
+          <Link
+            href="https://maps.app.goo.gl/gyagcBYHCd77PxgH7"
+            className="text-blue-500"
+          >
+            https://maps.app.goo.gl/gyagcBYHCd77PxgH7
+          </Link>
+          <Separator orientation="vertical" />
+
+          <Button variant="ghost" size="icon" className="h-6 w-6">
+            <CopyIcon className="w-3 h-3 text-gray-500" />
+          </Button>
+        </div>
+        <div className="text-sm my-1 w-full">
           <p className="">
             Kodachadri is a mountain peak with dense forests in the Western
             Ghats in South India, 78 km from Shimoga. book dmfdfml orler mer
@@ -33,9 +43,16 @@ export function FeedCard() {
           </p>
         </div>
       </div>
-      <div className="flex space-x-1 items-center">
-        <MountainIcon className="text-pink-300 w-6 h-6" />
-        <p className="text-gray-600 text-sm">25 likes</p>
+      <div
+        role="button"
+        className="flex items-center cursor-pointer group transition-colors w-fit"
+      >
+        <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
+          <MountainIcon className="text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500 " />
+        </div>
+        <div className="text-xs text-gray-400 group-hover:text-pink-500">
+          <span>25 likes</span>
+        </div>
       </div>
     </div>
   );

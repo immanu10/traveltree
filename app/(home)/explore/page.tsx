@@ -12,6 +12,11 @@ export default function ExplorePage() {
       <FeedCard />
       <FeedCard />
       <FeedCard />
+      <FeedCard />
+      <FeedCard />
+      <FeedCard />
+      <FeedCard />
+      <FeedCard />
     </div>
   );
 }
