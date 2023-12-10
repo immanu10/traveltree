@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 export function MainNav() {
   const pathname = usePathname();
   return (
-    <nav className="border-y flex items-end justify-around md:justify-center md:space-x-16 h-14 text-sm font-medium">
+    <nav className="border-b flex items-end justify-around md:justify-center md:space-x-16 h-14 text-sm font-medium">
       <Link
         href="/explore"
         className={cn(

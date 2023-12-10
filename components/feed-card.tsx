@@ -9,7 +9,7 @@ export function FeedCard() {
       <div>
         <p className="inline-flex items-center text-sm  text-gray-500">
           <span>Posted by</span>
-          <Link href="/manoj" className="ml-1 underline">
+          <Link href="/manoj" className="ml-1 hover:underline">
             @manoj
           </Link>
         </p>
@@ -17,14 +17,14 @@ export function FeedCard() {
         <div className="flex space-x-2 text-sm  text-gray-500 items-center">
           <p>Karnatak, India</p>
           <DotIcon className="w-3 h-3" />
-          <p>Best Time: Apr, May</p>
+          <p>Best time to visit: Apr, May</p>
         </div>
         <div className="my-2 py-2 rounded-sm flex space-x-2 h-8 items-center text-xs">
           <MapIcon className="w-3 h-3 text-blue-500" />
-          <Separator orientation="vertical" />
+          {/* <Separator orientation="vertical" /> */}
           <Link
             href="https://maps.app.goo.gl/gyagcBYHCd77PxgH7"
-            className="text-blue-500"
+            className="text-blue-500 hover:underline"
           >
             https://maps.app.goo.gl/gyagcBYHCd77PxgH7
           </Link>
