@@ -13,8 +13,8 @@ export default function HomeLayout({
 }) {
   return (
     <div className={cn("max-w-2xl px-4 flex flex-col container")}>
-      <header className="flex items-center h-16">
-        <Link href="/" className="inline-block">
+      <header className="flex items-center h-16 border-b sticky top-0 bg-background">
+        <Link href="/explore" className="inline-block">
           <Icons.logo />
         </Link>
         <div className="ml-auto flex items-center space-x-4">
@@ -28,7 +28,7 @@ export default function HomeLayout({
           <UserNav />
         </div>
       </header>
-      <MainNav />
+      {/* <MainNav /> */}
       <div>{children}</div>
     </div>
   );
