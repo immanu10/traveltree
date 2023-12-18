@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { FeedCard } from "@/components/feed-card";
+import { GetStarted } from "@/components/get-started";
 
 export default async function LandingPage() {
   const cookieStore = cookies();
@@ -27,11 +28,10 @@ export default async function LandingPage() {
         </div>
         <div className="lg:ml-[448px] flex-1 flex flex-col justify-between">
           <header className="sticky border-b top-0 z-50 w-full  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="px-5 flex h-16 max-w-screen-xl items-center justify-between w-full">
+            <div className="px-5 flex h-16 items-center justify-between w-full">
               <Link href="/" className="inline-block">
                 <Icons.logo />
               </Link>
-              <Button size="sm">Sign In</Button>
             </div>
           </header>
           <main className="px-5 flex flex-col gap-4  max-w-4xl items-start">
@@ -44,10 +44,13 @@ export default async function LandingPage() {
               tree with the world.
             </p>
             <div className="flex gap-4">
-              <Link href="/explore" className={cn(buttonVariants())}>
+              <Link
+                href="/explore"
+                className={cn(buttonVariants({ variant: "outline" }))}
+              >
                 Go To Explore
               </Link>
-              {session ? <Logout /> : <SigninForm />}
+              {!session && <GetStarted />}
             </div>
           </main>
 

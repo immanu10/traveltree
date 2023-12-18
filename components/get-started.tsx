@@ -1,0 +1,51 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Icons } from "./icons";
+
+export function GetStarted() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Get Started</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <div className="flex justify-center mb-6">
+            <Icons.logo />
+          </div>
+          <DialogTitle>Login to traveltree</DialogTitle>
+          <DialogDescription>
+            Platform to discover, track and share your travel journey!
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-12">
+          {/* <div className="flex rounded-md">
+            <span className="bg-muted text-subtle inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0 px-3 text-sm">
+              travel.tree/
+            </span>
+            <Input
+              id="username"
+              placeholder="username"
+              className="rounded-l-none"
+            />
+          </div> */}
+          <Button variant="outline" onClick={() => {}}>
+            <Icons.google className="mr-2 w-4 h-4" /> Sign in with Google
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
