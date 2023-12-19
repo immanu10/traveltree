@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "./icons";
+import { Separator } from "./ui/separator";
 
 export function GetStarted() {
   return (
@@ -22,15 +23,15 @@ export function GetStarted() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center py-6">
             <Icons.logo />
           </div>
-          <DialogTitle>Login to traveltree</DialogTitle>
+          <DialogTitle>Sign in to traveltree</DialogTitle>
           <DialogDescription>
             Platform to discover, track and share your travel journey!
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-12">
+        <div className="grid py-12">
           {/* <div className="flex rounded-md">
             <span className="bg-muted text-subtle inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0 px-3 text-sm">
               travel.tree/

@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function CreatePostPage() {
   return (
-    <div className="space-y-6 my-4">
+    <div className="space-y-6 my-4 px-5">
       <div>
         <h3 className="text-lg font-medium">Creat new Travel post</h3>
         <p className="text-sm text-muted-foreground">

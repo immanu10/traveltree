@@ -6,7 +6,7 @@ import { Separator } from "./ui/separator";
 export function FeedCard() {
   return (
     <div className="border-b py-3 flex flex-col gap-4">
-      <div>
+      <div className="px-5">
         <p className="inline-flex items-center text-sm  text-gray-500">
           <span>Posted by</span>
           <Link href="/manoj" className="ml-1 hover:underline">
@@ -45,7 +45,7 @@ export function FeedCard() {
       </div>
       <div
         role="button"
-        className="flex items-center cursor-pointer group transition-colors w-fit"
+        className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
       >
         <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
           <MountainIcon className="text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500 " />
