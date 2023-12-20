@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "./icons";
 import { Separator } from "./ui/separator";
+import { SigninForm } from "./form/signin";
 
 export function GetStarted() {
   return (
@@ -31,7 +32,7 @@ export function GetStarted() {
             Platform to discover, track and share your travel journey!
           </DialogDescription>
         </DialogHeader>
-        <div className="grid py-12">
+        <div className="py-12">
           {/* <div className="flex rounded-md">
             <span className="bg-muted text-subtle inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0 px-3 text-sm">
               travel.tree/
@@ -42,9 +43,7 @@ export function GetStarted() {
               className="rounded-l-none"
             />
           </div> */}
-          <Button variant="outline" onClick={() => {}}>
-            <Icons.google className="mr-2 w-4 h-4" /> Sign in with Google
-          </Button>
+          <SigninForm />
         </div>
       </DialogContent>
     </Dialog>
