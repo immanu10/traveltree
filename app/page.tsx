@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { FeedCard } from "@/components/feed-card";
-import { GetStarted } from "@/components/get-started";
+import { AuthDialog } from "@/components/auth-dialog";
 
 export default async function LandingPage() {
   const cookieStore = cookies();
@@ -50,7 +50,7 @@ export default async function LandingPage() {
               >
                 Go To Explore
               </Link>
-              {!session && <GetStarted />}
+              {!session && <AuthDialog btnTitle="Get Started" />}
             </div>
           </main>
 

@@ -16,11 +16,11 @@ import { Icons } from "./icons";
 import { Separator } from "./ui/separator";
 import { SigninForm } from "./form/signin";
 
-export function GetStarted() {
+export function AuthDialog({ btnTitle = "Sign in" }: { btnTitle?: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Get Started</Button>
+        <Button>{btnTitle}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
