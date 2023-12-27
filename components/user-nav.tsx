@@ -35,14 +35,19 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <Link href="/profile">
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+        {/* <DropdownMenuGroup> */}
+        <DropdownMenuItem>
+          <Link href="/profile" className="h-full w-full">
+            Your Tree
           </Link>
-          <Link href="/bucketlist">
-            <DropdownMenuItem>My Bucketlist</DropdownMenuItem>
-          </Link>
-        </DropdownMenuGroup>
+        </DropdownMenuItem>
+        <Link href="/bucketlist">
+          <DropdownMenuItem>My Posts</DropdownMenuItem>
+        </Link>
+        <Link href="/bucketlist">
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+        </Link>
+        {/* </DropdownMenuGroup> */}
         <DropdownMenuSeparator />
         <DropdownMenuItem>Log out</DropdownMenuItem>
       </DropdownMenuContent>

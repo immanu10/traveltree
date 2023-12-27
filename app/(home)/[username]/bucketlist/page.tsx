@@ -4,10 +4,14 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Page({
+  params,
   searchParams,
 }: {
+  params: { username: string };
   searchParams: { status?: string };
 }) {
+  console.log({ params, searchParams });
+
   return (
     <div>
       <h1>BucketList - {searchParams.status}</h1>
@@ -15,7 +19,7 @@ export default function Page({
         {["todo", "visited"].map((item, i) => (
           <Link
             key={i}
-            href={`/bucketlist?status=${item}`}
+            href={`/${params.username}/bucketlist?status=${item}`}
             className={cn(
               buttonVariants({ variant: "ghost" }),
               // pathname === item.href

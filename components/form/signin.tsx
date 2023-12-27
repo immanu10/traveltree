@@ -50,7 +50,7 @@ export function Logout() {
     router.refresh();
   };
   return (
-    <Button variant="outline" onClick={handleLogout}>
+    <Button variant="ghost" onClick={handleLogout} className="w-full">
       Log Out
     </Button>
   );

@@ -38,7 +38,8 @@ export default async function HomeLayout({
                   <PlusIcon className="mr-2 w-4 h-4" />
                   Create Post
                 </Link>
-                <Logout />
+                <UserNav />
+                {/* <Logout /> */}
               </>
             ) : (
               <AuthDialog />
