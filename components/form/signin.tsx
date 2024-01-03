@@ -50,8 +50,12 @@ export function Logout() {
     router.refresh();
   };
   return (
-    <Button variant="ghost" onClick={handleLogout} className="w-full">
-      Log Out
+    <Button
+      variant="link"
+      onClick={handleLogout}
+      className="h-full w-full py-0 px-0 justify-start"
+    >
+      Log out
     </Button>
   );
 }

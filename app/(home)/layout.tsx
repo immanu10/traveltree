@@ -24,12 +24,12 @@ export default async function HomeLayout({
   return (
     <div className={cn("max-w-2xl flex flex-col mx-auto")}>
       <header className="sticky border-b top-0 z-50 w-full  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex items-center h-16 px-5">
+        <div className="flex items-center h-16 px-5 md:px-0">
           <Link href="/explore" className="inline-block">
             <Icons.logo />
           </Link>
           <div className="ml-auto flex items-center space-x-4">
-            {session ? (
+            {true ? (
               <>
                 <Link
                   href="/post/new"
