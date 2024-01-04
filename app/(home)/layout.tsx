@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
-import { PenSquare, PlusIcon, PlusSquare } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
@@ -29,7 +29,7 @@ export default async function HomeLayout({
             <Icons.logo />
           </Link>
           <div className="ml-auto flex items-center space-x-4">
-            {true ? (
+            {session ? (
               <>
                 <Link
                   href="/post/new"
@@ -38,8 +38,7 @@ export default async function HomeLayout({
                   <PlusIcon className="mr-2 w-4 h-4" />
                   Create Post
                 </Link>
-                <UserNav />
-                {/* <Logout /> */}
+                <UserNav session={session} />
               </>
             ) : (
               <AuthDialog />
