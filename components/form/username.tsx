@@ -45,25 +45,41 @@ export function UserNameForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
+      <div className="p-4 shadow">
+        <p className="text-center text-sm font-medium">
+          Claim your username and let the world see your travel tree!
+        </p>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full flex space-x-2 my-2"
+        >
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormControl>
+                  <div className="flex rounded-md">
+                    <span className="bg-muted inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0 px-3 text-sm">
+                      travel.tree/
+                    </span>
+                    <Input
+                      id="username"
+                      placeholder="username"
+                      className="rounded-l-none"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="px-6">
+            Claim
+          </Button>
+        </form>
+      </div>
     </Form>
   );
 }

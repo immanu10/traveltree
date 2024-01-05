@@ -16,6 +16,7 @@ import Link from "next/link";
 import { Session } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export async function UserNav({ session }: { session: Session }) {
   const cookieStore = cookies();
@@ -25,12 +26,9 @@ export async function UserNav({ session }: { session: Session }) {
     .select("full_name,avatar_url")
     .eq("id", session.user.id);
 
-  if (data == null)
-    return (
-      <Avatar className="h-8 w-8">
-        <AvatarFallback></AvatarFallback>
-      </Avatar>
-    );
+  if (data == null) {
+    redirect("/");
+  }
 
   return (
     <DropdownMenu>
