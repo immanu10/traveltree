@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { useFormState } from "react-dom";
 import { createUsername } from "@/app/actions";
+import { useState, useTransition } from "react";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   username: z
@@ -29,11 +31,9 @@ const formSchema = z.object({
     }),
 });
 
-const initialState = {
-  message: "",
-};
-
 export function UserNameForm() {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,13 +41,17 @@ export function UserNameForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    const res = await createUsername(values.username);
-    if (res.status === 200) {
-      console.log(res.message);
-    }
-    console.log(res);
+    startTransition(async () => {
+      const res = await createUsername(values.username);
+      if (res.status === 200) {
+        console.log(res.message);
+      } else {
+        form.setError("username", { message: res.message });
+      }
+      console.log(res);
+    });
   }
 
   return (
@@ -83,6 +87,7 @@ export function UserNameForm() {
             )}
           />
           <Button type="submit" className="px-6">
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Claim
           </Button>
         </form>

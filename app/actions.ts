@@ -18,6 +18,15 @@ export async function createUsername(username: string) {
         message: "You must be logged in to do that.",
       };
     }
+
+    if (!/^[a-z0-9_]{3,18}$/.test(username)) {
+      return {
+        status: 400,
+        message:
+          "Username should be lowercase and should not contain any special characters.",
+      };
+    }
+
     const { error } = await supabase
       .from("profiles")
       .update({ username: username })
@@ -25,31 +34,21 @@ export async function createUsername(username: string) {
     console.log(error);
 
     if (!error) {
+      revalidatePath("/profile");
       return {
         status: 200,
         message: "Username Created!",
       };
-      revalidatePath("/profile");
     } else {
       return {
-        status: 500,
-        message: "omething went wrong!",
+        status: 403,
+        message: "Username already taken.",
       };
     }
   } catch (error) {
     return {
       status: 500,
-      message: "omething went wrong!",
+      message: "Something went wrong!",
     };
   }
-
-  // if (!/^[a-z0-9_]{3,18}$/.test(username)) {
-  //     return {
-  //       status: 400,
-  //       body: {
-  //         error:
-  //           "Username should be between 3 and 18 characters, should be lowercase and should not contain any special characters.",
-  //       },
-  //     };
-  //   }
 }

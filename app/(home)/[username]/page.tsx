@@ -18,7 +18,7 @@ export default async function Page({
     .eq("username", params.username);
 
   if (profiles?.length === 0 || !profiles) {
-    return <p className="text-destructive">No User found!</p>;
+    return <p className="text-destructive text-center my-4">No User found!</p>;
   }
 
   const { avatar_url, full_name, username, bio } = profiles[0];
