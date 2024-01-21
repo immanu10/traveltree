@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function createUsername(username: string) {
   try {
@@ -48,6 +49,50 @@ export async function createUsername(username: string) {
   } catch (error) {
     return {
       status: 500,
+      message: "Something went wrong!",
+    };
+  }
+}
+
+export async function updateProfile(values: {
+  username: string;
+  full_name: string;
+  bio: string;
+}) {
+  const { username, full_name, bio } = values;
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  if (!/^[a-z0-9_]{3,18}$/.test(username)) {
+    return {
+      status: 400,
+      message:
+        "Username should be lowercase and should not contain any special characters.",
+    };
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ username, full_name, bio })
+    .eq("id", session.user.id);
+  console.log(error);
+
+  if (!error) {
+    revalidatePath("/profile");
+    redirect(`/${username}`);
+  } else {
+    return {
+      status: 403,
       message: "Something went wrong!",
     };
   }

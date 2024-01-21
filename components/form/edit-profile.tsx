@@ -16,12 +16,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { useFormState } from "react-dom";
-import { createUsername } from "@/app/actions";
+import { createUsername, updateProfile } from "@/app/actions";
 import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitialFromFullName } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z
@@ -32,8 +33,17 @@ const formSchema = z.object({
     .max(18, {
       message: "Username must be less than 18 characters.",
     }),
-  full_name: z.string().min(1),
-  bio: z.string().max(160).min(4),
+  full_name: z.string().min(1, {
+    message: "Name must be at least 1 characters.",
+  }),
+  bio: z
+    .string()
+    .max(160, {
+      message: "Bio can not be more that 160 characters.",
+    })
+    .min(4, {
+      message: "Bio must be at least 4 characters.",
+    }),
 });
 
 export function EditProfile({
@@ -48,6 +58,7 @@ export function EditProfile({
 }) {
   const { username, full_name, bio, avatar_url } = initialData;
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,7 +71,11 @@ export function EditProfile({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    startTransition(async () => {});
+    startTransition(async () => {
+      const res = await updateProfile(values);
+
+      console.log(res);
+    });
   }
 
   return (
@@ -136,9 +151,6 @@ export function EditProfile({
             <Button type="submit" className="px-6">
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save
-            </Button>
-            <Button variant="secondary" className="px-6">
-              Cancel
             </Button>
           </div>
         </form>
