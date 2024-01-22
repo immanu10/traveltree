@@ -147,12 +147,10 @@ export function EditProfile({
             )}
           />
 
-          <div className="flex space-x-2">
-            <Button type="submit" className="px-6">
-              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Save
-            </Button>
-          </div>
+          <Button type="submit" className="px-6">
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save
+          </Button>
         </form>
       </Form>
     </div>

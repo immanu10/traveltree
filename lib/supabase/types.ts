@@ -4,145 +4,145 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export interface Database {
   public: {
     Tables: {
       bucketlists: {
         Row: {
-          id: number
-          inserted_at: string
-          is_completed: boolean | null
-          is_liked: boolean | null
-          post_id: number
-          user_id: string
-          visited_month: Database["public"]["Enums"]["months_enum"] | null
-          visited_year: number | null
-        }
+          id: number;
+          inserted_at: string;
+          is_completed: boolean | null;
+          is_liked: boolean | null;
+          post_id: number;
+          user_id: string;
+          visited_month: Database["public"]["Enums"]["months_enum"] | null;
+          visited_year: number | null;
+        };
         Insert: {
-          id?: never
-          inserted_at?: string
-          is_completed?: boolean | null
-          is_liked?: boolean | null
-          post_id: number
-          user_id: string
-          visited_month?: Database["public"]["Enums"]["months_enum"] | null
-          visited_year?: number | null
-        }
+          id?: never;
+          inserted_at?: string;
+          is_completed?: boolean | null;
+          is_liked?: boolean | null;
+          post_id: number;
+          user_id: string;
+          visited_month?: Database["public"]["Enums"]["months_enum"] | null;
+          visited_year?: number | null;
+        };
         Update: {
-          id?: never
-          inserted_at?: string
-          is_completed?: boolean | null
-          is_liked?: boolean | null
-          post_id?: number
-          user_id?: string
-          visited_month?: Database["public"]["Enums"]["months_enum"] | null
-          visited_year?: number | null
-        }
+          id?: never;
+          inserted_at?: string;
+          is_completed?: boolean | null;
+          is_liked?: boolean | null;
+          post_id?: number;
+          user_id?: string;
+          visited_month?: Database["public"]["Enums"]["months_enum"] | null;
+          visited_year?: number | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "bucketlists_post_id_fkey"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "posts"
-            referencedColumns: ["id"]
+            foreignKeyName: "bucketlists_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "bucketlists_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "bucketlists_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
           }
-        ]
-      }
+        ];
+      };
       posts: {
         Row: {
-          best_months: Database["public"]["Enums"]["months_enum"][] | null
-          country: string | null
-          description: string | null
-          id: number
-          inserted_at: string
-          map_url: string | null
-          state: string | null
-          title: string | null
-          user_id: string
-        }
+          best_months: Database["public"]["Enums"]["months_enum"][] | null;
+          country: string | null;
+          description: string | null;
+          id: number;
+          inserted_at: string;
+          map_url: string | null;
+          state: string | null;
+          title: string | null;
+          user_id: string;
+        };
         Insert: {
-          best_months?: Database["public"]["Enums"]["months_enum"][] | null
-          country?: string | null
-          description?: string | null
-          id?: never
-          inserted_at?: string
-          map_url?: string | null
-          state?: string | null
-          title?: string | null
-          user_id: string
-        }
+          best_months?: Database["public"]["Enums"]["months_enum"][] | null;
+          country?: string | null;
+          description?: string | null;
+          id?: never;
+          inserted_at?: string;
+          map_url?: string | null;
+          state?: string | null;
+          title?: string | null;
+          user_id: string;
+        };
         Update: {
-          best_months?: Database["public"]["Enums"]["months_enum"][] | null
-          country?: string | null
-          description?: string | null
-          id?: never
-          inserted_at?: string
-          map_url?: string | null
-          state?: string | null
-          title?: string | null
-          user_id?: string
-        }
+          best_months?: Database["public"]["Enums"]["months_enum"][] | null;
+          country?: string | null;
+          description?: string | null;
+          id?: never;
+          inserted_at?: string;
+          map_url?: string | null;
+          state?: string | null;
+          title?: string | null;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "posts_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "posts_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           }
-        ]
-      }
+        ];
+      };
       profiles: {
         Row: {
-          avatar_url: string | null
-          bio: string | null
-          full_name: string | null
-          id: string
-          inserted_at: string
-          username: string | null
-        }
+          avatar_url: string | null;
+          bio: string | null;
+          full_name: string | null;
+          id: string;
+          inserted_at: string;
+          username: string | null;
+        };
         Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          full_name?: string | null
-          id: string
-          inserted_at?: string
-          username?: string | null
-        }
+          avatar_url?: string | null;
+          bio?: string | null;
+          full_name?: string | null;
+          id: string;
+          inserted_at?: string;
+          username?: string | null;
+        };
         Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          full_name?: string | null
-          id?: string
-          inserted_at?: string
-          username?: string | null
-        }
+          avatar_url?: string | null;
+          bio?: string | null;
+          full_name?: string | null;
+          id?: string;
+          inserted_at?: string;
+          username?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "profiles_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
           }
-        ]
-      }
-    }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
       months_enum:
         | "Jan"
@@ -156,12 +156,12 @@ export interface Database {
         | "Sep"
         | "Oct"
         | "Nov"
-        | "Dec"
-    }
+        | "Dec";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
+      [_ in never]: never;
+    };
+  };
 }
 
 export type Tables<
@@ -175,7 +175,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -183,11 +183,11 @@ export type Tables<
       Database["public"]["Views"])
   ? (Database["public"]["Tables"] &
       Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : never
+  : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -198,17 +198,17 @@ export type TablesInsert<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
-  : never
+  : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -219,17 +219,17 @@ export type TablesUpdate<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
-  : never
+  : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -242,4 +242,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
   ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : never;

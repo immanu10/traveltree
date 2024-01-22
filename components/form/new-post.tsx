@@ -17,68 +17,44 @@ import * as z from "zod";
 import { Textarea } from "../ui/textarea";
 import { Checkbox } from "../ui/checkbox";
 import { cn } from "@/lib/utils";
+import { useTransition } from "react";
+import { createNewPost } from "@/app/actions";
+import { Loader2 } from "lucide-react";
 
-const items = [
-  {
-    id: "jan",
-    label: "Jan",
-  },
-  {
-    id: "feb",
-    label: "Feb",
-  },
-  {
-    id: "mar",
-    label: "Mar",
-  },
-  {
-    id: "apr",
-    label: "Apr",
-  },
-  {
-    id: "may",
-    label: "May",
-  },
-  {
-    id: "jun",
-    label: "Jun",
-  },
-  {
-    id: "jul",
-    label: "Jul",
-  },
-  {
-    id: "aug",
-    label: "Aug",
-  },
-  {
-    id: "sep",
-    label: "Sep",
-  },
-  {
-    id: "oct",
-    label: "Oct",
-  },
-  {
-    id: "nov",
-    label: "Nov",
-  },
-  {
-    id: "dec",
-    label: "Dec",
-  },
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ] as const;
 
 const formSchema = z.object({
   title: z.string().max(42).min(2),
   description: z.string(),
-  googleurl: z.string(),
-  besttime: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
+  googleurl: z
+    .string()
+    .regex(
+      new RegExp("^https://maps.app.goo.gl/[a-zA-Z0-9]+$"),
+      "Invalid google map link"
+    ),
+  besttime: z
+    .array(z.enum(MONTHS))
+    .refine((value) => value.some((item) => item), {
+      message: "You have to select at least one item.",
+    }),
 });
 
 export function NewPostForm() {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -91,6 +67,11 @@ export function NewPostForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    startTransition(async () => {
+      const res = await createNewPost(values);
+
+      console.log(res);
+    });
   }
 
   return (
@@ -149,40 +130,38 @@ export function NewPostForm() {
               <FormLabel className="text-base">Best time to visit</FormLabel>
               {/* </div> */}
               <div className="flex gap-2 flex-wrap">
-                {items.map((item) => (
+                {MONTHS.map((item) => (
                   <FormField
-                    key={item.id}
+                    key={item}
                     control={form.control}
                     name="besttime"
                     render={({ field }) => {
                       return (
-                        <FormItem key={item.id}>
+                        <FormItem key={item}>
                           <FormLabel
                             className={cn(
                               "transition-colors font-normal inline-flex items-center border-2 border-muted rounded-md px-4 py-2 cursor-pointer hover:bg-accent",
                               {
-                                "border-primary": field.value?.includes(
-                                  item.id
-                                ),
+                                "border-primary": field.value?.includes(item),
                               }
                             )}
                           >
                             <FormControl>
                               <Checkbox
-                                checked={field.value?.includes(item.id)}
+                                checked={field.value?.includes(item)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, item.id])
+                                    ? field.onChange([...field.value, item])
                                     : field.onChange(
                                         field.value?.filter(
-                                          (value) => value !== item.id
+                                          (value) => value !== item
                                         )
                                       );
                                 }}
                                 className="peer sr-only"
                               />
                             </FormControl>
-                            {item.label}
+                            {item}
                           </FormLabel>
                         </FormItem>
                       );
@@ -209,7 +188,10 @@ export function NewPostForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Submit
+        </Button>
       </form>
     </Form>
   );

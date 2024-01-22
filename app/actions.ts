@@ -35,7 +35,6 @@ export async function createUsername(username: string) {
     console.log(error);
 
     if (!error) {
-      revalidatePath("/profile");
       return {
         status: 200,
         message: "Username Created!",
@@ -91,6 +90,62 @@ export async function updateProfile(values: {
     revalidatePath("/profile");
     redirect(`/${username}`);
   } else {
+    return {
+      status: 403,
+      message: "Something went wrong!",
+    };
+  }
+}
+
+export async function createNewPost(values: {
+  description: string;
+  title: string;
+  googleurl: string;
+  besttime: (
+    | "Jan"
+    | "Feb"
+    | "Mar"
+    | "Apr"
+    | "May"
+    | "Jun"
+    | "Jul"
+    | "Aug"
+    | "Sep"
+    | "Oct"
+    | "Nov"
+    | "Dec"
+  )[];
+}) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  const { data, error } = await supabase
+    .from("posts")
+    .insert([
+      {
+        user_id: session.user.id,
+        title: values.title,
+        description: values.description,
+        best_months: values.besttime,
+        map_url: values.googleurl,
+      },
+    ])
+    .select()
+    .single();
+  if (data && !error) {
+    redirect(`/post/${data.id}`);
+  } else {
+    console.error(error);
     return {
       status: 403,
       message: "Something went wrong!",
