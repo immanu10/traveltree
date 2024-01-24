@@ -152,3 +152,20 @@ export async function createNewPost(values: {
     };
   }
 }
+
+export async function addAndRemovePostToBucketList(values: {
+  isLiked: boolean;
+}) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+}

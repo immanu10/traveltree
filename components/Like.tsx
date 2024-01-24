@@ -16,12 +16,17 @@ export function Like({
   const [likeCount, setLikeCount] = useState(count);
   const [isLiked, setIsLiked] = useState(isLikedByCurrentUser);
 
-  const toggleLike = async () => {
+  const toggleLike = () => {
     setIsLiked((prevLike) => !prevLike);
     setLikeCount((prevCount) => {
       if (!isLiked) return ++prevCount;
       return prevCount === 0 ? 0 : --prevCount;
     });
+  };
+
+  const handleLike = async () => {
+    // call server action
+    // useOptimistic to update like button state before server action finishes executing on server
   };
 
   return (
