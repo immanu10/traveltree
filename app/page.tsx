@@ -50,7 +50,11 @@ export default async function LandingPage() {
               >
                 Go To Explore
               </Link>
-              {!session && <AuthDialog btnTitle="Get Started" />}
+              {!session && (
+                <AuthDialog>
+                  <Button>Get Started</Button>
+                </AuthDialog>
+              )}
             </div>
           </main>
 

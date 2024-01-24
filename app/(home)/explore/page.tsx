@@ -6,6 +6,10 @@ export default async function ExplorePage() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   const { data } = await supabase
     .from("posts")
     .select(`*,profiles("username")`)
@@ -20,7 +24,7 @@ export default async function ExplorePage() {
         </div>
       </div>
       {data?.map((item) => {
-        return <FeedCard key={item.id} data={item} />;
+        return <FeedCard key={item.id} data={item} session={session} />;
       })}
     </div>
   );

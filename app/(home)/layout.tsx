@@ -2,7 +2,7 @@ import { Logout } from "@/components/form/signin";
 import { AuthDialog } from "@/components/auth-dialog";
 import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
@@ -41,7 +41,9 @@ export default async function HomeLayout({
                 <UserNav session={session} />
               </>
             ) : (
-              <AuthDialog />
+              <AuthDialog>
+                <Button>Sign in</Button>
+              </AuthDialog>
             )}
           </div>
         </div>

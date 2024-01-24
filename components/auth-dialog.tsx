@@ -16,12 +16,10 @@ import { Icons } from "./icons";
 import { Separator } from "./ui/separator";
 import { SigninForm } from "./form/signin";
 
-export function AuthDialog({ btnTitle = "Sign in" }: { btnTitle?: string }) {
+export function AuthDialog({ children }: { children: React.ReactNode }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button>{btnTitle}</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <div className="flex justify-center py-6">

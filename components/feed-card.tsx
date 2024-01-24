@@ -3,14 +3,30 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Database } from "@/lib/supabase/types";
+import { Like } from "./Like";
+import { Session } from "@supabase/supabase-js";
+import { UnAuthorizedLike } from "./unauthorized-like";
 
 type FeedCardData = Database["public"]["Tables"]["posts"]["Row"] & {
   profiles: { username: string | null } | null;
 };
 
-export function FeedCard({ data }: { data: FeedCardData }) {
-  const { profiles, title, description, map_url, best_months, inserted_at } =
-    data;
+export function FeedCard({
+  data,
+  session,
+}: {
+  data: FeedCardData;
+  session: Session | null;
+}) {
+  const {
+    profiles,
+    title,
+    description,
+    map_url,
+    best_months,
+    inserted_at,
+    id,
+  } = data;
 
   return (
     <div className="border-b py-3 flex flex-col gap-4">
@@ -46,17 +62,11 @@ export function FeedCard({ data }: { data: FeedCardData }) {
           <p className="">{description}</p>
         </div>
       </div>
-      <div
-        role="button"
-        className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
-      >
-        <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
-          <MountainIcon className="text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500 " />
-        </div>
-        <div className="text-xs text-gray-400 group-hover:text-pink-500">
-          <span>25 likes</span>
-        </div>
-      </div>
+      {session ? (
+        <Like count={0} isLikedByCurrentUser={true} />
+      ) : (
+        <UnAuthorizedLike count={0} />
+      )}
     </div>
   );
 }
