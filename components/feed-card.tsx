@@ -6,12 +6,15 @@ import { Database } from "@/lib/supabase/types";
 import { Like } from "./Like";
 import { Session } from "@supabase/supabase-js";
 import { UnAuthorizedLike } from "./unauthorized-like";
+import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 
 type FeedCardData = Database["public"]["Tables"]["posts"]["Row"] & {
   profiles: { username: string | null } | null;
+  totalLikes: number;
 };
 
-export function FeedCard({
+export async function FeedCard({
   data,
   session,
 }: {
@@ -26,6 +29,7 @@ export function FeedCard({
     best_months,
     inserted_at,
     id,
+    totalLikes,
   } = data;
 
   return (
@@ -63,9 +67,9 @@ export function FeedCard({
         </div>
       </div>
       {session ? (
-        <Like count={0} isLikedByCurrentUser={true} />
+        <Like count={totalLikes} postId={id} />
       ) : (
-        <UnAuthorizedLike count={0} />
+        <UnAuthorizedLike count={totalLikes} />
       )}
     </div>
   );

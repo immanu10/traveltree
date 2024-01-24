@@ -1,39 +1,66 @@
 "use client";
 
 import { HeartIcon, MountainIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import { createClient } from "@/lib/supabase/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { addAndRemoveBucketList } from "@/app/actions";
+import { createClient } from "@/lib/supabase/client";
 
-export function Like({
-  count,
-  isLikedByCurrentUser = false,
-}: {
-  count: number;
-  isLikedByCurrentUser: boolean;
-}) {
+export function Like({ count, postId }: { count: number; postId: number }) {
   const [likeCount, setLikeCount] = useState(count);
-  const [isLiked, setIsLiked] = useState(isLikedByCurrentUser);
+  const [isLiked, setIsLiked] = useState(false);
+  const supabase = createClient();
 
-  const toggleLike = () => {
+  useEffect(() => {
+    async function getIsLikedByCurrentUser() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        console.log("Not logged In.");
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("bucketlists")
+        .select()
+        .eq("user_id", session?.user.id)
+        .eq("post_id", postId)
+        .eq("is_liked", true);
+
+      if (error) return;
+      const isLikedByCurrentUser = data.length > 0;
+      setIsLiked(isLikedByCurrentUser);
+    }
+    getIsLikedByCurrentUser();
+  }, []);
+
+  const handleLikeClick = async () => {
+    // call server action
+    console.log({ isLiked });
+
+    const res = await addAndRemoveBucketList({
+      post_id: postId,
+      isLiked: !isLiked,
+    });
     setIsLiked((prevLike) => !prevLike);
     setLikeCount((prevCount) => {
       if (!isLiked) return ++prevCount;
       return prevCount === 0 ? 0 : --prevCount;
     });
-  };
-
-  const handleLike = async () => {
-    // call server action
-    // useOptimistic to update like button state before server action finishes executing on server
+    if (res.status === 500) {
+      console.log("Error", res.message);
+      // toast message
+    }
+    //TODO: useOptimistic to update like button state before server action finishes executing on server
   };
 
   return (
     <div
       role="button"
       className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
-      onClick={toggleLike}
+      onClick={handleLikeClick}
     >
       <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
         <MountainIcon

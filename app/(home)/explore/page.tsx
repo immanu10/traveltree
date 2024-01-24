@@ -12,7 +12,7 @@ export default async function ExplorePage() {
 
   const { data } = await supabase
     .from("posts")
-    .select(`*,profiles("username")`)
+    .select(`*,profiles(username),bucketlists(is_liked)`)
     .order("inserted_at", { ascending: false });
 
   return (
@@ -24,7 +24,12 @@ export default async function ExplorePage() {
         </div>
       </div>
       {data?.map((item) => {
-        return <FeedCard key={item.id} data={item} session={session} />;
+        const feedata = {
+          ...item,
+          totalLikes: item.bucketlists.filter((item) => item.is_liked).length,
+        };
+
+        return <FeedCard key={item.id} data={feedata} session={session} />;
       })}
     </div>
   );

@@ -153,7 +153,8 @@ export async function createNewPost(values: {
   }
 }
 
-export async function addAndRemovePostToBucketList(values: {
+export async function addAndRemoveBucketList(values: {
+  post_id: number;
   isLiked: boolean;
 }) {
   const cookieStore = cookies();
@@ -167,5 +168,37 @@ export async function addAndRemovePostToBucketList(values: {
       status: 401,
       message: "You must be logged in to do that.",
     };
+  }
+
+  if (values.isLiked) {
+    const { data, error } = await supabase
+      .from("bucketlists")
+      .insert([
+        {
+          user_id: session.user.id,
+          post_id: values.post_id,
+          is_liked: true,
+        },
+      ])
+      .select()
+      .single();
+
+    console.log(data);
+
+    if (error) return { status: 500, message: "Internal server error" };
+    return { status: 200, message: "Added to Bucketlist" };
+  } else {
+    const { data, error } = await supabase
+      .from("bucketlists")
+      .update({ is_liked: false })
+      .eq("post_id", values.post_id)
+      .eq("user_id", session.user.id)
+      .select()
+      .single();
+
+    console.log(data);
+
+    if (error) return { status: 500, message: "Internal server error" };
+    return { status: 200, message: "Removed Like" };
   }
 }
