@@ -9,10 +9,8 @@ import { UnAuthorizedLike } from "./unauthorized-like";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 
-type FeedCardData = Database["public"]["Tables"]["posts"]["Row"] & {
-  profiles: { username: string | null } | null;
-  totalLikes: number;
-};
+type FeedCardData =
+  Database["public"]["Functions"]["get_posts_info"]["Returns"][0];
 
 export async function FeedCard({
   data,
@@ -22,27 +20,29 @@ export async function FeedCard({
   session: Session | null;
 }) {
   const {
-    profiles,
+    id,
+    username,
+    full_name,
     title,
     description,
-    map_url,
     best_months,
-    inserted_at,
-    id,
-    totalLikes,
+    map_url,
+    total_likes,
+    liked_by_current_user,
   } = data;
 
   return (
     <div className="border-b py-3 flex flex-col gap-4">
       <div className="px-5">
         <p className="inline-flex items-center text-sm  text-gray-500">
-          <span>Posted by</span>
-          <Link
-            href={`/${profiles?.username}`}
-            className="ml-1 hover:underline"
-          >
-            {profiles?.username}
-          </Link>
+          <span>Posted by </span>
+          {username ? (
+            <Link href={`/${username}`} className="ml-1 hover:underline">
+              {username}
+            </Link>
+          ) : (
+            <span className="ml-1">{full_name}</span>
+          )}
         </p>
         <h1 className="font-medium text-lg">{title}</h1>
         <div className="flex space-x-2 text-sm  text-gray-500 items-center">
@@ -67,9 +67,13 @@ export async function FeedCard({
         </div>
       </div>
       {session ? (
-        <Like count={totalLikes} postId={id} />
+        <Like
+          count={total_likes}
+          postId={id}
+          likedByCurrentUser={liked_by_current_user}
+        />
       ) : (
-        <UnAuthorizedLike count={totalLikes} />
+        <UnAuthorizedLike count={total_likes} />
       )}
     </div>
   );

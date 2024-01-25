@@ -10,10 +10,13 @@ export default async function ExplorePage() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const { data } = await supabase
-    .from("posts")
-    .select(`*,profiles(username),bucketlists(is_liked)`)
+  const { data: feedData } = await supabase
+    .rpc("get_posts_info", {
+      current_user_id: session ? session.user.id : null,
+    })
     .order("inserted_at", { ascending: false });
+
+  console.log(feedData?.toSorted());
 
   return (
     <div className="">
@@ -23,13 +26,8 @@ export default async function ExplorePage() {
           bucket list.
         </div>
       </div>
-      {data?.map((item) => {
-        const feedata = {
-          ...item,
-          totalLikes: item.bucketlists.filter((item) => item.is_liked).length,
-        };
-
-        return <FeedCard key={item.id} data={feedata} session={session} />;
+      {feedData?.map((item) => {
+        return <FeedCard key={item.id} data={item} session={session} />;
       })}
     </div>
   );

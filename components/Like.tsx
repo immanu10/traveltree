@@ -6,35 +6,17 @@ import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
 import { createClient } from "@/lib/supabase/client";
 
-export function Like({ count, postId }: { count: number; postId: number }) {
+export function Like({
+  count,
+  postId,
+  likedByCurrentUser,
+}: {
+  count: number;
+  postId: number;
+  likedByCurrentUser: boolean;
+}) {
   const [likeCount, setLikeCount] = useState(count);
-  const [isLiked, setIsLiked] = useState(false);
-  const supabase = createClient();
-
-  useEffect(() => {
-    async function getIsLikedByCurrentUser() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session) {
-        console.log("Not logged In.");
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("bucketlists")
-        .select()
-        .eq("user_id", session?.user.id)
-        .eq("post_id", postId)
-        .eq("is_liked", true);
-
-      if (error) return;
-      const isLikedByCurrentUser = data.length > 0;
-      setIsLiked(isLikedByCurrentUser);
-    }
-    getIsLikedByCurrentUser();
-  }, []);
+  const [isLiked, setIsLiked] = useState(likedByCurrentUser);
 
   const handleLikeClick = async () => {
     // call server action
