@@ -170,35 +170,19 @@ export async function addAndRemoveBucketList(values: {
     };
   }
 
-  if (values.isLiked) {
-    const { data, error } = await supabase
-      .from("bucketlists")
-      .insert([
-        {
-          user_id: session.user.id,
-          post_id: values.post_id,
-          is_liked: true,
-        },
-      ])
-      .select()
-      .single();
+  const { data, error } = await supabase
+    .from("bucketlists")
+    .upsert(
+      {
+        user_id: session.user.id,
+        post_id: values.post_id,
+        is_liked: values.isLiked,
+      },
+      { onConflict: "user_id, post_id" }
+    )
+    .select()
+    .single();
 
-    console.log(data);
-
-    if (error) return { status: 500, message: "Internal server error" };
-    return { status: 200, message: "Added to Bucketlist" };
-  } else {
-    const { data, error } = await supabase
-      .from("bucketlists")
-      .update({ is_liked: false })
-      .eq("post_id", values.post_id)
-      .eq("user_id", session.user.id)
-      .select()
-      .single();
-
-    console.log(data);
-
-    if (error) return { status: 500, message: "Internal server error" };
-    return { status: 200, message: "Removed Like" };
-  }
+  if (error) return { status: 500, message: "Internal server error" };
+  return { status: 200, message: "Like/UnLike action Completed" };
 }

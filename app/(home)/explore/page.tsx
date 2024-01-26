@@ -16,8 +16,6 @@ export default async function ExplorePage() {
     })
     .order("inserted_at", { ascending: false });
 
-  console.log(feedData?.toSorted());
-
   return (
     <div className="">
       <div className="border-b py-1 px-2">

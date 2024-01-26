@@ -1,36 +1,53 @@
 "use client";
 
 import { HeartIcon, MountainIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useOptimistic, useState } from "react";
 import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
 import { createClient } from "@/lib/supabase/client";
 
-export function Like({
-  count,
-  postId,
-  likedByCurrentUser,
-}: {
+type LikeProps = {
   count: number;
   postId: number;
   likedByCurrentUser: boolean;
-}) {
-  const [likeCount, setLikeCount] = useState(count);
-  const [isLiked, setIsLiked] = useState(likedByCurrentUser);
+};
+type TLike = Omit<LikeProps, "postId">;
+
+export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
+  // const [likeCount, setLikeCount] = useState(count);
+  // const [isLiked, setIsLiked] = useState(likedByCurrentUser);
+
+  // Todo: fixing useOptimistic, make some decision on isLiked field in Database
+  const [optimisticLike, addAndRemoveOptimisticLike] = useOptimistic(
+    { count, likedByCurrentUser },
+    (state, newLike: TLike) => {
+      console.log(newLike);
+      return newLike;
+    }
+  );
 
   const handleLikeClick = async () => {
+    // callOptimisticLike function
+    addAndRemoveOptimisticLike(
+      optimisticLike.likedByCurrentUser
+        ? {
+            count: optimisticLike.count === 0 ? 0 : optimisticLike.count - 1,
+            likedByCurrentUser: !optimisticLike.likedByCurrentUser,
+          }
+        : {
+            count: optimisticLike.count + 1,
+            likedByCurrentUser: !optimisticLike.likedByCurrentUser,
+          }
+    );
     // call server action
-    console.log({ isLiked });
+
+    console.log({ optimisticLike });
 
     const res = await addAndRemoveBucketList({
       post_id: postId,
-      isLiked: !isLiked,
+      isLiked: !optimisticLike.likedByCurrentUser,
     });
-    setIsLiked((prevLike) => !prevLike);
-    setLikeCount((prevCount) => {
-      if (!isLiked) return ++prevCount;
-      return prevCount === 0 ? 0 : --prevCount;
-    });
+
     if (res.status === 500) {
       console.log("Error", res.message);
       // toast message
@@ -49,13 +66,13 @@ export function Like({
           className={cn(
             "text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500",
             {
-              "fill-pink-500 text-pink-500": isLiked,
+              "fill-pink-500 text-pink-500": optimisticLike.likedByCurrentUser,
             }
           )}
         />
       </div>
       <div className="text-xs text-gray-400 group-hover:text-pink-500">
-        <span>{`${likeCount} likes`}</span>
+        <span>{`${optimisticLike.count} likes`}</span>
       </div>
     </div>
   );
