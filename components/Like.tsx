@@ -1,10 +1,9 @@
 "use client";
 
-import { HeartIcon, MountainIcon } from "lucide-react";
-import { useEffect, useOptimistic, useState } from "react";
+import { MountainIcon } from "lucide-react";
+import { useOptimistic } from "react";
 import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
-import { createClient } from "@/lib/supabase/client";
 
 type LikeProps = {
   count: number;
@@ -12,68 +11,60 @@ type LikeProps = {
   likedByCurrentUser: boolean;
 };
 type TLike = Omit<LikeProps, "postId">;
+type TAction = "like" | "dislike";
 
 export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
-  // const [likeCount, setLikeCount] = useState(count);
-  // const [isLiked, setIsLiked] = useState(likedByCurrentUser);
+  //NOTE: useOptimistic is working correctly only when i revalidatePath in server action.
+  const [optimisticLikeState, setOptimisticLikeState] = useOptimistic<
+    TLike,
+    TAction
+  >({ count, likedByCurrentUser }, (state, action) => {
+    if (action === "like")
+      return { count: state.count + 1, likedByCurrentUser: true };
+    else return { count: state.count - 1, likedByCurrentUser: false };
+  });
 
-  // Todo: fixing useOptimistic, make some decision on isLiked field in Database
-  const [optimisticLike, addAndRemoveOptimisticLike] = useOptimistic(
-    { count, likedByCurrentUser },
-    (state, newLike: TLike) => {
-      console.log(newLike);
-      return newLike;
-    }
-  );
+  const handleLikeSubmit = async () => {
+    // Call useOptimistic Action
+    if (optimisticLikeState.likedByCurrentUser) {
+      setOptimisticLikeState("dislike");
+    } else setOptimisticLikeState("like");
 
-  const handleLikeClick = async () => {
-    // callOptimisticLike function
-    addAndRemoveOptimisticLike(
-      optimisticLike.likedByCurrentUser
-        ? {
-            count: optimisticLike.count === 0 ? 0 : optimisticLike.count - 1,
-            likedByCurrentUser: !optimisticLike.likedByCurrentUser,
-          }
-        : {
-            count: optimisticLike.count + 1,
-            likedByCurrentUser: !optimisticLike.likedByCurrentUser,
-          }
-    );
     // call server action
-
-    console.log({ optimisticLike });
-
-    const res = await addAndRemoveBucketList({
+    const res = await await addAndRemoveBucketList({
       post_id: postId,
-      isLiked: !optimisticLike.likedByCurrentUser,
+      isLiked: !optimisticLikeState.likedByCurrentUser,
     });
-
     if (res.status === 500) {
       console.log("Error", res.message);
-      // toast message
+      // error toast message
+    } else {
+      console.log("Success", res.message);
+      // success toast message
     }
-    //TODO: useOptimistic to update like button state before server action finishes executing on server
   };
 
   return (
-    <div
-      role="button"
-      className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
-      onClick={handleLikeClick}
-    >
-      <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
-        <MountainIcon
-          className={cn(
-            "text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500",
-            {
-              "fill-pink-500 text-pink-500": optimisticLike.likedByCurrentUser,
-            }
-          )}
-        />
-      </div>
-      <div className="text-xs text-gray-400 group-hover:text-pink-500">
-        <span>{`${optimisticLike.count} likes`}</span>
-      </div>
-    </div>
+    <form action={handleLikeSubmit}>
+      <button
+        type="submit"
+        className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
+      >
+        <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
+          <MountainIcon
+            className={cn(
+              "text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500",
+              {
+                "fill-pink-500 text-pink-500":
+                  optimisticLikeState.likedByCurrentUser,
+              }
+            )}
+          />
+        </div>
+        <div className="text-xs text-gray-400 group-hover:text-pink-500">
+          <span>{`${optimisticLikeState.count} buckets`}</span>
+        </div>
+      </button>
+    </form>
   );
 }
