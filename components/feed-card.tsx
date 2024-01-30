@@ -53,9 +53,15 @@ export async function FeedCard({
         <div className="my-2 py-2 rounded-sm flex space-x-2 h-8 items-center text-xs">
           <MapIcon className="w-3 h-3 text-blue-500" />
           {/* <Separator orientation="vertical" /> */}
-          <Link href={map_url!} className="text-blue-500 hover:underline">
+          <a
+            href={map_url!}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-500 hover:underline"
+          >
             {map_url}
-          </Link>
+          </a>
+
           <Separator orientation="vertical" />
 
           <Button variant="ghost" size="icon" className="h-6 w-6">

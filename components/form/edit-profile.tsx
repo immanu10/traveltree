@@ -73,8 +73,10 @@ export function EditProfile({
     console.log(values);
     startTransition(async () => {
       const res = await updateProfile(values);
-
-      console.log(res);
+      if (res.status === 403) {
+        // toast
+        console.log(res);
+      }
     });
   }
 

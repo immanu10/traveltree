@@ -84,7 +84,6 @@ export async function updateProfile(values: {
     .from("profiles")
     .update({ username, full_name, bio })
     .eq("id", session.user.id);
-  console.log(error);
 
   if (!error) {
     revalidatePath("/profile");
