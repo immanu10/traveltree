@@ -1,3 +1,4 @@
+import { BucketListTable } from "@/components/bucketlist-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -121,6 +122,8 @@ export default async function Page({
           <div className="grid grid-cols-3"></div>
         </div>
       </div>
+
+      <BucketListTable />
     </div>
   );
 }
