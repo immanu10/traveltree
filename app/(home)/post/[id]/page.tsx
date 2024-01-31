@@ -1,3 +1,4 @@
+import { FeedCard } from "@/components/feed-card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/server";
