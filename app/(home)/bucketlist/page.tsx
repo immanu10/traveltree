@@ -38,6 +38,7 @@ export default async function Page({
     .from("bucketlists")
     .select(`*,posts(*,profiles(username,full_name))`)
     .eq("user_id", session.user.id)
+    .eq("is_liked", true)
     .order("inserted_at", { ascending: false });
 
   if (!data) {
@@ -54,7 +55,7 @@ export default async function Page({
       <div className="mt-4 space-y-2">
         <div className="todo-section">
           <div className="border-l-4 border-green-500 pl-2 mb-2">
-            <h3 className="text-sm font-light">Todo</h3>
+            <h2 className="text-sm font-light">Todo</h2>
           </div>
           <div>
             {data.map((item) => {

@@ -34,17 +34,20 @@ export async function FeedCard({
   return (
     <div className="border-b py-3 flex flex-col gap-4">
       <div className="px-5">
-        <p className="inline-flex items-center text-sm  text-gray-500">
+        <div className="inline text-sm text-gray-500">
           <span>Posted by </span>
           {username ? (
-            <Link href={`/${username}`} className="ml-1 hover:underline">
+            <Link
+              href={`/${username}`}
+              className="hover:underline inline-block"
+            >
               {username}
             </Link>
           ) : (
-            <span className="ml-1">{full_name}</span>
+            <span>{full_name}</span>
           )}
-        </p>
-        <h1 className="font-medium text-lg">{title}</h1>
+        </div>
+        <h3 className="font-medium text-lg">{title}</h3>
         <div className="flex space-x-2 text-sm  text-gray-500 items-center">
           <p>Karnatak, India</p>
           <DotIcon className="w-3 h-3" />

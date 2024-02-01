@@ -141,6 +141,27 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      get_post_by_id: {
+        Args: {
+          current_user_id: string | null;
+          current_post_id: number;
+        };
+        Returns: {
+          id: number;
+          user_id: string;
+          username: string;
+          full_name: string;
+          title: string;
+          description: string;
+          map_url: string;
+          best_months: Database["public"]["Enums"]["months_enum"][];
+          state: string;
+          country: string;
+          inserted_at: string;
+          total_likes: number;
+          liked_by_current_user: boolean;
+        }[];
+      };
       get_posts_info: {
         Args: {
           current_user_id: string | null;

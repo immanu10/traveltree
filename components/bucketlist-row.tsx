@@ -8,7 +8,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { MoreHorizontalIcon, MountainIcon } from "lucide-react";
+import {
+  CheckCheck,
+  MoreHorizontalIcon,
+  MountainIcon,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -20,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { Database } from "@/lib/supabase/types";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
   posts:
@@ -36,43 +42,49 @@ export function BucketListRow({ data }: { data: DataProps }) {
   const { posts } = data;
 
   return (
-    <div className="border-b py-3 flex justify-between items-center space-x-2">
-      <div className="w-10/12 max-w-lg">
-        <p className="inline-flex items-center text-sm  text-gray-500">
+    <div className="border-b py-3 flex justify-between items-center gap-2">
+      <div className="w-7/12 max-w-lg">
+        <div className="inline text-xs text-gray-500">
           <span>Posted by </span>
           {posts?.profiles?.username ? (
             <Link
               href={`/${posts.profiles.username}`}
-              className="ml-1 hover:underline"
+              className="hover:underline inline-block"
             >
               {posts.profiles.username}
             </Link>
           ) : (
-            <span className="ml-1">{posts?.profiles?.full_name}</span>
+            <span>{posts?.profiles?.full_name}</span>
           )}
-        </p>
-        <Link href={`/post/${posts?.id}`}>
-          <p className="text-sm text-ellipsis overflow-hidden whitespace-nowrap">
+        </div>
+        <Link href={`/post/${posts?.id}`} className="">
+          <h3 className="text-sm text-foreground font-medium text-ellipsis overflow-hidden whitespace-nowrap">
             {posts?.title}
+          </h3>
+          <p className="text-accent-foreground text-sm text-ellipsis overflow-hidden whitespace-nowrap">
+            {posts?.description}
           </p>
         </Link>
       </div>
-      <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-            >
-              <MoreHorizontalIcon className="h-4 w-4" />
-              <span className="sr-only">Open menu</span>
+      <div className="flex items-center gap-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <CheckCheck className="h-4 w-4" />
+              <span className="sr-only">Mark as visited</span>
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="">
-            <DropdownMenuItem>Mark as Completed</DropdownMenuItem>
-            <DropdownMenuItem>Delete Bucketlist</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </TooltipTrigger>
+          <TooltipContent>Mark as visited</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Trash2 className="h-4 w-4" />
+              <span className="sr-only">Remove bucketlist</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Remove bucketlist</TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );
