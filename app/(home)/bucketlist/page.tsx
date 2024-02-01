@@ -18,10 +18,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 export default async function Page({
-  params,
   searchParams,
 }: {
-  params: { username: string };
   searchParams: { status?: string };
 }) {
   const cookieStore = cookies();
@@ -41,9 +39,7 @@ export default async function Page({
     .eq("is_liked", true)
     .order("inserted_at", { ascending: false });
 
-  if (!data) {
-    return <p className="text-red-500">No Bucketlist Added</p>;
-  }
+  const emptyBucketList = data === null || data.length === 0;
 
   return (
     <div className="my-4 px-5 md:px-0">
@@ -57,8 +53,11 @@ export default async function Page({
           <div className="border-l-4 border-green-500 pl-2 mb-2">
             <h2 className="text-sm font-light">Todo</h2>
           </div>
+          {emptyBucketList && (
+            <p className="text-red-500 text-center">No Bucketlist Added</p>
+          )}
           <div>
-            {data.map((item) => {
+            {data?.map((item) => {
               return <BucketListRow key={item.id} data={item} />;
             })}
           </div>

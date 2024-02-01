@@ -149,7 +149,7 @@ export function EditProfile({
             )}
           />
 
-          <Button type="submit" className="px-6">
+          <Button type="submit" className="px-6" disabled={isPending}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>

@@ -169,20 +169,40 @@ export async function addAndRemoveBucketList(values: {
     };
   }
 
-  const { data, error } = await supabase
-    .from("bucketlists")
-    .upsert(
-      {
-        user_id: session.user.id,
-        post_id: values.post_id,
-        is_liked: values.isLiked,
-      },
-      { onConflict: "user_id, post_id" }
-    )
-    .select()
-    .single();
+  const { error } = await supabase.from("bucketlists").upsert(
+    {
+      user_id: session.user.id,
+      post_id: values.post_id,
+      is_liked: values.isLiked,
+    },
+    { onConflict: "user_id, post_id" }
+  );
 
   if (error) return { status: 500, message: "Internal server error" };
   revalidatePath("/");
   return { status: 200, message: "Like/UnLike action Completed" };
+}
+
+export async function removeBucketList(bucketlist_id: number) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  const { error } = await supabase
+    .from("bucketlists")
+    .update({ is_liked: false })
+    .eq("id", bucketlist_id);
+
+  if (error) return { status: 500, message: "Internal server error" };
+  revalidatePath("/bucketlist");
+  return { status: 200, message: "Bucketlist Removed" };
 }

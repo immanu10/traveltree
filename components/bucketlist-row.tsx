@@ -1,31 +1,11 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import {
-  CheckCheck,
-  MoreHorizontalIcon,
-  MountainIcon,
-  Trash2,
-} from "lucide-react";
+import { CheckCheck } from "lucide-react";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { Button } from "./ui/button";
 import { Database } from "@/lib/supabase/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { DeleteBucketList } from "./form/delete-bucketlist";
 
 type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
   posts:
@@ -76,15 +56,7 @@ export function BucketListRow({ data }: { data: DataProps }) {
           </TooltipTrigger>
           <TooltipContent>Mark as visited</TooltipContent>
         </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Remove bucketlist</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Remove bucketlist</TooltipContent>
-        </Tooltip>
+        <DeleteBucketList data={data} />
       </div>
     </div>
   );

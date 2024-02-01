@@ -1,9 +1,10 @@
 "use client";
 
 import { MountainIcon } from "lucide-react";
-import { useOptimistic } from "react";
+import { useOptimistic, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
 type LikeProps = {
   count: number;
@@ -14,6 +15,7 @@ type TLike = Omit<LikeProps, "postId">;
 type TAction = "like" | "dislike";
 
 export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
+  const [pending, startTransisition] = useTransition();
   //NOTE: useOptimistic is working correctly only when i revalidatePath in server action.
   const [optimisticLikeState, setOptimisticLikeState] = useOptimistic<
     TLike,
@@ -30,41 +32,41 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
       setOptimisticLikeState("dislike");
     } else setOptimisticLikeState("like");
 
-    // call server action
-    const res = await await addAndRemoveBucketList({
-      post_id: postId,
-      isLiked: !optimisticLikeState.likedByCurrentUser,
+    startTransisition(async () => {
+      // call server action
+      const res = await addAndRemoveBucketList({
+        post_id: postId,
+        isLiked: !optimisticLikeState.likedByCurrentUser,
+      });
+      if (res.status === 500) {
+        console.log("Error", res.message);
+        // error toast message
+      } else {
+        console.log("Success", res.message);
+        // success toast message
+      }
     });
-    if (res.status === 500) {
-      console.log("Error", res.message);
-      // error toast message
-    } else {
-      console.log("Success", res.message);
-      // success toast message
-    }
   };
 
   return (
-    <form action={handleLikeSubmit}>
-      <button
-        type="submit"
-        className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
-      >
-        <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
-          <MountainIcon
-            className={cn(
-              "text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500",
-              {
-                "fill-pink-500 text-pink-500":
-                  optimisticLikeState.likedByCurrentUser,
-              }
-            )}
-          />
-        </div>
-        <div className="text-xs text-gray-400 group-hover:text-pink-500">
-          <span>{`${optimisticLikeState.count} buckets`}</span>
-        </div>
-      </button>
-    </form>
+    <button
+      onClick={handleLikeSubmit}
+      className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
+    >
+      <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
+        <MountainIcon
+          className={cn(
+            "text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500",
+            {
+              "fill-pink-500 text-pink-500":
+                optimisticLikeState.likedByCurrentUser,
+            }
+          )}
+        />
+      </div>
+      <div className="text-xs text-gray-400 group-hover:text-pink-500">
+        <span>{`${optimisticLikeState.count} buckets`}</span>
+      </div>
+    </button>
   );
 }
