@@ -3,7 +3,6 @@
 import { Loader2, Trash2 } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -15,9 +14,8 @@ import {
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Database } from "@/lib/supabase/types";
-import { use, useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { removeBucketList } from "@/app/actions";
-import { useFormStatus } from "react-dom";
 
 type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
   posts:
@@ -33,11 +31,7 @@ type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
 export function DeleteBucketList({ data }: { data: DataProps }) {
   const [pending, startTransisition] = useTransition();
 
-  const [mountend, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   function handleContinue() {
     startTransisition(async () => {
@@ -51,18 +45,17 @@ export function DeleteBucketList({ data }: { data: DataProps }) {
     });
   }
 
-  if (!mountend) return null;
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <Tooltip>
-        <AlertDialogTrigger>
-          <TooltipTrigger asChild>
+        <TooltipTrigger asChild>
+          <AlertDialogTrigger asChild>
             <Button variant="ghost" size="icon">
               <Trash2 className="h-4 w-4" />
               <span className="sr-only">Remove bucketlist</span>
             </Button>
-          </TooltipTrigger>
-        </AlertDialogTrigger>
+          </AlertDialogTrigger>
+        </TooltipTrigger>
         <TooltipContent>Remove bucketlist</TooltipContent>
       </Tooltip>
       <AlertDialogContent>

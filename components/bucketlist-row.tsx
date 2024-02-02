@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { Database } from "@/lib/supabase/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { DeleteBucketList } from "./form/delete-bucketlist";
+import { MarkVisitedBucketlist } from "./form/mark-visited-bucketlist";
 
 type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
   posts:
@@ -47,15 +48,7 @@ export function BucketListRow({ data }: { data: DataProps }) {
         </Link>
       </div>
       <div className="flex items-center gap-2">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <CheckCheck className="h-4 w-4" />
-              <span className="sr-only">Mark as visited</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Mark as visited</TooltipContent>
-        </Tooltip>
+        <MarkVisitedBucketlist data={data} />
         <DeleteBucketList data={data} />
       </div>
     </div>
