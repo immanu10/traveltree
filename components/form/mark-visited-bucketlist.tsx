@@ -61,9 +61,13 @@ const MONTHS = [
   "Nov",
   "Dec",
 ] as const;
+const currentYear = new Date().getFullYear();
+const LAST_TEN_YEARS = Array.from({ length: 11 }, (_, index) =>
+  (currentYear - index).toString()
+);
 const formSchema = z.object({
   visited_month: z.enum(MONTHS),
-  visited_year: z.number(),
+  visited_year: z.string(),
 });
 
 type FormType = z.infer<typeof formSchema>;
@@ -71,15 +75,15 @@ type FormType = z.infer<typeof formSchema>;
 export function MarkVisitedBucketlist({ data }: { data: DataProps }) {
   const [pending, startTransisition] = useTransition();
 
-  const [open, setOpen] = useState(false);
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
   });
 
   function onSubmit(values: FormType) {
+    console.log(values);
+
     startTransisition(async () => {
       //   const res = await removeBucketList(data.id);
-      setOpen(false);
       //   if (res.status !== 200) {
       // console.log("Erro", res);
       // toast message
@@ -89,86 +93,76 @@ export function MarkVisitedBucketlist({ data }: { data: DataProps }) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DialogTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <CheckCheck className="h-4 w-4" />
-              <span className="sr-only">Mark as visited</span>
-            </Button>
-          </DialogTrigger>
-        </TooltipTrigger>
-        <TooltipContent>Mark as visited</TooltipContent>
-      </Tooltip>
-
-      <DialogContent className="">
-        <DialogHeader>
-          <DialogTitle>Mark as Visited</DialogTitle>
-          <DialogDescription>
-            Select month and year when you visited {data.posts?.title}
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="pt-4 pb-2 px-1">
+          <Label className="text-xs">Visited in:</Label>
+          <div className="flex items-start gap-2">
             <FormField
               control={form.control}
               name="visited_month"
               render={({ field }) => (
-                <FormItem>
-                  <div className="grid grid-cols-4 gap-4 items-center">
-                    <FormLabel>Visited month</FormLabel>
-                    <div className="col-span-3">
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a month" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {MONTHS.map((item) => (
-                            <SelectItem key={item} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </div>
-                  </div>
+                <FormItem className="space-y-1 w-full">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="">
+                        <SelectValue placeholder="Month" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="max-h-60">
+                      {MONTHS.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
 
-            {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div> */}
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setOpen(false)}>
+            <FormField
+              control={form.control}
+              name="visited_year"
+              render={({ field }) => (
+                <FormItem className="space-y-1 w-full">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="">
+                        <SelectValue placeholder="Year" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="max-h-60">
+                      {LAST_TEN_YEARS.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+            <div className="ml-auto flex gap-2 items-center">
+              <Button variant="outline" onClick={() => {}}>
                 Cancel
               </Button>
               <Button type="submit" disabled={pending}>
                 {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Save
               </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+            </div>
+          </div>
+        </div>
+      </form>
+    </Form>
   );
 }

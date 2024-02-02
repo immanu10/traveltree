@@ -1,4 +1,4 @@
-import { BucketListRow } from "@/components/bucketlist-row";
+import { BucketListRow, BucketListView } from "@/components/bucketlist-row";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -42,26 +42,21 @@ export default async function Page({
   const emptyBucketList = data === null || data.length === 0;
 
   return (
-    <div className="my-4 px-5 md:px-0">
-      <div className="border-l-4 border-gray-300 pl-2">
+    <div className="my-4">
+      <div className="border-l-4 border-gray-300 pl-2 ml-5 md:ml-0">
         <h1 className="text-lg">My Bucketlist</h1>
       </div>
       <Separator className="my-4" />
 
-      <div className="mt-4 space-y-2">
-        <div className="todo-section">
-          <div className="border-l-4 border-green-500 pl-2 mb-2">
-            <h2 className="text-sm font-light">Todo</h2>
-          </div>
-          {emptyBucketList && (
-            <p className="text-red-500 text-center">No Bucketlist Added</p>
-          )}
-          <div>
-            {data?.map((item) => {
-              return <BucketListRow key={item.id} data={item} />;
-            })}
-          </div>
+      <div className="mt-4">
+        <div className="border-l-4 border-green-500 pl-2 ml-5 md:ml-0">
+          <h2 className="text-sm font-light">Todo</h2>
         </div>
+        {emptyBucketList ? (
+          <p className="text-red-500 text-center">No Bucketlist Added</p>
+        ) : (
+          <BucketListView data={data} />
+        )}
       </div>
     </div>
   );
