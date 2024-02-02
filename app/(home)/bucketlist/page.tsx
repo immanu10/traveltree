@@ -1,4 +1,8 @@
-import { BucketListRow, BucketListView } from "@/components/bucketlist-row";
+import {
+  BucketListRow,
+  BucketListView,
+  VisitedBucketListRow,
+} from "@/components/bucketlist-row";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -39,7 +43,13 @@ export default async function Page({
     .eq("is_liked", true)
     .order("inserted_at", { ascending: false });
 
-  const emptyBucketList = data === null || data.length === 0;
+  if (data === null) return <p className="text-lg text-center">No Data</p>;
+
+  const todoData = data.filter((item) => !item.is_completed);
+  const visitedData = data.filter((item) => item.is_completed);
+
+  const emptyTodoBucketList = todoData.length === 0;
+  const emptyVisitedBucketList = visitedData.length === 0;
 
   return (
     <div className="my-4">
@@ -52,10 +62,23 @@ export default async function Page({
         <div className="border-l-4 border-green-500 pl-2 ml-5 md:ml-0">
           <h2 className="text-sm font-light">Todo</h2>
         </div>
-        {emptyBucketList ? (
-          <p className="text-red-500 text-center">No Bucketlist Added</p>
+        {emptyTodoBucketList ? (
+          <p className="text-red-500 text-center mt-4">No Todo Bucketlist</p>
         ) : (
-          <BucketListView data={data} />
+          <BucketListView data={todoData} />
+        )}
+      </div>
+
+      <div className="mt-4">
+        <div className="border-l-4 border-blue-500 pl-2 ml-5 md:ml-0">
+          <h2 className="text-sm font-light">Visited</h2>
+        </div>
+        {emptyVisitedBucketList ? (
+          <p className="text-red-500 text-center mt-4">No visited Bucketlist</p>
+        ) : (
+          visitedData.map((item) => (
+            <VisitedBucketListRow key={item.id} data={item} />
+          ))
         )}
       </div>
     </div>

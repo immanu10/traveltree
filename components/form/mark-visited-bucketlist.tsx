@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Database } from "@/lib/supabase/types";
 import { useState, useTransition } from "react";
-import { removeBucketList } from "@/app/actions";
+import { markAsVisitedBucketList, removeBucketList } from "@/app/actions";
 import {
   Dialog,
   DialogContent,
@@ -36,17 +36,6 @@ import {
   SelectValue,
 } from "../ui/select";
 
-type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
-  posts:
-    | (Database["public"]["Tables"]["posts"]["Row"] & {
-        profiles: Pick<
-          Database["public"]["Tables"]["profiles"]["Row"],
-          "username" | "full_name"
-        > | null;
-      })
-    | null;
-};
-
 const MONTHS = [
   "Jan",
   "Feb",
@@ -72,7 +61,13 @@ const formSchema = z.object({
 
 type FormType = z.infer<typeof formSchema>;
 
-export function MarkVisitedBucketlist({ data }: { data: DataProps }) {
+export function MarkVisitedBucketlist({
+  id,
+  closeCollapsible,
+}: {
+  id: number;
+  closeCollapsible: () => void;
+}) {
   const [pending, startTransisition] = useTransition();
 
   const form = useForm<FormType>({
@@ -83,12 +78,16 @@ export function MarkVisitedBucketlist({ data }: { data: DataProps }) {
     console.log(values);
 
     startTransisition(async () => {
-      //   const res = await removeBucketList(data.id);
-      //   if (res.status !== 200) {
-      // console.log("Erro", res);
-      // toast message
-      //   }
-      //   console.log(res);
+      const res = await markAsVisitedBucketList({
+        bucketlist_id: id,
+        month: values.visited_month,
+        year: Number(values.visited_year),
+      });
+      if (res.status !== 200) {
+        console.log("Erro", res);
+        // toast message
+      }
+      console.log(res);
     });
   }
 
@@ -152,7 +151,7 @@ export function MarkVisitedBucketlist({ data }: { data: DataProps }) {
               )}
             />
             <div className="ml-auto flex gap-2 items-center">
-              <Button variant="outline" onClick={() => {}}>
+              <Button type="reset" variant="outline" onClick={closeCollapsible}>
                 Cancel
               </Button>
               <Button type="submit" disabled={pending}>

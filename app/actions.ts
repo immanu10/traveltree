@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { Database } from "@/lib/supabase/types";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -205,4 +206,60 @@ export async function removeBucketList(bucketlist_id: number) {
   if (error) return { status: 500, message: "Internal server error" };
   revalidatePath("/bucketlist");
   return { status: 200, message: "Bucketlist Removed" };
+}
+
+export async function markAsTodoBucketList(bucketlist_id: number) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  const { error } = await supabase
+    .from("bucketlists")
+    .update({ is_completed: false, visited_month: null, visited_year: null })
+    .eq("id", bucketlist_id);
+
+  if (error) return { status: 500, message: "Internal server error" };
+  revalidatePath("/bucketlist");
+  return { status: 200, message: "Bucketlist moved to Todo" };
+}
+
+export async function markAsVisitedBucketList({
+  bucketlist_id,
+  month,
+  year,
+}: {
+  bucketlist_id: number;
+  month: Database["public"]["Enums"]["months_enum"];
+  year: number;
+}) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  const { error } = await supabase
+    .from("bucketlists")
+    .update({ is_completed: true, visited_month: month, visited_year: year })
+    .eq("id", bucketlist_id);
+
+  if (error) return { status: 500, message: "Internal server error" };
+  revalidatePath("/bucketlist");
+  return { status: 200, message: "Bucketlist marked as completed" };
 }

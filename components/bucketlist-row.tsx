@@ -16,6 +16,7 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { useState } from "react";
+import { MoveTodoBucketList } from "./form/move-todo-bucketlist";
 
 type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
   posts:
@@ -55,7 +56,7 @@ export function BucketListView({ data }: { data: DataProps[] }) {
           key={item.id}
           data={item}
           open={open[item.id]}
-          onOpenChange={toggleOpenChange}
+          onOpenChange={() => toggleOpenChange(item.id)}
         />
       ))}
     </>
@@ -69,14 +70,14 @@ export function BucketListRow({
 }: {
   data: DataProps;
   open: boolean;
-  onOpenChange: (item: number) => void;
+  onOpenChange: () => void;
 }) {
   const { posts } = data;
 
   return (
     <Collapsible
       open={open}
-      onOpenChange={() => onOpenChange(data.id)}
+      onOpenChange={onOpenChange}
       className="border-b py-0 data-[state=closed]:py-4 data-[state=open]:pt-4 px-4 md:px-0"
     >
       <div className="w-full flex justify-between items-center gap-2 px-1">
@@ -115,12 +116,51 @@ export function BucketListRow({
             </CollapsibleTrigger>
             <TooltipContent>Mark as visited</TooltipContent>
           </Tooltip>
-          <DeleteBucketList data={data} />
+          <DeleteBucketList id={data.id} title={data.posts?.title} />
         </div>
       </div>
       <CollapsibleContent className="overflow-hidden transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        <MarkVisitedBucketlist data={data} />
+        <MarkVisitedBucketlist id={data.id} closeCollapsible={onOpenChange} />
       </CollapsibleContent>
     </Collapsible>
+  );
+}
+
+export function VisitedBucketListRow({ data }: { data: DataProps }) {
+  const { posts } = data;
+
+  return (
+    <div className="border-b py-4 px-4 md:px-0">
+      <div className="w-full flex justify-between items-center gap-2 px-1">
+        <div className="w-7/12 max-w-lg">
+          <div className="inline text-xs text-gray-500">
+            <span>Posted by </span>
+            {posts?.profiles?.username ? (
+              <Link
+                href={`/${posts.profiles.username}`}
+                className="hover:underline inline-block"
+              >
+                {posts.profiles.username}
+              </Link>
+            ) : (
+              <span>{posts?.profiles?.full_name}</span>
+            )}
+          </div>
+          <Link href={`/post/${posts?.id}`} className="">
+            <h3 className="text-sm text-foreground font-medium text-ellipsis overflow-hidden whitespace-nowrap">
+              {posts?.title}
+            </h3>
+            <p className="text-accent-foreground text-sm text-ellipsis overflow-hidden whitespace-nowrap">
+              {posts?.description}
+            </p>
+          </Link>
+          <p className="text-xs mt-2 text-gray-600">{`Visited in: ${data.visited_month}, ${data.visited_year}`}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <MoveTodoBucketList id={data.id} title={data.posts?.title} />
+          <DeleteBucketList id={data.id} title={data.posts?.title} />
+        </div>
+      </div>
+    </div>
   );
 }

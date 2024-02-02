@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Trash2 } from "lucide-react";
+import { Check, Loader2, Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -14,9 +14,9 @@ import {
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { useState, useTransition } from "react";
-import { removeBucketList } from "@/app/actions";
+import { markAsTodoBucketList, removeBucketList } from "@/app/actions";
 
-export function DeleteBucketList({
+export function MoveTodoBucketList({
   id,
   title,
 }: {
@@ -29,7 +29,7 @@ export function DeleteBucketList({
 
   function handleContinue() {
     startTransisition(async () => {
-      const res = await removeBucketList(id);
+      const res = await markAsTodoBucketList(id);
       setOpen(false);
       if (res.status !== 200) {
         console.log("Erro", res);
@@ -45,18 +45,18 @@ export function DeleteBucketList({
         <TooltipTrigger asChild>
           <AlertDialogTrigger asChild>
             <Button variant="ghost" size="icon">
-              <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Remove bucketlist</span>
+              <Check className="h-4 w-4" />
+              <span className="sr-only">Move to todo</span>
             </Button>
           </AlertDialogTrigger>
         </TooltipTrigger>
-        <TooltipContent>Remove bucketlist</TooltipContent>
+        <TooltipContent>Move to todo</TooltipContent>
       </Tooltip>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            {`${title ? title : "This"} will be removed from your bucketlist.`}
+            {`${title ? title : "This"} will be moved back to Todo bucketlist.`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
