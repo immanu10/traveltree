@@ -1,11 +1,15 @@
+import { BucketListProgress } from "@/components/bucketlist-progress";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/server";
 import { getInitialFromFullName } from "@/lib/utils";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
+// Need to revisit: checkout auth.getUser() supabse function
 async function getProfileOfCurrentSession(
   supabase: ReturnType<typeof createClient>
 ) {
@@ -44,12 +48,12 @@ export default async function Page({
     // notFound() page
     return <p className="text-destructive text-center my-4">No User found!</p>;
   }
-  const { avatar_url, full_name, username, bio } = profiles[0];
+  const { avatar_url, full_name, username, bio, id } = profiles[0];
 
   const currentUser = await getProfileOfCurrentSession(supabase);
 
   return (
-    <div className="px-5 md:px-0">
+    <div className="px-4 md:px-0">
       <div className="flex flex-col items-center mt-4">
         <Avatar className="h-20 w-20">
           <AvatarImage
@@ -82,6 +86,21 @@ export default async function Page({
             </Link>
           </div>
         )}
+      </div>
+      <div className="mt-5">
+        <p className="text-sm font-medium">Bucketlist Progress</p>
+        <div className="mt-2">
+          <Suspense
+            fallback={
+              <div className="w-full flex items-center gap-2">
+                <Skeleton className="h-4 w-11/12" />
+                <Skeleton className="h-4 w-1/12" />
+              </div>
+            }
+          >
+            <BucketListProgress userId={id} />
+          </Suspense>
+        </div>
       </div>
     </div>
   );

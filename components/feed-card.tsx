@@ -33,7 +33,7 @@ export async function FeedCard({
 
   return (
     <div className="border-b py-3 flex flex-col gap-4">
-      <div className="px-5">
+      <div className="px-5 md:px-0">
         <div className="inline text-sm text-gray-500">
           <span>Posted by </span>
           {username ? (
@@ -54,7 +54,7 @@ export async function FeedCard({
           <p>{`Best time to visit: ${best_months?.toString()}`}</p>
         </div>
         <div className="my-2 py-2 rounded-sm flex space-x-2 h-8 items-center text-xs">
-          <MapIcon className="w-3 h-3 text-blue-500" />
+          <MapIcon className="w-3.5 h-3.5 text-blue-500" />
           {/* <Separator orientation="vertical" /> */}
           <a
             href={map_url!}
@@ -68,22 +68,24 @@ export async function FeedCard({
           <Separator orientation="vertical" />
 
           <Button variant="ghost" size="icon" className="h-6 w-6">
-            <CopyIcon className="w-3 h-3 text-gray-500" />
+            <CopyIcon className="w-3.5 h-3.5 text-gray-500" />
           </Button>
         </div>
         <div className="text-sm my-1 w-full">
           <p className="">{description}</p>
         </div>
       </div>
-      {session ? (
-        <Like
-          count={total_likes}
-          postId={id}
-          likedByCurrentUser={liked_by_current_user}
-        />
-      ) : (
-        <UnAuthorizedLike count={total_likes} />
-      )}
+      <div className="px-4 md:px-0">
+        {session ? (
+          <Like
+            count={total_likes}
+            postId={id}
+            likedByCurrentUser={liked_by_current_user}
+          />
+        ) : (
+          <UnAuthorizedLike count={total_likes} />
+        )}
+      </div>
     </div>
   );
 }
