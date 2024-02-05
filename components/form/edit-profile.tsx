@@ -23,6 +23,7 @@ import { Textarea } from "../ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitialFromFullName } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { AvatarUpload } from "../avatar-upload";
 
 const formSchema = z.object({
   username: z
@@ -82,7 +83,7 @@ export function EditProfile({
 
   return (
     <div className="flex flex-col mt-4 space-y-4">
-      <Avatar className="h-20 w-20">
+      {/* <Avatar className="h-20 w-20">
         <AvatarImage
           src={avatar_url ? avatar_url : undefined}
           alt={full_name ? full_name : undefined}
@@ -90,7 +91,11 @@ export function EditProfile({
         <AvatarFallback>
           {full_name ? getInitialFromFullName(full_name) : ""}
         </AvatarFallback>
-      </Avatar>
+      </Avatar> */}
+      <AvatarUpload
+        url={avatar_url ? avatar_url : undefined}
+        altText={full_name ? full_name : undefined}
+      />
 
       <Form {...form}>
         <form
