@@ -26,7 +26,7 @@ export default async function Page({}: {}) {
     notFound();
   }
 
-  const { avatar_url, full_name, bio, username } = data;
+  const { avatar_url, full_name, bio, username, id } = data;
 
   return (
     <div className="px-5 md:px-0">

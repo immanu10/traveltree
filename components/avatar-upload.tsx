@@ -1,18 +1,24 @@
+"use client";
+
 import { getInitialFromFullName } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState, useTransition } from "react";
 import { Dialog, DialogContent, DialogFooter } from "./ui/dialog";
 import { Button } from "./ui/button";
-import Image from "next/image";
+import { Loader2 } from "lucide-react";
+import { uploadProfileAvatar } from "@/app/actions";
 
 type AvatarUploadProps = {
   url: string | undefined;
   altText: string | undefined;
 };
+
 export function AvatarUpload({ url, altText }: AvatarUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [pending, startTransisition] = useTransition();
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     try {
@@ -21,6 +27,7 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
       }
 
       const fileUrl = URL.createObjectURL(e.target.files[0]);
+      setAvatarFile(e.target.files[0]);
       e.target.value = "";
       setPreviewUrl(fileUrl);
       setShowPreviewModal(true);
@@ -32,13 +39,26 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
   function handleClosePreviewModal() {
     setShowPreviewModal(false);
   }
+  function handleSaveAvatar() {
+    if (!avatarFile) return;
+    const form = new FormData();
+    form.append("avatarFile", avatarFile);
+    startTransisition(async () => {
+      const res = await uploadProfileAvatar(form);
+      console.log({ res });
+      if (res?.status === 200) {
+        setShowPreviewModal(false);
+      }
+      // show toast message
+    });
+  }
 
   return (
     <>
       <div>
         <button
           onClick={() => inputRef.current?.click()}
-          className="transition-colors hover:ring-2 hover:ring-ring hover:ring-offset-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="transition-colors hover:ring-2 hover:ring-gray-400 hover:ring-offset-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Avatar className="h-20 w-20">
             <AvatarImage src={url} alt={altText} />
@@ -60,7 +80,8 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
       <Dialog open={showPreviewModal} onOpenChange={setShowPreviewModal}>
         <DialogContent>
           <div className="p-2">
-            <div className="max-w-xs mx-auto">
+            <div className="max-w-[320px] mx-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element  */}
               <img src={previewUrl} alt="preview-avatar" />
             </div>
           </div>
@@ -72,7 +93,10 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
             >
               Cancel
             </Button>
-            <Button>Save Avatar</Button>
+            <Button disabled={pending} onClick={handleSaveAvatar}>
+              {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Save Avatar
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -263,3 +263,56 @@ export async function markAsVisitedBucketList({
   revalidatePath("/bucketlist");
   return { status: 200, message: "Bucketlist marked as completed" };
 }
+
+export async function uploadProfileAvatar(form: FormData) {
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const file = form.get("avatarFile") as File;
+
+    const fileExt = file.name.split(".").pop();
+    const filePath = `${session.user.id}-${Math.random()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(filePath, file);
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        avatar_url: `https://sqvnokaivjagfnbngapa.supabase.co/storage/v1/object/public/avatars/${filePath}`,
+      })
+      .eq("id", session.user.id);
+
+    if (!error) {
+      revalidatePath("/profile");
+      return { status: 200, message: "Avatar updated" };
+    } else {
+      return {
+        status: 403,
+        message: "Something went wrong!",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return {
+      status: 500,
+      message: "Something went wrong on server",
+    };
+  }
+}
