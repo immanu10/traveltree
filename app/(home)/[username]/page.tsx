@@ -1,9 +1,28 @@
 import { BucketListProgress } from "@/components/bucketlist-progress";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/server";
 import { getInitialFromFullName } from "@/lib/utils";
+import { Plus } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -100,6 +119,74 @@ export default async function Page({
           >
             <BucketListProgress userId={id} />
           </Suspense>
+        </div>
+      </div>
+      <div className="mt-5">
+        <p className="text-sm font-medium">Toys</p>
+        <div className="mt-2 flex gap-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <div className="w-40 h-40">
+                <Button
+                  variant="outline"
+                  className="w-full h-full border-dashed border-primary"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Toy
+                </Button>
+              </div>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add your Toy</DialogTitle>
+                <DialogDescription>
+                  Whether its newly bought dream bike, car or anything else you
+                  use to travel with
+                </DialogDescription>
+              </DialogHeader>
+              <div>
+                <Label>Name</Label>
+                <Input id="name" placeholder="Name" />
+                <Label>Since</Label>
+                <Select>
+                  <SelectTrigger className="">
+                    <SelectValue placeholder="Year" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    {["2019", "2020", "2021", "2022", "2023", "2024"].map(
+                      (item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+              <DialogFooter>
+                <Button type="button" variant="secondary">
+                  Cancel
+                </Button>
+                <Button>Save</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <div className="w-40 h-40">
+            <Button
+              variant="outline"
+              className="w-full h-full border-dashed border-primary"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Toy
+            </Button>
+          </div>
+          <div className="px-2 w-40 h-40 border border-dashed border-primary rounded-md flex flex-col items-center justify-center">
+            <p className="text-xs font-medium  text-center ">
+              Want to buy more slot for your toys?
+            </p>
+            <p className="mt-2 text-xs text-muted-foreground">Coming soon...</p>
+          </div>
         </div>
       </div>
     </div>

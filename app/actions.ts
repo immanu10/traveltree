@@ -180,7 +180,7 @@ export async function addAndRemoveBucketList(values: {
   );
 
   if (error) return { status: 500, message: "Internal server error" };
-  revalidatePath("/");
+  revalidatePath("/explore");
   return { status: 200, message: "Like/UnLike action Completed" };
 }
 
