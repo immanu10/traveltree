@@ -8,7 +8,7 @@ export function UnAuthorizedLike({ count }: { count: number }) {
     <AuthDialog>
       <div
         role="button"
-        className="px-5 flex items-center cursor-pointer group transition-colors w-fit"
+        className="flex items-center cursor-pointer group transition-colors w-fit"
       >
         <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
           <MountainIcon

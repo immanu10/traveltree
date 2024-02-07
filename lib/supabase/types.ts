@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       bucketlists: {
@@ -141,6 +141,19 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      delete_avatar: {
+        Args: {
+          avatar_url: string;
+        };
+        Returns: Record<string, unknown>;
+      };
+      delete_storage_object: {
+        Args: {
+          bucket: string;
+          object: string;
+        };
+        Returns: Record<string, unknown>;
+      };
       get_post_by_id: {
         Args: {
           current_user_id: string | null;
@@ -202,7 +215,7 @@ export interface Database {
       [_ in never]: never;
     };
   };
-}
+};
 
 export type Tables<
   PublicTableNameOrOptions extends
