@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -19,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
-import { Plus } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -32,39 +31,50 @@ import {
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+const MAX_FILE_SIZE = 5000000;
+
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png"];
 
 const formSchema = z.object({
   name: z.string().max(32).min(2),
   since: z.string(),
   picture: z
     .any()
-    .refine((files) => files?.length == 1, "Image is required.")
+    .refine((files) => files?.length == 1, "Picture is required.")
     .refine(
       (files) => files?.[0]?.size <= MAX_FILE_SIZE,
       `Max file size is 5MB.`
     )
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
+      ".jpeg and .png files are accepted."
     ),
 });
 
 type FormType = z.infer<typeof formSchema>;
 
 export function AddToy() {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
   });
 
+  const formValues = form.watch();
+  const [previewUrl, setPreviewUrl] = useFilePreview(formValues.picture);
+
   const fileRef = form.register("picture", { required: true });
+
+  function handleCloseAndCancel(open: boolean) {
+    form.reset();
+    setPreviewUrl("");
+    setOpen(open);
+  }
 
   function onSubmit(values: FormType) {
     console.log(values);
@@ -75,7 +85,7 @@ export function AddToy() {
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleCloseAndCancel}>
       <DialogTrigger asChild>
         <div className="w-40 h-40">
           <Button
@@ -103,13 +113,13 @@ export function AddToy() {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem className="flex items-center gap-4">
-                    <FormLabel className="text-right">Name</FormLabel>
-                    <div className="flex-1 space-y-1">
+                  <FormItem className="grid gap-4 items-center grid-cols-4">
+                    <FormLabel className="text-left">Name</FormLabel>
+                    <div className="space-y-1 col-span-3">
                       <FormControl>
                         <Input id="name" placeholder="Name" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-xs" />
                     </div>
                   </FormItem>
                 )}
@@ -119,9 +129,9 @@ export function AddToy() {
                 control={form.control}
                 name="since"
                 render={({ field }) => (
-                  <FormItem className="flex items-center gap-4">
-                    <FormLabel className="text-right">Since</FormLabel>
-                    <div className="flex-1 space-y-1">
+                  <FormItem className="grid gap-4 items-center grid-cols-4">
+                    <FormLabel className="text-left">Since</FormLabel>
+                    <div className="space-y-1 col-span-3">
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
@@ -146,7 +156,7 @@ export function AddToy() {
                           </SelectContent>
                         </Select>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-xs" />
                     </div>
                   </FormItem>
                 )}
@@ -155,20 +165,56 @@ export function AddToy() {
                 control={form.control}
                 name="picture"
                 render={({ field }) => (
-                  <FormItem className="flex items-center gap-4">
-                    <FormLabel className="text-right">Picture</FormLabel>
-                    <div className="flex-1 space-y-1">
+                  <FormItem className="grid gap-4 items-center grid-cols-4">
+                    <FormLabel className="text-left">Picture</FormLabel>
+                    <div className="space-y-1 col-span-3">
                       <FormControl>
-                        <Input id="picture" type="file" {...fileRef} />
+                        <Input
+                          id="picture"
+                          type="file"
+                          {...fileRef}
+                          accept="image/jpeg, image/png"
+                        />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-xs" />
                     </div>
                   </FormItem>
                 )}
               />
+              <div className="grid gap-4 items-center grid-cols-4">
+                <p className="text-sm font-medium">Preview</p>
+                <div className="relative col-span-3 h-44 border overflow-hidden rounded-md flex items-center justify-center">
+                  {previewUrl ? (
+                    //  eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={previewUrl}
+                      alt="preview-avatar"
+                      className="max-h-full max-w-full"
+                    />
+                  ) : (
+                    <p className="text-muted-foreground text-lg font-extralight">
+                      No Image
+                    </p>
+                  )}
+                  <div className="absolute bottom-0 inset-x-0 w-full pt-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
+                    <div className="text-white px-4 pb-2">
+                      <p className="font-bold text-lg">
+                        {formValues.name ? formValues.name : "Name"}
+                      </p>
+                      <p className="font-medium text-xs">
+                        Since: {formValues.since ? formValues.since : "Year"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <DialogFooter>
-              <Button type="reset" variant="secondary">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => handleCloseAndCancel(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit">Save</Button>
@@ -178,4 +224,25 @@ export function AddToy() {
       </DialogContent>
     </Dialog>
   );
+}
+
+function useFilePreview(
+  file: FileList
+): [string, Dispatch<SetStateAction<string>>] {
+  const [imgSrc, setImgSrc] = useState("");
+
+  useEffect(() => {
+    if (file && file[0]) {
+      const newUrl = URL.createObjectURL(file[0]);
+
+      if (newUrl !== imgSrc) {
+        setImgSrc(newUrl);
+      }
+    } else {
+      setImgSrc("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [file]);
+
+  return [imgSrc, setImgSrc];
 }
