@@ -131,15 +131,13 @@ export async function createNewPost(values: {
 
   const { data, error } = await supabase
     .from("posts")
-    .insert([
-      {
-        user_id: session.user.id,
-        title: values.title,
-        description: values.description,
-        best_months: values.besttime,
-        map_url: values.googleurl,
-      },
-    ])
+    .insert({
+      user_id: session.user.id,
+      title: values.title,
+      description: values.description,
+      best_months: values.besttime,
+      map_url: values.googleurl,
+    })
     .select()
     .single();
   if (data && !error) {
@@ -282,7 +280,9 @@ export async function uploadProfileAvatar(form: FormData) {
     const file = form.get("avatarFile") as File;
 
     const fileExt = file.name.split(".").pop();
-    const filePath = `${session.user.id}-${Math.random()}.${fileExt}`;
+    const filePath = `${session.user.id}-${Math.random()
+      .toString(16)
+      .substring(2)}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage
       .from("avatars")
@@ -294,13 +294,76 @@ export async function uploadProfileAvatar(form: FormData) {
     const { error } = await supabase
       .from("profiles")
       .update({
-        avatar_url: `https://sqvnokaivjagfnbngapa.supabase.co/storage/v1/object/public/avatars/${filePath}`,
+        avatar_url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`,
       })
       .eq("id", session.user.id);
 
     if (!error) {
       revalidatePath("/profile");
       return { status: 200, message: "Avatar updated" };
+    } else {
+      return {
+        status: 403,
+        message: "Something went wrong!",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return {
+      status: 500,
+      message: "Something went wrong on server",
+    };
+  }
+}
+
+export async function insertToToys(form: FormData) {
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const file = form.get("image_url") as File;
+    const name = form.get("name") as string;
+    const since = form.get("since") as string;
+
+    const fileNameParts = file.name.split(".");
+    const fileExt = fileNameParts.pop();
+    const fileName = fileNameParts.join("");
+    const filePath = `${fileName}-${session.user.id}-${Math.random()
+      .toString(16)
+      .substring(2)}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("user_toys")
+      .upload(filePath, file);
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { data, error } = await supabase
+      .from("toys")
+      .insert({
+        user_id: session.user.id,
+        name: name,
+        since: Number(since),
+        image_url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/user_toys/${filePath}`,
+      })
+      .select()
+      .single();
+
+    if (!error) {
+      revalidatePath("/profile");
+      return { status: 200, message: "Toy Added" };
     } else {
       return {
         status: 403,

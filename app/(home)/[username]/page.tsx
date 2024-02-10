@@ -11,6 +11,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ToysList } from "./toys-list";
 
 // Need to revisit: checkout auth.getUser() supabse function
 async function getProfileOfCurrentSession(
@@ -51,10 +52,12 @@ export default async function Page({
     // notFound() page
     return <p className="text-destructive text-center my-4">No User found!</p>;
   }
-  const { avatar_url, full_name, username, bio, id } = profiles[0];
+  const { avatar_url, full_name, username, bio, id, max_toy_limit } =
+    profiles[0];
 
   const currentUser = await getProfileOfCurrentSession(supabase);
 
+  const isLoggedInUser = currentUser?.username === username;
   return (
     <div className="px-4 md:px-0">
       <div className="flex flex-col items-center mt-4">
@@ -76,7 +79,7 @@ export default async function Page({
           </div>
           <p className="text-sm ">{bio}</p>
         </div>
-        {currentUser?.username === username && (
+        {isLoggedInUser && (
           <div className="w-full max-w-xs mt-3">
             <Link
               href="/profile"
@@ -108,13 +111,13 @@ export default async function Page({
       <div className="mt-5">
         <p className="text-sm font-medium">Toys</p>
         <div className="mt-2 flex gap-4">
-          <AddToy />
-          <div className="px-2 w-40 h-40 border border-dashed border-primary rounded-md flex flex-col items-center justify-center">
-            <p className="text-xs font-medium  text-center ">
-              Want to add more toys?
-            </p>
-            <p className="mt-2 text-xs text-muted-foreground">Coming soon...</p>
-          </div>
+          <Suspense fallback={"loading"}>
+            <ToysList
+              userId={id}
+              maxLimit={max_toy_limit}
+              isLoggedInUser={isLoggedInUser}
+            />
+          </Suspense>
         </div>
       </div>
     </div>

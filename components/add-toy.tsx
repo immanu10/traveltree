@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
-import { Eye, Plus } from "lucide-react";
+import { Eye, Loader2, Plus } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -31,7 +31,19 @@ import {
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
+import { insertToToys } from "@/app/actions";
+
+const currentYear = new Date().getFullYear();
+const LAST_TEN_YEARS = Array.from({ length: 11 }, (_, index) =>
+  (currentYear - index).toString()
+);
 
 const MAX_FILE_SIZE = 5000000;
 
@@ -57,6 +69,7 @@ type FormType = z.infer<typeof formSchema>;
 
 export function AddToy() {
   const [open, setOpen] = useState(false);
+  const [pending, startTransisition] = useTransition();
 
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -77,20 +90,32 @@ export function AddToy() {
   }
 
   function onSubmit(values: FormType) {
-    console.log(values);
+    if (!values.picture) return; //show toast error
 
-    // startTransisition(async () => {
+    const form = new FormData();
+    form.append("image_url", values.picture[0]);
+    form.append("name", values.name);
+    form.append("since", values.since);
 
-    // });
+    startTransisition(async () => {
+      const res = await insertToToys(form);
+      console.log({ res });
+
+      if (res?.status === 200) {
+        setOpen(false);
+      }
+
+      // show toast message
+    });
   }
 
   return (
     <Dialog open={open} onOpenChange={handleCloseAndCancel}>
       <DialogTrigger asChild>
-        <div className="w-40 h-40">
+        <div className="w-44 h-44">
           <Button
             variant="outline"
-            className="w-full h-full border-dashed border-primary"
+            className="p-0 w-full h-full border-dashed border-primary"
           >
             <Plus className="h-4 w-4 mr-2" />
             Add Toy
@@ -141,14 +166,7 @@ export function AddToy() {
                             <SelectValue placeholder="Year" />
                           </SelectTrigger>
                           <SelectContent className="max-h-60">
-                            {[
-                              "2019",
-                              "2020",
-                              "2021",
-                              "2022",
-                              "2023",
-                              "2024",
-                            ].map((item) => (
+                            {LAST_TEN_YEARS.map((item) => (
                               <SelectItem key={item} value={item}>
                                 {item}
                               </SelectItem>
@@ -217,7 +235,10 @@ export function AddToy() {
               >
                 Cancel
               </Button>
-              <Button type="submit">Save</Button>
+              <Button type="submit" disabled={pending}>
+                {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Save
+              </Button>
             </DialogFooter>
           </form>
         </Form>

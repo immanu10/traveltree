@@ -108,6 +108,7 @@ export type Database = {
           full_name: string | null;
           id: string;
           inserted_at: string;
+          max_toy_limit: number | null;
           username: string | null;
         };
         Insert: {
@@ -116,6 +117,7 @@ export type Database = {
           full_name?: string | null;
           id: string;
           inserted_at?: string;
+          max_toy_limit?: number | null;
           username?: string | null;
         };
         Update: {
@@ -124,6 +126,7 @@ export type Database = {
           full_name?: string | null;
           id?: string;
           inserted_at?: string;
+          max_toy_limit?: number | null;
           username?: string | null;
         };
         Relationships: [
@@ -132,6 +135,41 @@ export type Database = {
             columns: ["id"];
             isOneToOne: true;
             referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      toys: {
+        Row: {
+          id: number;
+          image_url: string | null;
+          inserted_at: string;
+          name: string | null;
+          since: number | null;
+          user_id: string;
+        };
+        Insert: {
+          id?: never;
+          image_url?: string | null;
+          inserted_at?: string;
+          name?: string | null;
+          since?: number | null;
+          user_id: string;
+        };
+        Update: {
+          id?: never;
+          image_url?: string | null;
+          inserted_at?: string;
+          name?: string | null;
+          since?: number | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "toys_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           }
         ];
