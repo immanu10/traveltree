@@ -110,7 +110,7 @@ export default async function Page({
       </div>
       <div className="mt-5">
         <p className="text-sm font-medium">Toys</p>
-        <div className="mt-2 flex gap-4">
+        <div className="mt-2 flex gap-4 items-center">
           <Suspense fallback={"loading"}>
             <ToysList
               userId={id}

@@ -34,7 +34,7 @@ export async function ToysList({
         return (
           <div
             key={item.id}
-            className="relative w-44 h-44 border overflow-hidden rounded-md"
+            className="relative w-64 h-64 border overflow-hidden rounded-md"
           >
             <Image
               src={item.image_url!}
@@ -48,7 +48,9 @@ export async function ToysList({
 
             <div className="absolute bottom-0 inset-x-0 w-full pt-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
               <div className="text-white px-4 pb-2">
-                <p className="font-bold text-lg">{item.name}</p>
+                <p className="font-bold text-lg text-ellipsis overflow-hidden">
+                  {item.name}
+                </p>
                 <p className="font-medium text-xs">Since: {item.since}</p>
               </div>
             </div>

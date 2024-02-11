@@ -112,15 +112,12 @@ export function AddToy() {
   return (
     <Dialog open={open} onOpenChange={handleCloseAndCancel}>
       <DialogTrigger asChild>
-        <div className="w-44 h-44">
-          <Button
-            variant="outline"
-            className="p-0 w-full h-full border-dashed border-primary"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Toy
-          </Button>
-        </div>
+        {/* <div className="w-44 h-44"> */}
+        <Button variant="outline" className="border-dashed border-primary">
+          <Plus className="h-4 w-4 mr-2" />
+          Add Toy
+        </Button>
+        {/* </div> */}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
@@ -207,16 +204,16 @@ export function AddToy() {
                     <img
                       src={previewUrl}
                       alt="preview-avatar"
-                      className="max-h-full max-w-full"
+                      className="w-full h-full max-h-full max-w-full"
                     />
                   ) : (
-                    <p className="text-muted-foreground text-lg font-extralight">
+                    <p className="text-muted-foreground text-lg font-extralight text-center">
                       No Image
                     </p>
                   )}
-                  <div className="absolute bottom-0 inset-x-0 w-full pt-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
-                    <div className="text-white px-4 pb-2">
-                      <p className="font-bold text-lg">
+                  <div className="absolute bottom-0 inset-x-0 w-full pt-4  bg-gradient-to-t from-black/70 via-black/40 to-transparent">
+                    <div className="text-white px-4 py-2">
+                      <p className="font-bold text-lg text-ellipsis overflow-hidden">
                         {formValues.name ? formValues.name : "Name"}
                       </p>
                       <p className="font-medium text-xs">
