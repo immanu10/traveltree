@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ToysList } from "./toys-list";
 import { AddToyAction } from "@/components/add-toy-action";
+import { PostsList } from "@/components/posts-list";
 
 // Need to revisit: checkout auth.getUser() supabse function
 async function getProfileOfCurrentSession(
@@ -94,7 +95,7 @@ export default async function Page({
           </div>
         )}
       </div>
-      <div className="mt-6">
+      <div className="my-12">
         <p className="text-sm font-medium">Bucketlist Progress</p>
         <div className="mt-2">
           <Suspense
@@ -108,7 +109,7 @@ export default async function Page({
           </Suspense>
         </div>
       </div>
-      <div className="mt-6">
+      <div className="my-12">
         <div className="flex justify-between">
           <p className="text-sm font-medium">Toys</p>
           {isLoggedInUser && (
@@ -124,9 +125,24 @@ export default async function Page({
             </Suspense>
           )}
         </div>
-        <div className="mt-4 flex gap-4 items-center">
-          <Suspense fallback={"loading"}>
+        <div className="mt-4">
+          <Suspense
+            fallback={
+              <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Skeleton className="w-full h-60 border rounded-md" />
+                <Skeleton className="w-full h-60 border rounded-md" />
+              </div>
+            }
+          >
             <ToysList userId={id} />
+          </Suspense>
+        </div>
+      </div>
+      <div className="my-12">
+        <p className="text-sm font-medium">Posts</p>
+        <div className="mt-2">
+          <Suspense fallback={<Skeleton className="h-12 w-full" />}>
+            <PostsList userId={id} />
           </Suspense>
         </div>
       </div>

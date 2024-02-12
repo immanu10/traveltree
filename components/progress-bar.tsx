@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { Progress } from "./ui/progress";
 
 export function ProgressBar({
@@ -9,17 +6,7 @@ export function ProgressBar({
   data: { visitedCount: number; totalBucketlist: number };
 }) {
   const { visitedCount, totalBucketlist } = data;
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const newProgress = totalBucketlist
-        ? (visitedCount / totalBucketlist) * 100
-        : 0;
-      setProgress(newProgress);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [visitedCount, totalBucketlist]);
+  const progress = totalBucketlist ? (visitedCount / totalBucketlist) * 100 : 0;
 
   return (
     <div className="flex gap-2 items-center">
@@ -28,3 +15,5 @@ export function ProgressBar({
     </div>
   );
 }
+
+// in future add animation to progress bar if required.

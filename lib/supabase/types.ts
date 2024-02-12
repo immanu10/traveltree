@@ -179,6 +179,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      check_max_toy_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       delete_avatar: {
         Args: {
           avatar_url: string;
@@ -191,6 +195,27 @@ export type Database = {
           object: string;
         };
         Returns: Record<string, unknown>;
+      };
+      get_all_posts_of_user: {
+        Args: {
+          current_user_id: string | null;
+          user_profile_id: string;
+        };
+        Returns: {
+          id: number;
+          user_id: string;
+          username: string;
+          full_name: string;
+          title: string;
+          description: string;
+          map_url: string;
+          best_months: Database["public"]["Enums"]["months_enum"][];
+          state: string;
+          country: string;
+          inserted_at: string;
+          total_likes: number;
+          liked_by_current_user: boolean;
+        }[];
       };
       get_post_by_id: {
         Args: {

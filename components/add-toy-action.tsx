@@ -64,7 +64,7 @@ export async function AddToyAction({
         </Dialog>
       )}
       <Button className="" size="sm">
-        Buy
+        Buy more
       </Button>
     </div>
   );

@@ -198,30 +198,20 @@ export function AddToy({ slotCount }: { slotCount: number }) {
                 )}
               />
               <div className="grid gap-4 items-center grid-cols-4">
-                <p className="text-sm font-medium">Preview</p>
+                <p className="text-sm font-medium"></p>
                 <div className="relative col-span-3 h-44 border overflow-hidden rounded-md flex items-center justify-center">
                   {previewUrl ? (
                     //  eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={previewUrl}
                       alt="preview-avatar"
-                      className="w-full h-full max-h-full max-w-full"
+                      className="w-full h-full max-h-full max-w-full object-cover"
                     />
                   ) : (
                     <p className="text-muted-foreground text-lg font-extralight text-center">
                       No Image
                     </p>
                   )}
-                  <div className="absolute bottom-0 inset-x-0 w-full pt-4  bg-gradient-to-t from-black/70 via-black/40 to-transparent">
-                    <div className="text-white px-4 py-2">
-                      <p className="font-bold text-lg text-ellipsis overflow-hidden">
-                        {formValues.name ? formValues.name : "Name"}
-                      </p>
-                      <p className="font-medium text-xs">
-                        Since: {formValues.since ? formValues.since : "Year"}
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
