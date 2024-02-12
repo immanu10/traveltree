@@ -67,7 +67,7 @@ const formSchema = z.object({
 
 type FormType = z.infer<typeof formSchema>;
 
-export function AddToy() {
+export function AddToy({ slotCount }: { slotCount: number }) {
   const [open, setOpen] = useState(false);
   const [pending, startTransisition] = useTransition();
 
@@ -112,12 +112,13 @@ export function AddToy() {
   return (
     <Dialog open={open} onOpenChange={handleCloseAndCancel}>
       <DialogTrigger asChild>
-        {/* <div className="w-44 h-44"> */}
-        <Button variant="outline" className="border-dashed border-primary">
+        <Button variant="outline" size="sm">
           <Plus className="h-4 w-4 mr-2" />
-          Add Toy
+          Add
+          <span className="ml-1  text-xs text-muted-foreground">
+            {slotCount} slots left
+          </span>
         </Button>
-        {/* </div> */}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>

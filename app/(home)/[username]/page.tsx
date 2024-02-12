@@ -12,6 +12,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ToysList } from "./toys-list";
+import { AddToyAction } from "@/components/add-toy-action";
 
 // Need to revisit: checkout auth.getUser() supabse function
 async function getProfileOfCurrentSession(
@@ -93,14 +94,13 @@ export default async function Page({
           </div>
         )}
       </div>
-      <div className="mt-5">
+      <div className="mt-6">
         <p className="text-sm font-medium">Bucketlist Progress</p>
         <div className="mt-2">
           <Suspense
             fallback={
               <div className="w-full flex items-center gap-2">
-                <Skeleton className="h-4 w-11/12" />
-                <Skeleton className="h-4 w-1/12" />
+                <Skeleton className="h-5 w-full rounded-full" />
               </div>
             }
           >
@@ -108,15 +108,25 @@ export default async function Page({
           </Suspense>
         </div>
       </div>
-      <div className="mt-5">
-        <p className="text-sm font-medium">Toys</p>
-        <div className="mt-2 flex gap-4 items-center">
+      <div className="mt-6">
+        <div className="flex justify-between">
+          <p className="text-sm font-medium">Toys</p>
+          {isLoggedInUser && (
+            <Suspense
+              fallback={
+                <div className="flex gap-2">
+                  <Skeleton className="h-9 w-20 rounded-md" />
+                  <Skeleton className="h-9 w-16 rounded-md" />
+                </div>
+              }
+            >
+              <AddToyAction userId={id} maxLimit={max_toy_limit} />
+            </Suspense>
+          )}
+        </div>
+        <div className="mt-4 flex gap-4 items-center">
           <Suspense fallback={"loading"}>
-            <ToysList
-              userId={id}
-              maxLimit={max_toy_limit}
-              isLoggedInUser={isLoggedInUser}
-            />
+            <ToysList userId={id} />
           </Suspense>
         </div>
       </div>

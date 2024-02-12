@@ -1,17 +1,8 @@
-import { AddToy } from "@/components/add-toy";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import Image from "next/image";
 
-export async function ToysList({
-  userId,
-  maxLimit,
-  isLoggedInUser,
-}: {
-  userId: string;
-  maxLimit: number | null;
-  isLoggedInUser: boolean;
-}) {
+export async function ToysList({ userId }: { userId: string }) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
@@ -20,13 +11,11 @@ export async function ToysList({
     .select("*")
     .eq("user_id", userId);
 
-  const totalAddToySlot = (maxLimit ?? 0) - (data?.length ?? 0);
-
   if (error)
     return (
       <p className="text-sm  text-muted-foreground">Something went wrong</p>
     );
-  if (data.length == 0 && !isLoggedInUser)
+  if (data.length == 0)
     return <p className="text-sm  text-muted-foreground">No Data</p>;
   return (
     <>
@@ -57,10 +46,6 @@ export async function ToysList({
           </div>
         );
       })}
-      {isLoggedInUser &&
-        Array.from({ length: totalAddToySlot }).map((_, i) => (
-          <AddToy key={i} />
-        ))}
     </>
   );
 }
