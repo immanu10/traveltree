@@ -56,7 +56,7 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
       <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
         <MountainIcon
           className={cn(
-            "text-gray-400 w-[18px] h-[18px] group-hover:text-pink-500",
+            "text-gray-500 w-[18px] h-[18px] group-hover:text-pink-500",
             {
               "fill-pink-500 text-pink-500":
                 optimisticLikeState.likedByCurrentUser,
@@ -64,7 +64,7 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
           )}
         />
       </div>
-      <div className="text-xs text-gray-400 group-hover:text-pink-500">
+      <div className="text-xs text-gray-500 group-hover:text-pink-500">
         <span>{`${optimisticLikeState.count} buckets`}</span>
       </div>
     </button>

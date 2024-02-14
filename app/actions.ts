@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/supabase/types";
+import { BestTime } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -100,21 +101,8 @@ export async function updateProfile(values: {
 export async function createNewPost(values: {
   description: string;
   title: string;
-  googleurl: string;
-  besttime: (
-    | "Jan"
-    | "Feb"
-    | "Mar"
-    | "Apr"
-    | "May"
-    | "Jun"
-    | "Jul"
-    | "Aug"
-    | "Sep"
-    | "Oct"
-    | "Nov"
-    | "Dec"
-  )[];
+  googleurl: string | undefined;
+  besttime: BestTime;
 }) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
@@ -136,7 +124,7 @@ export async function createNewPost(values: {
       title: values.title,
       description: values.description,
       best_months: values.besttime,
-      map_url: values.googleurl,
+      map_url: values.googleurl || undefined,
     })
     .select()
     .single();

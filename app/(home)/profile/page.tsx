@@ -31,14 +31,14 @@ export default async function Page({}: {}) {
   return (
     <div className="px-5 md:px-0">
       {username && (
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center space-x-2 my-4">
+          <p className="text-sm">For more customization visit:</p>
           <Link
             href={`/${username}`}
-            className={buttonVariants({
-              variant: "link",
-              className: "my-2 underline",
-            })}
-          >{`Your travel tree : traveltr.ee/${username}`}</Link>
+            className="text-sm font-medium underline underline-offset-4"
+          >
+            {`traveltree.co/${username}`}
+          </Link>
         </div>
       )}
 

@@ -61,8 +61,8 @@ export default async function Page({
 
   const isLoggedInUser = currentUser?.username === username;
   return (
-    <div className="px-4 md:px-0">
-      <div className="flex flex-col items-center mt-4">
+    <div className="">
+      <div className="px-4 md:px-0 flex flex-col items-center mt-4">
         <Avatar className="h-20 w-20">
           <AvatarImage
             src={avatar_url ? avatar_url : undefined}
@@ -95,7 +95,7 @@ export default async function Page({
           </div>
         )}
       </div>
-      <div className="my-12">
+      <div className="px-4 md:px-0 my-12">
         <p className="text-sm font-medium">Bucketlist Progress</p>
         <div className="mt-2">
           <Suspense
@@ -109,7 +109,7 @@ export default async function Page({
           </Suspense>
         </div>
       </div>
-      <div className="my-12">
+      <div className="px-4 md:px-0 my-12">
         <div className="flex justify-between">
           <p className="text-sm font-medium">Toys</p>
           {isLoggedInUser && (
@@ -139,7 +139,7 @@ export default async function Page({
         </div>
       </div>
       <div className="my-12">
-        <p className="text-sm font-medium">Posts</p>
+        <p className="px-4 md:px-0 text-sm font-medium">Posts</p>
         <div className="mt-2">
           <Suspense fallback={<Skeleton className="h-12 w-full" />}>
             <PostsList userId={id} />

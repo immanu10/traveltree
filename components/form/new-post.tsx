@@ -16,25 +16,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Textarea } from "../ui/textarea";
 import { Checkbox } from "../ui/checkbox";
-import { cn } from "@/lib/utils";
+import { MONTHS, cn } from "@/lib/utils";
 import { useTransition } from "react";
 import { createNewPost } from "@/app/actions";
 import { Loader2 } from "lucide-react";
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
 
 const formSchema = z.object({
   title: z.string().max(42).min(2),
@@ -69,7 +54,6 @@ export function NewPostForm() {
     console.log(values);
     startTransition(async () => {
       const res = await createNewPost(values);
-
       console.log(res);
     });
   }

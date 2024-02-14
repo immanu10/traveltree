@@ -61,7 +61,7 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
           <TooltipTrigger asChild>
             <button
               onClick={() => inputRef.current?.click()}
-              className="transition-colors hover:ring-2 hover:ring-gray-400 hover:ring-offset-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="transition-colors hover:ring-2 hover:ring-muted-foreground hover:ring-offset-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <Avatar className="h-20 w-20">
                 <AvatarImage src={url} alt={altText} />

@@ -1,25 +1,12 @@
 import {
-  BucketListRow,
-  BucketListView,
-  VisitedBucketListRow,
-} from "@/components/bucketlist-row";
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  TodoBucketListView,
+  VisitiedBucketListView,
+} from "@/components/bucketlist-view";
+
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/server";
-import { cn } from "@/lib/utils";
-import { MoreHorizontalIcon, MountainIcon } from "lucide-react";
 import { cookies } from "next/headers";
-import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default async function Page({
   searchParams,
@@ -48,9 +35,6 @@ export default async function Page({
   const todoData = data.filter((item) => !item.is_completed);
   const visitedData = data.filter((item) => item.is_completed);
 
-  const emptyTodoBucketList = todoData.length === 0;
-  const emptyVisitedBucketList = visitedData.length === 0;
-
   return (
     <div className="my-4">
       <div className="border-l-4 border-gray-300 pl-2 ml-5 md:ml-0">
@@ -62,24 +46,15 @@ export default async function Page({
         <div className="border-l-4 border-green-500 pl-2 ml-5 md:ml-0">
           <h2 className="text-sm font-light">Todo</h2>
         </div>
-        {emptyTodoBucketList ? (
-          <p className="text-red-500 text-center mt-4">No Todo Bucketlist</p>
-        ) : (
-          <BucketListView data={todoData} />
-        )}
+
+        <TodoBucketListView data={todoData} />
       </div>
 
       <div className="mt-4">
         <div className="border-l-4 border-blue-500 pl-2 ml-5 md:ml-0">
           <h2 className="text-sm font-light">Visited</h2>
         </div>
-        {emptyVisitedBucketList ? (
-          <p className="text-red-500 text-center mt-4">No visited Bucketlist</p>
-        ) : (
-          visitedData.map((item) => (
-            <VisitedBucketListRow key={item.id} data={item} />
-          ))
-        )}
+        <VisitiedBucketListView data={visitedData} />
       </div>
     </div>
   );

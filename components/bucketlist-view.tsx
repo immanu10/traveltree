@@ -1,5 +1,4 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { CheckCheck } from "lucide-react";
 import Link from "next/link";
 
@@ -13,8 +12,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { useState } from "react";
 import { MoveTodoBucketList } from "./form/move-todo-bucketlist";
 
@@ -28,7 +25,7 @@ type DataProps = Database["public"]["Tables"]["bucketlists"]["Row"] & {
       })
     | null;
 };
-export function BucketListView({ data }: { data: DataProps[] }) {
+export function TodoBucketListView({ data }: { data: DataProps[] }) {
   const initialOpenState = data.reduce((acc, item) => {
     return {
       ...acc,
@@ -49,10 +46,15 @@ export function BucketListView({ data }: { data: DataProps[] }) {
     });
   };
 
+  const emptyTodoBucketList = data.length === 0;
+
+  if (emptyTodoBucketList)
+    return <p className="text-red-500 text-center mt-4">No Todo Bucketlist</p>;
+
   return (
     <>
       {data.map((item) => (
-        <BucketListRow
+        <TodoBucketListRow
           key={item.id}
           data={item}
           open={open[item.id]}
@@ -63,7 +65,22 @@ export function BucketListView({ data }: { data: DataProps[] }) {
   );
 }
 
-export function BucketListRow({
+export function VisitiedBucketListView({ data }: { data: DataProps[] }) {
+  const emptyVisitedBucketList = data.length === 0;
+  if (emptyVisitedBucketList)
+    return (
+      <p className="text-red-500 text-center mt-4">No visited Bucketlist</p>
+    );
+  return (
+    <>
+      {data.map((item) => (
+        <VisitedBucketListRow key={item.id} data={item} />
+      ))}
+    </>
+  );
+}
+
+function TodoBucketListRow({
   data,
   open,
   onOpenChange,
@@ -89,7 +106,7 @@ export function BucketListRow({
                 href={`/${posts.profiles.username}`}
                 className="hover:underline inline-block"
               >
-                {posts.profiles.username}
+                @{posts.profiles.username}
               </Link>
             ) : (
               <span>{posts?.profiles?.full_name}</span>
@@ -126,7 +143,7 @@ export function BucketListRow({
   );
 }
 
-export function VisitedBucketListRow({ data }: { data: DataProps }) {
+function VisitedBucketListRow({ data }: { data: DataProps }) {
   const { posts } = data;
 
   return (
@@ -140,7 +157,7 @@ export function VisitedBucketListRow({ data }: { data: DataProps }) {
                 href={`/${posts.profiles.username}`}
                 className="hover:underline inline-block"
               >
-                {posts.profiles.username}
+                @{posts.profiles.username}
               </Link>
             ) : (
               <span>{posts?.profiles?.full_name}</span>

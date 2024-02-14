@@ -35,21 +35,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { MONTHS } from "@/lib/utils";
 
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
 const currentYear = new Date().getFullYear();
 const LAST_TEN_YEARS = Array.from({ length: 11 }, (_, index) =>
   (currentYear - index).toString()
