@@ -48,14 +48,14 @@ export default async function Page({
   const { data: profiles, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("username", params.username);
+    .eq("username", params.username)
+    .single();
 
-  if (profiles?.length === 0 || !profiles) {
+  if (!profiles) {
     // notFound() page
     return <p className="text-destructive text-center my-4">No User found!</p>;
   }
-  const { avatar_url, full_name, username, bio, id, max_toy_limit } =
-    profiles[0];
+  const { avatar_url, full_name, username, bio, id, max_toy_limit } = profiles;
 
   const currentUser = await getProfileOfCurrentSession(supabase);
 
