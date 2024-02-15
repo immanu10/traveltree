@@ -1,7 +1,20 @@
 import { NewPostForm } from "@/components/form/new-post";
 import { Separator } from "@/components/ui/separator";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function CreatePostPage() {
+export default async function CreatePostPage() {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    redirect("/");
+  }
+
   return (
     <div className="space-y-6 my-4 px-4 md:px-0">
       <div>

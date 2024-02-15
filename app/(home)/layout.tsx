@@ -1,14 +1,12 @@
-import { Logout } from "@/components/form/signin";
 import { AuthDialog } from "@/components/auth-dialog";
 import { Icons } from "@/components/icons";
-import { MainNav } from "@/components/main-nav";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
-import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "lucide-react";
-import { cookies } from "next/headers";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 
 export default async function HomeLayout({
   children,

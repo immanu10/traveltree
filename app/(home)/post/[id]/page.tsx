@@ -1,10 +1,6 @@
 import { FeedCard } from "@/components/feed-card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/server";
-import { CopyIcon, DotIcon, MapIcon, MountainIcon } from "lucide-react";
 import { cookies } from "next/headers";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 export default async function PostPage({ params }: { params: { id: string } }) {

@@ -1,20 +1,13 @@
 import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
-import { SigninForm, Logout } from "@/components/form/signin";
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { FeedCard } from "@/components/feed-card";
 import { AuthDialog } from "@/components/auth-dialog";
+import { getSessionUser } from "@/lib/supabase/helpers";
 
 export default async function LandingPage() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const session = await getSessionUser();
 
   return (
     <>

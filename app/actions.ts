@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+// Todo: Remove unnecessary supabase session getSession call
+
 export async function createUsername(username: string) {
   try {
     const cookieStore = cookies();
@@ -27,6 +29,13 @@ export async function createUsername(username: string) {
         status: 400,
         message:
           "Username should be lowercase and should not contain any special characters.",
+      };
+    }
+
+    if (["post", "profile", "explore", "bucketlist"].includes(username)) {
+      return {
+        status: 400,
+        message: "Username is not available.",
       };
     }
 
@@ -79,6 +88,13 @@ export async function updateProfile(values: {
       status: 400,
       message:
         "Username should be lowercase and should not contain any special characters.",
+    };
+  }
+
+  if (["post", "profile", "explore", "bucketlist"].includes(username)) {
+    return {
+      status: 400,
+      message: "Username is not available.",
     };
   }
 

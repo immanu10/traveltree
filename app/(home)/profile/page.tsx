@@ -1,5 +1,4 @@
 import { EditProfile } from "@/components/form/edit-profile";
-import { buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import Link from "next/link";

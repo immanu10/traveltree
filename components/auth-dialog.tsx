@@ -1,19 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Icons } from "./icons";
-import { Separator } from "./ui/separator";
 import { SigninForm } from "./form/signin";
 
 export function AuthDialog({ children }: { children: React.ReactNode }) {
@@ -31,16 +26,6 @@ export function AuthDialog({ children }: { children: React.ReactNode }) {
           </DialogDescription>
         </DialogHeader>
         <div className="py-12">
-          {/* <div className="flex rounded-md">
-            <span className="bg-muted text-subtle inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0 px-3 text-sm">
-              travel.tree/
-            </span>
-            <Input
-              id="username"
-              placeholder="username"
-              className="rounded-l-none"
-            />
-          </div> */}
           <SigninForm />
         </div>
       </DialogContent>
