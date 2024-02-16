@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { Database } from "@/lib/supabase/types";
 import { Like } from "./Like";
-import { Session } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import { UnAuthorizedLike } from "./unauthorized-like";
 import { CopyToClipboardButton } from "./copy-to-clipboard-button";
 import { formateBestTime } from "@/lib/utils";
@@ -13,10 +13,10 @@ type FeedCardData =
 
 export async function FeedCard({
   data,
-  session,
+  sessionUser,
 }: {
   data: FeedCardData;
-  session: Session | null;
+  sessionUser: User | null;
 }) {
   const {
     id,
@@ -72,7 +72,7 @@ export async function FeedCard({
         </div>
       </div>
       <div className="px-4 md:px-0">
-        {session ? (
+        {sessionUser ? (
           <Like
             count={total_likes}
             postId={id}

@@ -4,6 +4,7 @@ import {
 } from "@/components/bucketlist-view";
 
 import { Separator } from "@/components/ui/separator";
+import { getSessionUser } from "@/lib/supabase/helpers";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -13,20 +14,16 @@ export default async function Page({
 }: {
   searchParams: { status?: string };
 }) {
+  const sessionUser = await getSessionUser();
+  if (!sessionUser) redirect("/");
+
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session) {
-    redirect("/");
-  }
 
   const { data } = await supabase
     .from("bucketlists")
     .select(`*,posts(*,profiles(username,full_name))`)
-    .eq("user_id", session.user.id)
+    .eq("user_id", sessionUser.id)
     .eq("is_liked", true)
     .order("inserted_at", { ascending: false });
 

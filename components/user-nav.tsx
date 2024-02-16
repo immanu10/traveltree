@@ -11,11 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
-import { Session } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import { getProfileInfo } from "@/lib/supabase/helpers";
 
-export async function UserNav({ session }: { session: Session }) {
-  const data = await getProfileInfo(session.user.id);
+export async function UserNav({ sessionUser }: { sessionUser: User }) {
+  const data = await getProfileInfo(sessionUser.id);
 
   return (
     <DropdownMenu>
@@ -36,10 +36,10 @@ export async function UserNav({ session }: { session: Session }) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {data?.username ? data.username : data?.full_name}
+              {data?.full_name}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {session.user.email}
+              {sessionUser.email}
             </p>
           </div>
         </DropdownMenuLabel>

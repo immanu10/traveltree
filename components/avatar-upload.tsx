@@ -85,7 +85,7 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
       </div>
       <Dialog open={showPreviewModal} onOpenChange={setShowPreviewModal}>
         <DialogContent>
-          <div className="p-2">
+          <div className="p-2 mx-auto">
             <div className="max-w-[320px] mx-auto">
               {/* eslint-disable-next-line @next/next/no-img-element  */}
               <img src={previewUrl} alt="preview-avatar" />

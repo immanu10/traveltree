@@ -5,19 +5,15 @@ import { UserNav } from "@/components/user-nav";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
+import { getSessionUser } from "@/lib/supabase/helpers";
+import { ClaimUserNameCheck } from "./claim-username";
 
 export default async function HomeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const sessionUser = await getSessionUser();
 
   return (
     <div className={cn("max-w-2xl flex flex-col mx-auto")}>
@@ -27,7 +23,7 @@ export default async function HomeLayout({
             <Icons.logo />
           </Link>
           <div className="ml-auto flex items-center space-x-4">
-            {session ? (
+            {sessionUser ? (
               <>
                 <Link
                   href="/post/new"
@@ -36,7 +32,7 @@ export default async function HomeLayout({
                   <PlusIcon className="mr-2 w-4 h-4" />
                   Create Post
                 </Link>
-                <UserNav session={session} />
+                <UserNav sessionUser={sessionUser} />
               </>
             ) : (
               <AuthDialog>
@@ -47,7 +43,10 @@ export default async function HomeLayout({
         </div>
       </header>
       {/* <MainNav /> */}
-      <div>{children}</div>
+      <div>
+        {sessionUser && <ClaimUserNameCheck sessionUser={sessionUser} />}
+        {children}
+      </div>
     </div>
   );
 }

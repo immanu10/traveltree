@@ -56,7 +56,7 @@ export function UserNameForm() {
     <Form {...form}>
       <div className="p-4 shadow">
         <p className="text-center text-sm font-medium">
-          Claim your username and let the world see your travel tree!
+          Claim your username now!
         </p>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -70,7 +70,7 @@ export function UserNameForm() {
                 <FormControl>
                   <div className="flex rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
                     <span className="bg-muted inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0  px-3 text-sm">
-                      travel.tree/
+                      traveltree.co/
                     </span>
                     <Input
                       id="username"

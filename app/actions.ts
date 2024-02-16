@@ -10,56 +10,47 @@ import { redirect } from "next/navigation";
 // Todo: Remove unnecessary supabase session getSession call
 
 export async function createUsername(username: string) {
-  try {
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-    if (!session) {
-      return {
-        status: 401,
-        message: "You must be logged in to do that.",
-      };
-    }
-
-    if (!/^[a-z0-9_]{3,18}$/.test(username)) {
-      return {
-        status: 400,
-        message:
-          "Username should be lowercase and should not contain any special characters.",
-      };
-    }
-
-    if (["post", "profile", "explore", "bucketlist"].includes(username)) {
-      return {
-        status: 400,
-        message: "Username is not available.",
-      };
-    }
-
-    const { error } = await supabase
-      .from("profiles")
-      .update({ username: username })
-      .eq("id", session.user.id);
-    console.log(error);
-
-    if (!error) {
-      return {
-        status: 200,
-        message: "Username Created!",
-      };
-    } else {
-      return {
-        status: 403,
-        message: "Username already taken.",
-      };
-    }
-  } catch (error) {
+  if (!session) {
     return {
-      status: 500,
-      message: "Something went wrong!",
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  if (!/^[a-z0-9_]{3,18}$/.test(username)) {
+    return {
+      status: 400,
+      message:
+        "Username should be lowercase and should not contain any special characters.",
+    };
+  }
+
+  if (["post", "profile", "explore", "bucketlist"].includes(username)) {
+    return {
+      status: 400,
+      message: "Username is not available.",
+    };
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ username: username })
+    .eq("id", session.user.id);
+
+  if (!error) {
+    revalidatePath("/(home)", "layout");
+    redirect(`/${username}`);
+  } else {
+    // Todo: return error based on username taken db error or network error
+    return {
+      status: 403,
+      message: "Username already taken.",
     };
   }
 }
@@ -366,7 +357,7 @@ export async function insertToToys(form: FormData) {
       .single();
 
     if (!error) {
-      revalidatePath("/profile");
+      revalidatePath("/(home)/[username]", "page");
       return { status: 200, message: "Toy Added" };
     } else {
       return {

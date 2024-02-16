@@ -1,40 +1,25 @@
-import { AddToy } from "@/components/add-toy";
 import { BucketListProgress } from "@/components/bucketlist-progress";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button, buttonVariants } from "@/components/ui/button";
-
+import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/server";
 import { getInitialFromFullName } from "@/lib/utils";
-import { Plus } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ToysList } from "./toys-list";
 import { AddToyAction } from "@/components/add-toy-action";
 import { PostsList } from "@/components/posts-list";
+import { getProfileInfo, getSessionUser } from "@/lib/supabase/helpers";
 
-// Need to revisit: checkout auth.getUser() supabse function
-async function getProfileOfCurrentSession(
-  supabase: ReturnType<typeof createClient>
-) {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+async function getProfileOfCurrentSession() {
+  const sessionUser = await getSessionUser();
 
-  let profileData = null;
-  if (session) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", session.user.id);
-
-    if (data) {
-      profileData = data[0];
-    }
+  if (sessionUser) {
+    const data = await getProfileInfo(sessionUser.id);
+    return data;
   }
-  return profileData;
+  return null;
 }
 
 export default async function Page({
@@ -52,14 +37,17 @@ export default async function Page({
     .single();
 
   if (!profiles) {
-    // notFound() page
-    return <p className="text-destructive text-center my-4">No User found!</p>;
+    return (
+      <p className="text-destructive text-center my-4">
+        {"This account doesn't exist"}
+      </p>
+    );
   }
   const { avatar_url, full_name, username, bio, id, max_toy_limit } = profiles;
 
-  const currentUser = await getProfileOfCurrentSession(supabase);
-
+  const currentUser = await getProfileOfCurrentSession();
   const isLoggedInUser = currentUser?.username === username;
+
   return (
     <div className="">
       <div className="px-4 md:px-0 flex flex-col items-center mt-4">

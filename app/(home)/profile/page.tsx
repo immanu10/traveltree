@@ -1,31 +1,19 @@
 import { EditProfile } from "@/components/form/edit-profile";
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
+import { getProfileInfo, getSessionUser } from "@/lib/supabase/helpers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 export default async function Page({}: {}) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const sessionUser = await getSessionUser();
+  if (!sessionUser) redirect("/");
 
-  if (!session) {
-    redirect("/");
-  }
-
-  const { data } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", session.user.id)
-    .single();
+  const data = await getProfileInfo(sessionUser.id);
 
   if (!data) {
     notFound();
   }
 
-  const { avatar_url, full_name, bio, username, id } = data;
+  const { avatar_url, full_name, bio, username } = data;
 
   return (
     <div className="px-5 md:px-0">
