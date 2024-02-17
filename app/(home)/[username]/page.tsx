@@ -130,7 +130,7 @@ export default async function Page({
         <p className="px-4 md:px-0 text-sm font-medium">Posts</p>
         <div className="mt-2">
           <Suspense fallback={<Skeleton className="h-12 w-full" />}>
-            <PostsList userId={id} />
+            <PostsList userId={id} isLoggedInUser={isLoggedInUser} />
           </Suspense>
         </div>
       </div>

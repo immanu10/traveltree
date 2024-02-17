@@ -7,6 +7,7 @@ import { UnAuthorizedLike } from "./unauthorized-like";
 import { CopyToClipboardButton } from "./copy-to-clipboard-button";
 import { formateBestTime } from "@/lib/utils";
 import { Badge } from "./ui/badge";
+import { PostActions } from "./form/post-actions";
 
 type FeedCardData =
   Database["public"]["Functions"]["get_posts_info"]["Returns"][0];
@@ -14,9 +15,11 @@ type FeedCardData =
 export async function FeedCard({
   data,
   sessionUser,
+  isLoggedInUser,
 }: {
   data: FeedCardData;
   sessionUser: User | null;
+  isLoggedInUser?: boolean | undefined;
 }) {
   const {
     id,
@@ -33,20 +36,25 @@ export async function FeedCard({
   return (
     <div className="border-b py-3 flex flex-col gap-2">
       <div className="px-4 md:px-0">
-        <div className="inline text-xs text-muted-foreground font-medium">
-          <span>Posted by </span>
-          {username ? (
-            <Link
-              href={`/${username}`}
-              className="hover:underline inline-block"
-            >
-              @{username}
-            </Link>
-          ) : (
-            <span>{full_name}</span>
-          )}
+        <div className="flex justify-between">
+          <div>
+            <div className="inline text-xs text-muted-foreground font-medium">
+              <span>Posted by </span>
+              {username ? (
+                <Link
+                  href={`/${username}`}
+                  className="hover:underline inline-block"
+                >
+                  @{username}
+                </Link>
+              ) : (
+                <span>{full_name}</span>
+              )}
+            </div>
+            <h3 className="font-medium text-lg">{title}</h3>
+          </div>
+          {isLoggedInUser && <PostActions id={id} title={title} />}
         </div>
-        <h3 className="font-medium text-lg">{title}</h3>
         <div className="mt-1 text-xs text-muted-foreground font-medium flex gap-1 items-center">
           <p>{`Best time to visit: `}</p>
           <Badge variant="secondary" className="font-medium">

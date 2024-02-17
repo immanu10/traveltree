@@ -395,3 +395,24 @@ export async function removeToy(toy_id: number) {
   revalidatePath("/(home)/[username]", "page");
   return { status: 200, message: "Toy got Removed" };
 }
+
+export async function removePost(post_id: number) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  const { error } = await supabase.from("posts").delete().eq("id", post_id);
+
+  if (error) return { status: 500, message: "Internal server error" };
+  revalidatePath("/(home)/[username]", "page");
+  return { status: 200, message: "Post Delete Successfully" };
+}

@@ -3,7 +3,13 @@ import { cookies } from "next/headers";
 import { FeedCard } from "./feed-card";
 import { getSessionUser } from "@/lib/supabase/helpers";
 
-export async function PostsList({ userId }: { userId: string }) {
+export async function PostsList({
+  userId,
+  isLoggedInUser,
+}: {
+  userId: string;
+  isLoggedInUser: boolean;
+}) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
@@ -28,6 +34,11 @@ export async function PostsList({ userId }: { userId: string }) {
     );
 
   return data.map((item) => (
-    <FeedCard key={item.id} sessionUser={sessionUser} data={item} />
+    <FeedCard
+      key={item.id}
+      sessionUser={sessionUser}
+      data={item}
+      isLoggedInUser={isLoggedInUser}
+    />
   ));
 }
