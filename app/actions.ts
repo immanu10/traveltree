@@ -173,7 +173,7 @@ export async function addAndRemoveBucketList(values: {
   );
 
   if (error) return { status: 500, message: "Internal server error" };
-  revalidatePath("/explore");
+  // revalidatePath("/explore");
   return { status: 200, message: "Like/UnLike action Completed" };
 }
 
@@ -373,4 +373,25 @@ export async function insertToToys(form: FormData) {
       message: "Something went wrong on server",
     };
   }
+}
+
+export async function removeToy(toy_id: number) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      status: 401,
+      message: "You must be logged in to do that.",
+    };
+  }
+
+  const { error } = await supabase.from("toys").delete().eq("id", toy_id);
+
+  if (error) return { status: 500, message: "Internal server error" };
+  revalidatePath("/(home)/[username]", "page");
+  return { status: 200, message: "Toy got Removed" };
 }

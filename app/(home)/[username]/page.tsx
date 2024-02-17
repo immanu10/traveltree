@@ -122,7 +122,7 @@ export default async function Page({
               </div>
             }
           >
-            <ToysList userId={id} />
+            <ToysList userId={id} isLoggedInUser={isLoggedInUser} />
           </Suspense>
         </div>
       </div>

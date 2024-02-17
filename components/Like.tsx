@@ -15,6 +15,7 @@ type TLike = Omit<LikeProps, "postId">;
 type TAction = "like" | "dislike";
 
 export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
+  const router = useRouter();
   const [pending, startTransisition] = useTransition();
   //NOTE: useOptimistic is working correctly only when i revalidatePath in server action.
   const [optimisticLikeState, setOptimisticLikeState] = useOptimistic<
@@ -46,6 +47,7 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
         // success toast message
       }
     });
+    router.refresh();
   };
 
   return (
