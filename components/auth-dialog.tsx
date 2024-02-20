@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Dialog,
   DialogContent,
@@ -20,12 +18,22 @@ export function AuthDialog({ children }: { children: React.ReactNode }) {
           <div className="flex justify-center py-6">
             <Icons.logo />
           </div>
-          <DialogTitle>Sign in to traveltree</DialogTitle>
+          <DialogTitle>Sign in to traveltree.co</DialogTitle>
           <DialogDescription>
             Platform to discover, track and share your travel journey!
           </DialogDescription>
         </DialogHeader>
-        <div className="py-12">
+        <div className="py-6 grid gap-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-background px-2 text-muted-foreground font-medium text-xs uppercase">
+                Continue with
+              </span>
+            </div>
+          </div>
           <SigninForm />
         </div>
       </DialogContent>

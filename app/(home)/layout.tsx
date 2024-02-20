@@ -1,6 +1,5 @@
-import { AuthDialog } from "@/components/auth-dialog";
 import { Icons } from "@/components/icons";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "lucide-react";
@@ -35,9 +34,9 @@ export default async function HomeLayout({
                 <UserNav sessionUser={sessionUser} />
               </>
             ) : (
-              <AuthDialog>
-                <Button>Sign in</Button>
-              </AuthDialog>
+              <Link href={"/signin"} className={cn(buttonVariants())}>
+                Sign in
+              </Link>
             )}
           </div>
         </div>

@@ -1,14 +1,10 @@
 import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { AuthDialog } from "@/components/auth-dialog";
-import { getSessionUser } from "@/lib/supabase/helpers";
 
 export default async function LandingPage() {
-  const session = await getSessionUser();
-
   return (
     <>
       <div className="flex h-screen">
@@ -28,13 +24,16 @@ export default async function LandingPage() {
             </div>
           </header>
           <main className="px-5 flex flex-col gap-4  max-w-4xl items-start">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold  sm:text-left">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl  font-bold  sm:text-left">
               explore, achieve, and track your travel dreams.
             </h1>
-            <p className="text-lg md:text-xl font-light  sm:text-left">
-              your pathway to personalized travel adventures: discover suggested
+            <p className="md:text-lg font-light  sm:text-left">
+              your pathway to personalized travel adventures.
+              {/* 
+              TODO: Make landing page out of below points.
+              discover suggested
               places from the community, create, track, and share your travel
-              tree with the world.
+              tree with the world. */}
             </p>
             <div className="flex gap-4">
               <Link
@@ -43,11 +42,9 @@ export default async function LandingPage() {
               >
                 Go To Explore
               </Link>
-              {!session && (
-                <AuthDialog>
-                  <Button>Get Started</Button>
-                </AuthDialog>
-              )}
+              <Link href={"/signin"} className={cn(buttonVariants())}>
+                Get Started
+              </Link>
             </div>
           </main>
 
