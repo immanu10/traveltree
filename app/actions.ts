@@ -1,5 +1,6 @@
 "use server";
 
+import { BLACKLISTED_USERNAME } from "@/lib/site-config";
 import { createClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/supabase/types";
 import { BestTime } from "@/lib/utils";
@@ -31,7 +32,7 @@ export async function createUsername(username: string) {
     };
   }
 
-  if (["post", "profile", "explore", "bucketlist"].includes(username)) {
+  if (BLACKLISTED_USERNAME.includes(username)) {
     return {
       status: 400,
       message: "Username is not available.",
@@ -47,10 +48,15 @@ export async function createUsername(username: string) {
     revalidatePath("/(home)", "layout");
     redirect(`/${username}`);
   } else {
-    // Todo: return error based on username taken db error or network error
+    if (error.code === "23505") {
+      return {
+        status: 400,
+        message: "Username already taken.",
+      };
+    }
     return {
-      status: 403,
-      message: "Username already taken.",
+      status: 500,
+      message: "Something went wrong.",
     };
   }
 }
@@ -82,7 +88,7 @@ export async function updateProfile(values: {
     };
   }
 
-  if (["post", "profile", "explore", "bucketlist"].includes(username)) {
+  if (BLACKLISTED_USERNAME.includes(username)) {
     return {
       status: 400,
       message: "Username is not available.",
@@ -98,9 +104,15 @@ export async function updateProfile(values: {
     revalidatePath("/profile");
     redirect(`/${username}`);
   } else {
+    if (error.code === "23505") {
+      return {
+        status: 400,
+        message: "Username already taken.",
+      };
+    }
     return {
-      status: 403,
-      message: "Something went wrong!",
+      status: 500,
+      message: "Something went wrong.",
     };
   }
 }
@@ -141,7 +153,7 @@ export async function createNewPost(values: {
     console.error(error);
     return {
       status: 403,
-      message: "Something went wrong!",
+      message: "Something went wrong.",
     };
   }
 }
@@ -150,79 +162,113 @@ export async function addAndRemoveBucketList(values: {
   post_id: number;
   isLiked: boolean;
 }) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-  if (!session) {
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const { error } = await supabase.from("bucketlists").upsert(
+      {
+        user_id: session.user.id,
+        post_id: values.post_id,
+        is_liked: values.isLiked,
+      },
+      { onConflict: "user_id, post_id" }
+    );
+
+    if (error)
+      return {
+        status: 500,
+        message: "Something went wrong",
+        type: error.message,
+      };
     return {
-      status: 401,
-      message: "You must be logged in to do that.",
+      status: 200,
+      message: `${values.isLiked ? "Liked" : "Removed"} Bucketlist.`,
     };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Internal server error" };
   }
-
-  const { error } = await supabase.from("bucketlists").upsert(
-    {
-      user_id: session.user.id,
-      post_id: values.post_id,
-      is_liked: values.isLiked,
-    },
-    { onConflict: "user_id, post_id" }
-  );
-
-  if (error) return { status: 500, message: "Internal server error" };
-  // revalidatePath("/explore");
-  return { status: 200, message: "Like/UnLike action Completed" };
 }
 
 export async function removeBucketList(bucketlist_id: number) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-  if (!session) {
-    return {
-      status: 401,
-      message: "You must be logged in to do that.",
-    };
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const { error } = await supabase
+      .from("bucketlists")
+      .update({ is_liked: false })
+      .eq("id", bucketlist_id);
+
+    if (error)
+      return {
+        status: 500,
+        message: "Something went wrong.",
+        type: error.message,
+      };
+
+    revalidatePath("/bucketlist");
+    return { status: 200, message: "Bucketlist Removed." };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Internal server error." };
   }
-
-  const { error } = await supabase
-    .from("bucketlists")
-    .update({ is_liked: false })
-    .eq("id", bucketlist_id);
-
-  if (error) return { status: 500, message: "Internal server error" };
-  revalidatePath("/bucketlist");
-  return { status: 200, message: "Bucketlist Removed" };
 }
 
 export async function markAsTodoBucketList(bucketlist_id: number) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-  if (!session) {
-    return {
-      status: 401,
-      message: "You must be logged in to do that.",
-    };
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const { error } = await supabase
+      .from("bucketlists")
+      .update({ is_completed: false, visited_month: null, visited_year: null })
+      .eq("id", bucketlist_id);
+
+    if (error)
+      return {
+        status: 500,
+        message: "Something went wrong.",
+        type: error.message,
+      };
+
+    revalidatePath("/bucketlist");
+    return { status: 200, message: "Bucketlist moved to Todo." };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Internal server error." };
   }
-
-  const { error } = await supabase
-    .from("bucketlists")
-    .update({ is_completed: false, visited_month: null, visited_year: null })
-    .eq("id", bucketlist_id);
-
-  if (error) return { status: 500, message: "Internal server error" };
-  revalidatePath("/bucketlist");
-  return { status: 200, message: "Bucketlist moved to Todo" };
 }
 
 export async function markAsVisitedBucketList({
@@ -234,27 +280,38 @@ export async function markAsVisitedBucketList({
   month: Database["public"]["Enums"]["months_enum"];
   year: number;
 }) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-  if (!session) {
-    return {
-      status: 401,
-      message: "You must be logged in to do that.",
-    };
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const { error } = await supabase
+      .from("bucketlists")
+      .update({ is_completed: true, visited_month: month, visited_year: year })
+      .eq("id", bucketlist_id);
+
+    if (error)
+      return {
+        status: 500,
+        message: "Something went wrong.",
+        type: error.message,
+      };
+
+    revalidatePath("/bucketlist");
+    return { status: 200, message: "Bucketlist marked as completed." };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Internal server error." };
   }
-
-  const { error } = await supabase
-    .from("bucketlists")
-    .update({ is_completed: true, visited_month: month, visited_year: year })
-    .eq("id", bucketlist_id);
-
-  if (error) return { status: 500, message: "Internal server error" };
-  revalidatePath("/bucketlist");
-  return { status: 200, message: "Bucketlist marked as completed" };
 }
 
 export async function uploadProfileAvatar(form: FormData) {
@@ -295,19 +352,19 @@ export async function uploadProfileAvatar(form: FormData) {
 
     if (!error) {
       revalidatePath("/profile");
-      return { status: 200, message: "Avatar updated" };
+      return { status: 200, message: "Avatar updated." };
     } else {
       return {
         status: 403,
-        message: "Something went wrong!",
+        message: "Something went wrong.",
+        type: error.message,
       };
     }
   } catch (error) {
     console.log(error);
-
     return {
       status: 500,
-      message: "Something went wrong on server",
+      message: "Internal server error.",
     };
   }
 }
@@ -358,61 +415,81 @@ export async function insertToToys(form: FormData) {
 
     if (!error) {
       revalidatePath("/(home)/[username]", "page");
-      return { status: 200, message: "Toy Added" };
+      return { status: 200, message: "Toy Added Successfully." };
     } else {
       return {
         status: 403,
-        message: "Something went wrong!",
+        message: "Something went wrong.",
+        type: error.message,
       };
     }
   } catch (error) {
     console.log(error);
-
     return {
       status: 500,
-      message: "Something went wrong on server",
+      message: "Internal server error.",
     };
   }
 }
 
 export async function removeToy(toy_id: number) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-  if (!session) {
-    return {
-      status: 401,
-      message: "You must be logged in to do that.",
-    };
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const { error } = await supabase.from("toys").delete().eq("id", toy_id);
+
+    if (error)
+      return {
+        status: 500,
+        message: "Something went wrong.",
+        type: error.message,
+      };
+    revalidatePath("/(home)/[username]", "page");
+    return { status: 200, message: "Toy Delete Successfully." };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Internal server error." };
   }
-
-  const { error } = await supabase.from("toys").delete().eq("id", toy_id);
-
-  if (error) return { status: 500, message: "Internal server error" };
-  revalidatePath("/(home)/[username]", "page");
-  return { status: 200, message: "Toy got Removed" };
 }
 
 export async function removePost(post_id: number) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-  if (!session) {
-    return {
-      status: 401,
-      message: "You must be logged in to do that.",
-    };
+    if (!session) {
+      return {
+        status: 401,
+        message: "You must be logged in to do that.",
+      };
+    }
+
+    const { error } = await supabase.from("posts").delete().eq("id", post_id);
+
+    if (error)
+      return {
+        status: 500,
+        message: "Something went wrong.",
+        type: error.message,
+      };
+    revalidatePath("/(home)/[username]", "page");
+    return { status: 200, message: "Post Delete Successfully." };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: "Internal server error." };
   }
-
-  const { error } = await supabase.from("posts").delete().eq("id", post_id);
-
-  if (error) return { status: 500, message: "Internal server error" };
-  revalidatePath("/(home)/[username]", "page");
-  return { status: 200, message: "Post Delete Successfully" };
 }

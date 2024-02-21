@@ -42,10 +42,10 @@ export default async function HomeLayout({
         </div>
       </header>
       {/* <MainNav /> */}
-      <div>
+      <main>
         {sessionUser && <ClaimUserNameCheck sessionUser={sessionUser} />}
         {children}
-      </div>
+      </main>
     </div>
   );
 }

@@ -16,6 +16,7 @@ import { Button } from "../ui/button";
 import { createUsername } from "@/app/actions";
 import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   username: z
@@ -42,21 +43,19 @@ export function UserNameForm() {
     console.log(values);
     startTransition(async () => {
       const res = await createUsername(values.username);
-      if (res.status === 200) {
-        // display toast
-        console.log(res.message);
-      } else {
+      if (res.status === 400) {
         form.setError("username", { message: res.message });
+      } else {
+        toast.error(res.message);
       }
-      console.log(res);
     });
   }
 
   return (
     <Form {...form}>
       <div className="p-4 shadow">
-        <p className="text-center text-sm font-medium">
-          Claim your username now!
+        <p className="text-sm font-normal">
+          Claim your username and create your traveltree profile now.
         </p>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -69,7 +68,7 @@ export function UserNameForm() {
               <FormItem className="flex-1">
                 <FormControl>
                   <div className="flex rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                    <span className="bg-muted inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0  px-3 text-sm">
+                    <span className="bg-muted inline-flex flex-shrink-0 items-center rounded-l-md border border-r-0  px-3 text-sm font-medium">
                       traveltree.co/
                     </span>
                     <Input

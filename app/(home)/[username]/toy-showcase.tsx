@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 type ToyShowCaseProps = {
   item: {
@@ -37,11 +38,11 @@ export function ToyShowCase({ item, isLoggedInUser }: ToyShowCaseProps) {
     startTransisition(async () => {
       const res = await removeToy(item.id);
       setOpen(false);
-      if (res.status !== 200) {
-        console.log("Erro", res);
-        // toast message
+      if (res.status === 200) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-      console.log(res);
     });
   }
 

@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { uploadProfileAvatar } from "@/app/actions";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { toast } from "sonner";
 
 type AvatarUploadProps = {
   url: string | undefined;
@@ -46,11 +47,12 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
     form.append("avatarFile", avatarFile);
     startTransisition(async () => {
       const res = await uploadProfileAvatar(form);
-      console.log({ res });
-      if (res?.status === 200) {
+      if (res.status === 200) {
         setShowPreviewModal(false);
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-      // show toast message
     });
   }
 

@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { useState, useTransition } from "react";
 import { removeBucketList } from "@/app/actions";
+import { toast } from "sonner";
 
 export function DeleteBucketList({
   id,
@@ -31,11 +32,11 @@ export function DeleteBucketList({
     startTransisition(async () => {
       const res = await removeBucketList(id);
       setOpen(false);
-      if (res.status !== 200) {
-        console.log("Erro", res);
-        // toast message
+      if (res.status === 200) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-      console.log(res);
     });
   }
 

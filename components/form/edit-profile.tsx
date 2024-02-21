@@ -15,15 +15,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { useFormState } from "react-dom";
-import { createUsername, updateProfile } from "@/app/actions";
-import { useState, useTransition } from "react";
+import { updateProfile } from "@/app/actions";
+import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "../ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { getInitialFromFullName } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { AvatarUpload } from "../avatar-upload";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   username: z
@@ -71,29 +69,18 @@ export function EditProfile({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     startTransition(async () => {
       const res = await updateProfile(values);
-      console.log(res);
-
-      if (res.status === 403) {
-        // toast
-        console.log(res);
+      if (res.status === 400) {
+        form.setError("username", { message: res.message });
+      } else {
+        toast.error(res.message);
       }
     });
   }
 
   return (
     <div className="flex flex-col mt-4 space-y-4">
-      {/* <Avatar className="h-20 w-20">
-        <AvatarImage
-          src={avatar_url ? avatar_url : undefined}
-          alt={full_name ? full_name : undefined}
-        />
-        <AvatarFallback>
-          {full_name ? getInitialFromFullName(full_name) : ""}
-        </AvatarFallback>
-      </Avatar> */}
       <AvatarUpload
         url={avatar_url ? avatar_url : undefined}
         altText={full_name ? full_name : undefined}
@@ -132,7 +119,7 @@ export function EditProfile({
                 </FormControl>
                 <FormDescription>
                   Add your username to have your travel profile accessible on
-                  traveltr.ee/username
+                  traveltree.co/username
                 </FormDescription>
                 <FormMessage />
               </FormItem>

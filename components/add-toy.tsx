@@ -39,6 +39,7 @@ import {
   useTransition,
 } from "react";
 import { insertToToys } from "@/app/actions";
+import { toast } from "sonner";
 
 const currentYear = new Date().getFullYear();
 const LAST_TEN_YEARS = Array.from({ length: 11 }, (_, index) =>
@@ -99,13 +100,12 @@ export function AddToy({ slotCount }: { slotCount: number }) {
 
     startTransisition(async () => {
       const res = await insertToToys(form);
-      console.log({ res });
-
-      if (res?.status === 200) {
+      if (res.status === 200) {
         setOpen(false);
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-
-      // show toast message
     });
   }
 

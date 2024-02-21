@@ -20,6 +20,7 @@ import { MONTHS, cn } from "@/lib/utils";
 import { useTransition } from "react";
 import { createNewPost } from "@/app/actions";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().max(42).min(2),
@@ -54,7 +55,9 @@ export function NewPostForm() {
     console.log(values);
     startTransition(async () => {
       const res = await createNewPost(values);
-      console.log(res);
+      if (res.status === 403) {
+        toast.error(res.message);
+      }
     });
   }
 

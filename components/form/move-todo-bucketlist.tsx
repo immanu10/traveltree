@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Loader2, Trash2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -14,7 +14,8 @@ import {
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { useState, useTransition } from "react";
-import { markAsTodoBucketList, removeBucketList } from "@/app/actions";
+import { markAsTodoBucketList } from "@/app/actions";
+import { toast } from "sonner";
 
 export function MoveTodoBucketList({
   id,
@@ -31,11 +32,11 @@ export function MoveTodoBucketList({
     startTransisition(async () => {
       const res = await markAsTodoBucketList(id);
       setOpen(false);
-      if (res.status !== 200) {
-        console.log("Erro", res);
-        // toast message
+      if (res.status === 200) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-      console.log(res);
     });
   }
 

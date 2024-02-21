@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { removePost } from "@/app/actions";
+import { toast } from "sonner";
 
 export function PostActions({
   id,
@@ -35,11 +36,11 @@ export function PostActions({
     startTransisition(async () => {
       const res = await removePost(id);
       setOpen(false);
-      if (res.status !== 200) {
-        console.log("Erro", res);
-        // toast message
+      if (res.status === 200) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-      console.log(res);
     });
   }
 

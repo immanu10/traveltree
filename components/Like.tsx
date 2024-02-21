@@ -5,6 +5,7 @@ import { useOptimistic, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type LikeProps = {
   count: number;
@@ -39,12 +40,8 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
         post_id: postId,
         isLiked: !optimisticLikeState.likedByCurrentUser,
       });
-      if (res.status === 500) {
-        console.log("Error", res.message);
-        // error toast message
-      } else {
-        console.log("Success", res.message);
-        // success toast message
+      if (res.status !== 200) {
+        toast.error(res.message);
       }
     });
     router.refresh();

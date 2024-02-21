@@ -1,21 +1,10 @@
 "use client";
 
-import { CheckCheck, Loader2, Trash2 } from "lucide-react";
-
+import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Database } from "@/lib/supabase/types";
-import { useState, useTransition } from "react";
-import { markAsVisitedBucketList, removeBucketList } from "@/app/actions";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { useTransition } from "react";
+import { markAsVisitedBucketList } from "@/app/actions";
+
 import { Label } from "../ui/label";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -25,7 +14,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import {
@@ -36,6 +24,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { MONTHS } from "@/lib/utils";
+import { toast } from "sonner";
 
 const currentYear = new Date().getFullYear();
 const LAST_TEN_YEARS = Array.from({ length: 11 }, (_, index) =>
@@ -70,11 +59,11 @@ export function MarkVisitedBucketlist({
         month: values.visited_month,
         year: Number(values.visited_year),
       });
-      if (res.status !== 200) {
-        console.log("Erro", res);
-        // toast message
+      if (res.status === 200) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
-      console.log(res);
     });
   }
 
