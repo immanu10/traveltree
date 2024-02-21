@@ -9,11 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { status?: string };
-}) {
+export default async function Page() {
   const sessionUser = await getSessionUser();
   if (!sessionUser) redirect("/");
 
