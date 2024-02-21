@@ -86,3 +86,17 @@ export function formateBestTime(months: BestTime) {
 
   return formattedString;
 }
+
+export function formatTimestamp(timestampString: string) {
+  const date = new Date(timestampString);
+
+  // Get day, month, and year
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  // Format the date
+  const formattedDate = `${day} ${MONTHS[monthIndex]} ${year}`;
+
+  return formattedDate;
+}

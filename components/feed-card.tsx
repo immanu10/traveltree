@@ -5,7 +5,7 @@ import { Like } from "./Like";
 import { User } from "@supabase/supabase-js";
 import { UnAuthorizedLike } from "./unauthorized-like";
 import { CopyToClipboardButton } from "./copy-to-clipboard-button";
-import { formateBestTime } from "@/lib/utils";
+import { formatTimestamp, formateBestTime } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 import { PostActions } from "./form/post-actions";
 
@@ -31,6 +31,7 @@ export async function FeedCard({
     map_url,
     total_likes,
     liked_by_current_user,
+    inserted_at,
   } = data;
 
   return (
@@ -50,6 +51,8 @@ export async function FeedCard({
               ) : (
                 <span>{full_name}</span>
               )}
+              <span className="mx-1 font-bold">&middot;</span>
+              <time dateTime={inserted_at}>{formatTimestamp(inserted_at)}</time>
             </div>
             <h3 className="font-medium text-lg">{title}</h3>
           </div>
