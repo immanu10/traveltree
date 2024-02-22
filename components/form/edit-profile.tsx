@@ -19,7 +19,6 @@ import { updateProfile } from "@/app/actions";
 import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "../ui/textarea";
-import { useRouter } from "next/navigation";
 import { AvatarUpload } from "../avatar-upload";
 import { toast } from "sonner";
 
@@ -57,7 +56,6 @@ export function EditProfile({
 }) {
   const { username, full_name, bio, avatar_url } = initialData;
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,6 +65,10 @@ export function EditProfile({
       bio: bio ?? "",
     },
   });
+
+  const {
+    formState: { isDirty },
+  } = form;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
@@ -143,7 +145,11 @@ export function EditProfile({
             )}
           />
 
-          <Button type="submit" className="px-6" disabled={isPending}>
+          <Button
+            type="submit"
+            className="px-6"
+            disabled={isPending || !isDirty}
+          >
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
