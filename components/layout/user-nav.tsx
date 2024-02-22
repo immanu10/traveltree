@@ -1,7 +1,7 @@
 import { getInitialFromFullName } from "@/lib/utils";
-import { Logout } from "./form/signin";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import { Logout } from "../form/signin";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import Link from "next/link";
 import { User } from "@supabase/supabase-js";
 import { getProfileInfo } from "@/lib/supabase/helpers";
@@ -44,6 +44,21 @@ export async function UserNav({ sessionUser }: { sessionUser: User }) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {data?.username && (
+          <DropdownMenuItem>
+            <Link
+              href={data.username}
+              className="h-full w-full flex items-center"
+            >
+              <span className="overflow-hidden text-ellipsis">
+                Your Tree
+                <span className="ml-1 text-muted-foreground">
+                  {`( @${data.username} )`}
+                </span>
+              </span>
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem>
           <Link href="/profile" className="h-full w-full">
             Profile

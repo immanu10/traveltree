@@ -24,7 +24,7 @@ export function BuyCoffeeDialog({ children }: { children: React.ReactNode }) {
           <p>You get slots for your toys</p>
         </div>
         <div>
-          <div className="flex justify-center  gap-6 px-4 py-2 rounded-full border border-border text-4xl">
+          <div className="flex justify-center  gap-6 px-4 py-2 rounded-md text-4xl">
             <div className="flex space-x-2 items-center">
               <p className="font-semibold">1</p>
               <p className="text-2xl text-muted-foreground font-medium">x</p>
