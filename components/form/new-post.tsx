@@ -52,7 +52,6 @@ export function NewPostForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     startTransition(async () => {
       const res = await createNewPost(values);
       if (res.status === 403) {

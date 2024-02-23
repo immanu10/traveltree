@@ -34,8 +34,7 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
       setPreviewUrl(fileUrl);
       setShowPreviewModal(true);
     } catch (error) {
-      // toast alert or something
-      console.log(error);
+      toast.error("Something went wrong.");
     }
   }
   function handleClosePreviewModal() {

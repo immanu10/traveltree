@@ -40,7 +40,6 @@ export function UserNameForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     startTransition(async () => {
       const res = await createUsername(values.username);
       if (res.status === 400) {

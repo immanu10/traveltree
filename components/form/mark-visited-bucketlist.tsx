@@ -51,8 +51,6 @@ export function MarkVisitedBucketlist({
   });
 
   function onSubmit(values: FormType) {
-    console.log(values);
-
     startTransisition(async () => {
       const res = await markAsVisitedBucketList({
         bucketlist_id: id,

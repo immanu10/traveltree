@@ -18,7 +18,6 @@ export const getSessionUser = cache(async () => {
 
     return user;
   } catch (error) {
-    console.error("Error:", error);
     return null;
   }
 });
@@ -34,13 +33,11 @@ export const getProfileInfo = cache(async (userId: string) => {
       .single();
 
     if (error) {
-      console.error("Error fetching user info:", error);
       return null;
     }
 
     return data;
   } catch (error) {
-    console.error("Error:", error);
     return null;
   }
 });

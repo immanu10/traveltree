@@ -150,7 +150,6 @@ export async function createNewPost(values: {
   if (data && !error) {
     redirect(`/post/${data.id}`);
   } else {
-    console.error(error);
     return {
       status: 403,
       message: "Something went wrong.",
@@ -196,7 +195,6 @@ export async function addAndRemoveBucketList(values: {
       message: `${values.isLiked ? "Liked" : "Removed"} Bucketlist.`,
     };
   } catch (error) {
-    console.error(error);
     return { status: 500, message: "Internal server error" };
   }
 }
@@ -231,7 +229,6 @@ export async function removeBucketList(bucketlist_id: number) {
     revalidatePath("/bucketlist");
     return { status: 200, message: "Bucketlist Removed." };
   } catch (error) {
-    console.error(error);
     return { status: 500, message: "Internal server error." };
   }
 }
@@ -266,7 +263,6 @@ export async function markAsTodoBucketList(bucketlist_id: number) {
     revalidatePath("/bucketlist");
     return { status: 200, message: "Bucketlist moved to Todo." };
   } catch (error) {
-    console.error(error);
     return { status: 500, message: "Internal server error." };
   }
 }
@@ -309,7 +305,6 @@ export async function markAsVisitedBucketList({
     revalidatePath("/bucketlist");
     return { status: 200, message: "Bucketlist marked as completed." };
   } catch (error) {
-    console.error(error);
     return { status: 500, message: "Internal server error." };
   }
 }
@@ -361,7 +356,6 @@ export async function uploadProfileAvatar(form: FormData) {
       };
     }
   } catch (error) {
-    console.log(error);
     return {
       status: 500,
       message: "Internal server error.",
@@ -424,7 +418,6 @@ export async function insertToToys(form: FormData) {
       };
     }
   } catch (error) {
-    console.log(error);
     return {
       status: 500,
       message: "Internal server error.",
@@ -458,7 +451,6 @@ export async function removeToy(toy_id: number) {
     revalidatePath("/(home)/[username]", "page");
     return { status: 200, message: "Toy Delete Successfully." };
   } catch (error) {
-    console.error(error);
     return { status: 500, message: "Internal server error." };
   }
 }
@@ -489,7 +481,6 @@ export async function removePost(post_id: number) {
     revalidatePath("/(home)/[username]", "page");
     return { status: 200, message: "Post Delete Successfully." };
   } catch (error) {
-    console.error(error);
     return { status: 500, message: "Internal server error." };
   }
 }

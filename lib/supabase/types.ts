@@ -196,6 +196,12 @@ export type Database = {
         };
         Returns: Record<string, unknown>;
       };
+      delete_toy: {
+        Args: {
+          image_url: string;
+        };
+        Returns: Record<string, unknown>;
+      };
       get_all_posts_of_user: {
         Args: {
           current_user_id: string | null;
@@ -257,6 +263,13 @@ export type Database = {
           total_likes: number;
           liked_by_current_user: boolean;
         }[];
+      };
+      verify_and_update_toy_limit: {
+        Args: {
+          email_id: string;
+          toy_count: number;
+        };
+        Returns: undefined;
       };
     };
     Enums: {
