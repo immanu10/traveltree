@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { Database } from "@/lib/supabase/types";
-import { Like } from "./Like";
 import { User } from "@supabase/supabase-js";
 import { UnAuthorizedLike } from "./unauthorized-like";
 import { CopyToClipboardButton } from "./copy-to-clipboard-button";
 import { formatTimestamp, formateBestTime } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 import { PostActions } from "./form/post-actions";
+import { Like } from "./like-button";
 
 type FeedCardData =
   Database["public"]["Functions"]["get_posts_info"]["Returns"][0];
