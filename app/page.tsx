@@ -1,8 +1,17 @@
 import { Icons } from "@/components/icons";
 import Link from "next/link";
-import { Github, Linkedin } from "lucide-react";
+import {
+  ClipboardCopy,
+  CopyIcon,
+  Github,
+  Linkedin,
+  Mountain,
+  MountainIcon,
+} from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 export default async function LandingPage() {
   return (
@@ -49,9 +58,70 @@ export default async function LandingPage() {
           </main>
 
           <section className="px-5 my-14 mt-24 grid auto-rows-[20rem] grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="row-span-1 border border-border rounded-lg bg-slate-50"></div>
-            <div className="row-span-1 border border-border rounded-lg bg-slate-50"></div>
-            <div className="row-span-2 md:col-span-2 border border-border rounded-lg bg-slate-50"></div>
+            <div className="row-span-1 border border-border rounded-lg relative">
+              {/* Todo: show the feed card, with bucketlist like animation */}
+              <div className="w-full mt-12">
+                <div className="border-y flex flex-col gap-2">
+                  <div className="px-4">
+                    <div className="flex justify-between">
+                      <div>
+                        <div className="inline text-xs text-muted-foreground font-medium">
+                          <span>Posted by </span>
+                          <span>@immanu10</span>
+                          <span className="mx-1 font-bold">&middot;</span>
+                          <span>22, feb 2023</span>
+                        </div>
+                        <h3 className="font-medium text-lg">Goa</h3>
+                      </div>
+                    </div>
+                    <div className="mt-1 text-xs text-muted-foreground font-medium flex gap-1 items-center">
+                      <p>{`Best time to visit: `}</p>
+                      <Badge variant="secondary" className="font-medium">
+                        All months
+                      </Badge>
+                    </div>
+                    <div className="my-2  rounded-sm flex items-center text-xs">
+                      <span className="text-blue-500 hover:underline overflow-hidden text-ellipsis">
+                        map.sdkdso/dfl
+                      </span>
+                      <Separator orientation="vertical" className="h-4 mx-2" />
+                      <CopyIcon className="w-3 h-3 text-muted-foreground" />
+                    </div>
+                    <div className="text-sm my-2 w-full">
+                      <p className="text-justify">Dummy description... test</p>
+                    </div>
+                  </div>
+                  <div className="px-4">
+                    <button className="flex items-center cursor-pointer group transition-colors w-fit">
+                      <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
+                        <MountainIcon
+                          className={cn(
+                            "text-gray-500 w-[18px] h-[18px] group-hover:text-pink-500"
+                          )}
+                        />
+                      </div>
+                      <div className="text-xs text-gray-500 group-hover:text-pink-500">
+                        <span>6996 buckets</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-b from-background to-slate-100 ">
+                <h3 className=" font-semibold">
+                  Explore and Create bucketlist
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  Just like the post and your bucketlist is created.
+                </p>
+              </div>
+            </div>
+            <div className="row-span-1 border border-border rounded-lg bg-slate-50">
+              {/* Bucketlist page. */}
+            </div>
+            <div className="row-span-2 md:col-span-2 border border-border rounded-lg bg-slate-50">
+              {/* Profile Page info */}
+            </div>
           </section>
 
           {/* <section className="mt-24 px-5">
