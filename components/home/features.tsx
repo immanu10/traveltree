@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { CopyIcon, MountainIcon } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
+import Image from "next/image";
 
 export function BentroGridFeatures({ className }: { className?: string }) {
   return (
@@ -14,15 +15,21 @@ export function BentroGridFeatures({ className }: { className?: string }) {
       <div className="row-span-1 border border-border rounded-lg overflow-hidden">
         <GridItemOneFeature />
       </div>
-      <div className="row-span-1 border border-border rounded-lg overflow-hidden"></div>
-      <div className="row-span-2 md:col-span-2 border border-border rounded-lg overflow-hidden"></div>
+      <div className="row-span-1 border border-border rounded-lg overflow-hidden">
+        <GridItemTwoFeature />
+      </div>
+      <div className="row-span-2 md:col-span-1 border border-border rounded-lg overflow-hidden">
+        <GridItemThreeFeature />
+      </div>
+      <div className="row-span-1 md:col-span-1 border border-border rounded-lg overflow-hidden"></div>
+      <div className="row-span-1 md:col-span-1 border border-border rounded-lg overflow-hidden"></div>
     </section>
   );
 }
 
 function GridItemOneFeature() {
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-pink-100 to-slate-50">
+    <div className="h-full flex flex-col bg-gradient-to-b from-pink-50 to-slate-50">
       <div className="flex-1 flex items-center px-4 relative select-none">
         <div className="py-2  shadow-lg flex flex-col gap-2 rounded-lg w-full bg-background relative">
           <div className="w-5/12 h-full absolute top-0 right-0 bg-gradient-to-l from-white rounded-lg"></div>
@@ -34,7 +41,7 @@ function GridItemOneFeature() {
                   <span>Posted by </span>
                   <span>@immanu10</span>
                   <span className="mx-1 font-bold">&middot;</span>
-                  <span>22, feb 2023</span>
+                  <span>16 Feb 2024</span>
                 </div>
                 <h3 className="font-medium text-lg">Goa</h3>
               </div>
@@ -74,10 +81,42 @@ function GridItemOneFeature() {
           </div>
         </div>
       </div>
-      <div className="px-4 pt-2 pb-4 rounded-lg">
+      <div className="p-4 rounded-lg">
         <h3 className="font-semibold">Explore and Create bucketlist</h3>
         <p className="text-muted-foreground text-sm">
-          Just like the post and your bucketlist is created.
+          Just like the post and your bucketlist is ready.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function GridItemTwoFeature() {
+  return (
+    <div className="h-full flex flex-col ">
+      <div className="flex-1 flex items-center px-4 relative select-none"></div>
+      <div className="p-4 rounded-lg">
+        <h3 className="font-semibold">Post your travel tales</h3>
+        <p className="text-muted-foreground text-sm">
+          Simple way to share and track your travel life.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function GridItemThreeFeature() {
+  return (
+    <div className="h-full flex flex-col">
+      <div className="flex-1 flex items-center px-4 relative select-none">
+        <div className="w-96 h-full relative">
+          <Image src="/profile.png" alt="profile-mockup" fill />
+        </div>
+      </div>
+      <div className="p-4 rounded-lg">
+        <h3 className="font-semibold">TravelTree profile</h3>
+        <p className="text-muted-foreground text-sm">
+          Create and customize your profile.
         </p>
       </div>
     </div>
