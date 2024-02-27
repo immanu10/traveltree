@@ -12,6 +12,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { BentroGridFeatures } from "@/components/home/features";
 
 export default async function LandingPage() {
   return (
@@ -57,9 +58,8 @@ export default async function LandingPage() {
             </div>
           </main>
 
-          <section className="px-5 my-14 mt-24 grid auto-rows-[20rem] grid-cols-1 md:grid-cols-2 gap-4">
+          {/* <section className="px-5 my-14 mt-24 grid auto-rows-[20rem] grid-cols-1 md:grid-cols-2 gap-4">
             <div className="row-span-1 border border-border rounded-lg relative p-4">
-              {/* Todo: show the feed card, with bucketlist like animation */}
               <div className="w-20 h-full absolute top-0 left-0 bg-gradient-to-r from-white to-transparent overflow-hidden"></div>
               <div className="w-10/12  mt-6 border-pink-400 border-y border-r flex flex-col gap-2 py-2 rounded-lg rounded-tl-none rounded-bl-none">
                 <div className="px-4">
@@ -116,12 +116,11 @@ export default async function LandingPage() {
               </div>
             </div>
             <div className="row-span-1 border border-border rounded-lg bg-slate-50">
-              {/* Bucketlist page. */}
             </div>
             <div className="row-span-2 md:col-span-2 border border-border rounded-lg bg-slate-50">
-              {/* Profile Page info */}
             </div>
-          </section>
+          </section> */}
+          <BentroGridFeatures className="my-14 mt-24" />
 
           {/* <section className="mt-24 px-5">
             <h2 className="text-xl font-semibold">
