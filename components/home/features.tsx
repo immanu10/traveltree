@@ -1,5 +1,14 @@
 import { cn } from "@/lib/utils";
-import { CopyIcon, MountainIcon } from "lucide-react";
+import {
+  Battery,
+  BatteryFull,
+  BatteryMedium,
+  Bluetooth,
+  CopyIcon,
+  Lock,
+  MountainIcon,
+  Wifi,
+} from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import Image from "next/image";
@@ -29,7 +38,7 @@ export function BentroGridFeatures({ className }: { className?: string }) {
 
 function GridItemOneFeature() {
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-pink-50 to-slate-50">
+    <div className="h-full flex flex-col bg-gradient-to-b from-pink-50">
       <div className="flex-1 flex items-center px-4 relative select-none">
         <div className="py-2  shadow-lg flex flex-col gap-2 rounded-lg w-full bg-background relative">
           <div className="w-5/12 h-full absolute top-0 right-0 bg-gradient-to-l from-white rounded-lg"></div>
@@ -93,7 +102,7 @@ function GridItemOneFeature() {
 
 function GridItemTwoFeature() {
   return (
-    <div className="h-full flex flex-col ">
+    <div className="h-full flex flex-col">
       <div className="flex-1 flex items-center px-4 relative select-none"></div>
       <div className="p-4 rounded-lg">
         <h3 className="font-semibold">Post your travel tales</h3>
@@ -108,10 +117,26 @@ function GridItemTwoFeature() {
 function GridItemThreeFeature() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex-1 flex items-center px-4 relative select-none">
-        <div className="w-96 h-full relative">
-          <Image src="/profile.png" alt="profile-mockup" fill />
+      <div className="flex-1 flex mt-12 justify-center px-4 relative select-none">
+        <div className="w-64 h-[32rem] border-x-2 border-t-2 border-muted-foreground rounded-t-xl flex flex-col">
+          <div className="text-muted-foreground flex justify-between px-2 mt-2">
+            <p className="text-xs font-medium">10:00</p>
+            <div className="flex items-center space-x-3">
+              <Wifi className="w-4 h-4" />
+              <BatteryMedium className="w-5 h-5" />
+            </div>
+          </div>
+
+          <div className="flex-1 relative">
+            <Image
+              src="/profile.png"
+              alt="profile-mockup"
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
+        <div className="w-full h-36 absolute bottom-0 inset-x-0 bg-gradient-to-t from-white rounded-lg"></div>
       </div>
       <div className="p-4 rounded-lg">
         <h3 className="font-semibold">TravelTree profile</h3>
