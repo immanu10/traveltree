@@ -18,7 +18,8 @@ import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import Image from "next/image";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
+import Link from "next/link";
 
 export function BentroGridFeatures({ className }: { className?: string }) {
   return (
@@ -49,9 +50,9 @@ export function BentroGridFeatures({ className }: { className?: string }) {
 
 function GridItemOneFeature() {
   return (
-    <div className="h-full flex flex-col bg-gradient-to-tl from-background to-pink-50">
+    <div className="h-full flex flex-col bg-gradient-to-b from-pink-50 via-white">
       <div className="flex-1 flex items-center px-4 relative select-none">
-        <div className="py-2  shadow-lg flex flex-col gap-2 rounded-lg w-full bg-background relative">
+        <div className="py-2  shadow-md flex flex-col gap-2 rounded-lg w-full bg-background relative">
           <div className="w-5/12 h-full absolute top-0 right-0 bg-gradient-to-l from-white rounded-lg"></div>
 
           <div className="px-4">
@@ -142,9 +143,9 @@ function GridItemTwoFeature() {
 
 function GridItemThreeFeature() {
   return (
-    <div className="h-full flex flex-col ">
+    <div className="h-full flex flex-col bg-gradient-to-b from-pink-50 via-white">
       <div className="flex-1 flex mt-12 justify-center px-4 relative select-none">
-        <div className="w-64 h-[32rem] border-x-2 border-t-2 border-muted-foreground rounded-t-xl flex flex-col">
+        <div className="w-64 h-[32rem] border-x-2 border-t-2 border-muted-foreground rounded-t-xl flex flex-col bg-background">
           <div className="text-muted-foreground flex justify-between px-2 mt-2">
             <p className="text-xs font-medium">10:00</p>
             <div className="flex items-center space-x-3">
@@ -165,7 +166,7 @@ function GridItemThreeFeature() {
         <div className="w-full h-36 absolute bottom-0 inset-x-0 bg-gradient-to-t from-white"></div>
       </div>
       <div className="p-4 rounded-lg">
-        <h3 className="font-semibold">TravelTree profile</h3>
+        <h3 className="font-semibold">Your traveltree profile</h3>
         <p className="text-muted-foreground text-sm">
           Create and customize your profile.
         </p>
@@ -176,13 +177,13 @@ function GridItemThreeFeature() {
 
 function GridItemFourFeature() {
   return (
-    <div className="h-full flex flex-col ">
+    <div className="h-full flex flex-col bg-gradient-to-b from-pink-50 via-white">
       <div className="flex-1 flex flex-col justify-center px-4 relative select-none">
         <div className="flex items-center justify-between">
           <div className="border-l-4 border-green-500 pl-2">
             <span className="block text-sm font-medium">Todo</span>
           </div>
-          <div className="max-w-fit px-3 py-1.5 text-sm text-popover-foreground shadow-md rounded-md">
+          <div className="max-w-fit px-3 py-1.5 text-sm text-popover-foreground shadow-md rounded-md bg-background">
             Mark as visited
           </div>
         </div>
@@ -229,12 +230,11 @@ function GridItemFourFeature() {
             </Button>
           </div>
         </div>
-        <Separator className="mt-6" />
         <div className="w-8 h-full absolute left-0 inset-y-0 bg-gradient-to-r from-white"></div>
         <div className="w-24 h-full absolute right-0 inset-y-0 bg-gradient-to-l from-white"></div>
       </div>
       <div className="p-4 rounded-lg">
-        <h3 className="font-semibold">My Bucketlist</h3>
+        <h3 className="font-semibold">Bucketlist</h3>
         <p className="text-muted-foreground text-sm">
           Easy to track your todo, visited bucketlist.
         </p>
@@ -245,18 +245,28 @@ function GridItemFourFeature() {
 
 function GridItemFiveFeature() {
   return (
-    <div className="h-full flex justify-center items-center px-4">
-      <div className="">
-        <p className="text-sm text-center font-normal">
-          Claim your username and create your traveltree profile now.
-        </p>
-        <div className="w-full rounded-md text-sm border border-input">
-          <span className="bg-muted font-medium h-full px-3 py-2">
-            traveltree.co/
-          </span>
+    <div className="h-full flex flex-col space-y-4 justify-center px-6 ">
+      <h3 className="text-6xl text-center font-bold">
+        Join
+        <br />
+        <span className="bg-gradient-to-b from-pink-600 via-pink-300  bg-clip-text text-transparent">
+          traveltree.
+        </span>
+      </h3>
+      <div className="w-full h-10 flex items-center text-sm bg-background rounded-md">
+        <div className="bg-muted border border-r-0 font-medium max-w-fit py-2 px-3 rounded-l-md">
+          traveltree.co/
+        </div>
+        <div className="flex-1  border  py-2 px-3 rounded-r-md bg-background text-muted-foreground">
           username
         </div>
       </div>
+      {/* <Link
+        href="/signin"
+        className={cn(buttonVariants({ size: "sm" }), "max-w-fit mx-auto")}
+      >
+        Get started
+      </Link> */}
     </div>
   );
 }
