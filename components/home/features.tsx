@@ -1,15 +1,10 @@
 import { cn } from "@/lib/utils";
 import {
-  ArrowDown,
-  Battery,
-  BatteryFull,
+  ArrowRight,
   BatteryMedium,
-  Bluetooth,
   CheckCheck,
   ChevronDown,
   CopyIcon,
-  Delete,
-  Lock,
   MountainIcon,
   Trash2,
   Wifi,
@@ -17,9 +12,9 @@ import {
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import Image from "next/image";
-import { Input } from "../ui/input";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
+import { LikeVisual } from "./LikeVisual";
 
 export function BentroGridFeatures({ className }: { className?: string }) {
   return (
@@ -82,7 +77,7 @@ function GridItemOneFeature() {
             </div>
           </div>
           <div className="px-4">
-            <button className="flex items-center cursor-pointer group transition-colors w-fit">
+            {/* <button className="flex items-center cursor-pointer group transition-colors w-fit">
               <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
                 <MountainIcon
                   className={cn(
@@ -93,7 +88,8 @@ function GridItemOneFeature() {
               <div className="text-xs text-gray-500 group-hover:text-pink-500">
                 <span>68 buckets</span>
               </div>
-            </button>
+            </button> */}
+            <LikeVisual />
           </div>
         </div>
       </div>
@@ -261,12 +257,13 @@ function GridItemFiveFeature() {
           username
         </div>
       </div>
-      {/* <Link
+      <Link
         href="/signin"
         className={cn(buttonVariants({ size: "sm" }), "max-w-fit mx-auto")}
       >
-        Get started
-      </Link> */}
+        Let&apos;s go
+        <ArrowRight className="w-4 h-4 ml-1" />
+      </Link>
     </div>
   );
 }

@@ -83,6 +83,16 @@ module.exports = {
           from: { height: "var(--radix-collapsible-content-height)" },
           to: { height: 0 },
         },
+        scale: {
+          from: { transform: "scale(0.8)" },
+          "90%": { transform: "scale(1.05)" },
+          to: { transform: "scale(1)" },
+        },
+        circle: {
+          from: { transform: "scale(0)", strokeWidth: "16px" },
+          "50%": { transform: "scale(0.5)", strokeWidth: "16px" },
+          to: { transform: "scale(1)", strokeWidth: "0px" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
