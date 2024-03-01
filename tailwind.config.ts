@@ -93,12 +93,22 @@ module.exports = {
           "50%": { transform: "scale(0.5)", strokeWidth: "16px" },
           to: { transform: "scale(1)", strokeWidth: "0px" },
         },
+        marquee: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(0%)" },
+        },
+        marquee2: {
+          "0%": { transform: "translateY(0%)" },
+          "100%": { transform: "translateY(100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "collapsible-down": "collapsible-down 0.2s ease-out",
         "collapsible-up": "collapsible-up 0.2s ease-out",
+        marquee: "marquee 2s linear infinite",
+        marquee2: "marquee2 2s linear infinite",
       },
     },
   },

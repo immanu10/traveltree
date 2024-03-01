@@ -9,12 +9,25 @@ export default async function LandingPage() {
   return (
     <>
       <div className="flex h-screen">
-        <div className="hidden lg:block w-80 bg-black fixed inset-y-0 left-10">
-          <div className="absolute h-full w-4 bg-white left-2"></div>
-          <div className="absolute h-full w-4 bg-white right-2"></div>
-          <div className="absolute h-1/6 w-4 bg-white top-2 left-1/2 transform -translate-x-1/2 "></div>
-          <div className="absolute h-2/6 w-4 bg-white top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute h-1/6 w-4 bg-white bottom-2 left-1/2 transform -translate-x-1/2 "></div>
+        <div className="road hidden lg:block w-80 bg-[#000] fixed inset-y-0 left-10">
+          <div className="flex justify-between h-full">
+            <div className="h-full w-4 bg-white ml-2 z-10"></div>
+            <div className="overflow-y-hidden relative flex flex-col">
+              <div className="flex flex-col space-y-20">
+                <div className="h-36 w-4 bg-white z-10"></div>
+                <div className="h-36 w-4 bg-white z-10"></div>
+                <div className="h-36 w-4 bg-white z-10"></div>
+                <div className="h-36 w-4 bg-white z-10"></div>
+              </div>
+              {/* <div className="absolute top-0 animate-marquee2 flex flex-col space-y-20">
+                <div className="h-36 w-4 bg-white z-10"></div>
+                <div className="h-36 w-4 bg-white z-10"></div>
+                <div className="h-36 w-4 bg-white z-10"></div>
+                <div className="h-36 w-4 bg-white z-10"></div>
+              </div> */}
+            </div>
+            <div className="h-full w-4 bg-white mr-2 z-10"></div>
+          </div>
         </div>
         <div className="lg:ml-[360px] flex-1 flex flex-col">
           <header className="sticky border-b top-0 z-50 w-full  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
