@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     images: [
       {
         type: "image/jpeg",
-        url: "/images/og.jpg",
+        url: "/og.jpg",
         width: 1200,
         height: 630,
         alt: "Traveltree.co",
@@ -44,23 +44,12 @@ export const metadata: Metadata = {
     images: [
       {
         type: "image/jpeg",
-        url: "/images/og.jpg",
+        url: "/og.jpg",
         width: 1920,
         height: 1080,
         alt: "Traveltre.co",
       },
     ],
-  },
-  // Put images in app/
-  // icons: {
-  //   icon: '/icons/favicon-32x32.png',
-  //   shortcut: '/icons/favicon.ico',
-  //   apple: '/icons/apple-touch-icon.png',
-  // },
-  appleWebApp: {
-    title,
-    statusBarStyle: "default",
-    startupImage: ["/icons/apple-icon.png"],
   },
 };
 
