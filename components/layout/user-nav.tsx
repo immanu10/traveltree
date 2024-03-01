@@ -47,7 +47,7 @@ export async function UserNav({ sessionUser }: { sessionUser: User }) {
         {data?.username && (
           <DropdownMenuItem>
             <Link
-              href={data.username}
+              href={`/${data.username}`}
               className="h-full w-full flex items-center"
             >
               <span className="overflow-hidden text-ellipsis">

@@ -1,7 +1,17 @@
 import { NewPostForm } from "@/components/form/new-post";
 import { Separator } from "@/components/ui/separator";
 import { getSessionUser } from "@/lib/supabase/helpers";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+const title = "Traveltree.co | New Post";
+const description =
+  "Traveltree.co is a platform to create, discover, and track your bucket list. It also allows you to create, customize, and share your travel profile.";
+
+export const metadata: Metadata = {
+  title,
+  description,
+};
 
 export default async function CreatePostPage() {
   const sessionUser = await getSessionUser();

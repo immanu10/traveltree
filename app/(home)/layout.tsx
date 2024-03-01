@@ -6,6 +6,49 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { getSessionUser } from "@/lib/supabase/helpers";
 import { ClaimUserNameCheck } from "./claim-username";
+import { Metadata } from "next";
+
+const title = "Traveltree.co | Home";
+const description =
+  "Traveltree.co is a platform to create, discover, and track your bucket list. It also allows you to create, customize, and share your travel profile.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://traveltree.co"),
+  title,
+  description,
+  openGraph: {
+    type: "website",
+    siteName: "Traveltree.co",
+    title,
+    description,
+    url: "https://traveltree.co",
+    images: [
+      {
+        type: "image/jpeg",
+        url: "/images/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Traveltree.co",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    site: "@immanu10x",
+    description,
+    creator: "@immanu10x",
+    images: [
+      {
+        type: "image/jpeg",
+        url: "/images/og.jpg",
+        width: 1920,
+        height: 1080,
+        alt: "Traveltre.co",
+      },
+    ],
+  },
+};
 
 export default async function HomeLayout({
   children,

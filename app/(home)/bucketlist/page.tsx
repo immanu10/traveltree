@@ -6,8 +6,18 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { getSessionUser } from "@/lib/supabase/helpers";
 import { createClient } from "@/lib/supabase/server";
+import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+
+const title = "Traveltree.co | Bucketlist";
+const description =
+  "Traveltree.co is a platform to create, discover, and track your bucket list. It also allows you to create, customize, and share your travel profile.";
+
+export const metadata: Metadata = {
+  title,
+  description,
+};
 
 export default async function Page() {
   const sessionUser = await getSessionUser();

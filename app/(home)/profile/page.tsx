@@ -1,7 +1,17 @@
 import { EditProfile } from "@/components/form/edit-profile";
 import { getProfileInfo, getSessionUser } from "@/lib/supabase/helpers";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+
+const title = "Traveltree.co | Profile";
+const description =
+  "Traveltree.co is a platform to create, discover, and track your bucket list. It also allows you to create, customize, and share your travel profile.";
+
+export const metadata: Metadata = {
+  title,
+  description,
+};
 
 export default async function Page({}: {}) {
   const sessionUser = await getSessionUser();
