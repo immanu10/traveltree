@@ -1,4 +1,5 @@
-import { Button } from "./ui/button";
+import Image from "next/image";
+import { Button, buttonVariants } from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { Icons } from "./icons";
+import { cn } from "@/lib/utils";
 
 export function BuyCoffeeDialog({ children }: { children: React.ReactNode }) {
   return (
@@ -19,30 +22,34 @@ export function BuyCoffeeDialog({ children }: { children: React.ReactNode }) {
             {"You can support me and get slots for your toys."}
           </DialogDescription>
         </DialogHeader>
-        <div className="font-medium text-sm flex flex-col items-center">
-          <p>You buy me a coffee</p>
-          <p>You get slots for your toys</p>
+        <div className="relative min-h-[250px]">
+          <Image
+            src="/tradememe.jpg"
+            fill
+            alt="tradememe"
+            className="object-contain"
+            priority
+          />
+
+          <div className="text-white text-3xl font-bold absolute bottom-0 inset-x-0 flex justify-center">
+            <h3 className="text-center">
+              1 <span className="text-sm">x</span> ☕️ = 1 slot
+            </h3>
+          </div>
         </div>
         <div>
-          <div className="flex justify-center  gap-6 px-4 py-2 rounded-md text-4xl">
-            <div className="flex space-x-2 items-center">
-              <p className="font-semibold">1</p>
-              <p className="text-2xl text-muted-foreground font-medium">x</p>
-              <p className="text-4xl">☕️</p>
-            </div>
-            <p>=</p>
-            <div className="flex space-x-2 items-end">
-              <p className="font-semibold">1</p>
-              <p className="text-2xl text-muted-foreground font-semibold">
-                slot
-              </p>
-            </div>
-          </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             * Make sure to use same email id which is used in this platform
           </p>
         </div>
-        <Button className="mt-2">Buy coffee</Button>
+        <a
+          href={"https://www.buymeacoffee.com/immanu10"}
+          target="_blank"
+          className={cn(buttonVariants(), "h-12 text-lg font-semibold")}
+        >
+          <Icons.buymeacoffee className="mr-2" />
+          Buy me a coffee
+        </a>
       </DialogContent>
     </Dialog>
   );
