@@ -1,6 +1,7 @@
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -10,7 +11,13 @@ export default async function NotFound() {
       <header className="sticky border-b top-0 z-50 w-full  bg-background">
         <div className="flex items-center h-16 px-4 md:px-0">
           <Link href="/explore">
-            <Icons.logo />
+            <Image
+              src="/traveltree.svg"
+              width={80}
+              height={40}
+              alt="traveltree logo"
+              priority
+            />
           </Link>
         </div>
       </header>

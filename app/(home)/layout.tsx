@@ -7,6 +7,7 @@ import Link from "next/link";
 import { getSessionUser } from "@/lib/supabase/helpers";
 import { ClaimUserNameCheck } from "./claim-username";
 import { Metadata } from "next";
+import Image from "next/image";
 
 const title = "Traveltree.co | Home";
 const description =
@@ -62,7 +63,13 @@ export default async function HomeLayout({
       <header className="sticky border-b top-0 z-50 w-full  bg-background">
         <div className="flex items-center h-16 px-4 md:px-0">
           <Link href="/explore">
-            <Icons.logo />
+            <Image
+              src="/traveltree.svg"
+              width={80}
+              height={40}
+              alt="traveltree logo"
+              priority
+            />
           </Link>
           <div className="ml-auto flex items-center space-x-4">
             {sessionUser ? (

@@ -1,6 +1,8 @@
 import { SigninForm } from "@/components/form/signin";
 import { Icons } from "@/components/icons";
 import { getSessionUser } from "@/lib/supabase/helpers";
+import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function SigninPage({
@@ -15,7 +17,15 @@ export default async function SigninPage({
   return (
     <div className="px-5 md:px-0 w-screen h-screen max-w-2xl flex flex-col mx-auto justify-center items-center space-y-6">
       <div className="flex flex-col items-center space-y-2 text-center">
-        <Icons.logo />
+        <Link href="/">
+          <Image
+            src="/traveltree.svg"
+            width={100}
+            height={40}
+            alt="traveltree logo"
+            priority
+          />
+        </Link>
         <h1 className="text-3xl font-semibold">Authenticate</h1>
         <p className="font-medium text-muted-foreground">
           Sign in to traveltree.co

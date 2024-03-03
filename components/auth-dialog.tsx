@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Icons } from "./icons";
 import { SigninForm } from "./form/signin";
+import Image from "next/image";
 
 export function AuthDialog({ children }: { children: React.ReactNode }) {
   return (
@@ -16,7 +17,13 @@ export function AuthDialog({ children }: { children: React.ReactNode }) {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <div className="flex justify-center py-6">
-            <Icons.logo />
+            <Image
+              src="/traveltree.svg"
+              width={80}
+              height={40}
+              alt="traveltree logo"
+              priority
+            />
           </div>
           <DialogTitle>Sign in to traveltree.co</DialogTitle>
           <DialogDescription>

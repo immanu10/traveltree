@@ -30,7 +30,9 @@ const formSchema = z.object({
     .regex(
       new RegExp("^https://maps.app.goo.gl/[a-zA-Z0-9]+$"),
       "Invalid google map link"
-    ),
+    )
+    .optional()
+    .or(z.literal("")),
   besttime: z
     .array(z.enum(MONTHS))
     .refine((value) => value.some((item) => item), {

@@ -120,7 +120,7 @@ export async function updateProfile(values: {
 export async function createNewPost(values: {
   description: string;
   title: string;
-  googleurl: string | undefined;
+  googleurl?: string | undefined;
   besttime: BestTime;
 }) {
   const cookieStore = cookies();

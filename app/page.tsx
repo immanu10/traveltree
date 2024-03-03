@@ -4,6 +4,7 @@ import { Github, Linkedin } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BentroGridFeatures } from "@/components/home/features";
+import Image from "next/image";
 
 export default async function LandingPage() {
   return (
@@ -33,7 +34,13 @@ export default async function LandingPage() {
           <header className="sticky border-b top-0 z-50 w-full  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="px-5 flex h-16 items-center justify-between w-full">
               <Link href="/" className="inline-block">
-                <Icons.logo />
+                <Image
+                  src="/traveltree.svg"
+                  width={80}
+                  height={40}
+                  alt="traveltree logo"
+                  priority
+                />
               </Link>
               <div className="ml-auto">
                 <Link href={"/signin"} className={cn(buttonVariants())}>

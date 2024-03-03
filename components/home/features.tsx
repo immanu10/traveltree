@@ -56,7 +56,7 @@ function GridItemOneFeature() {
               <span className="mx-1 font-bold">&middot;</span>
               <span>16 Feb 2024</span>
             </div>
-            <span className="block font-medium text-lg">Goa</span>
+            <span className="block font-medium text-lg">Karnataka</span>
             <div className="mt-1 text-xs text-muted-foreground font-medium flex gap-1 items-center">
               <span>{`Best time to visit: `}</span>
               <Badge variant="secondary" className="font-medium">
@@ -65,14 +65,14 @@ function GridItemOneFeature() {
             </div>
             <div className="my-2  rounded-sm flex items-center text-xs">
               <span className="text-blue-500 hover:underline overflow-hidden text-ellipsis">
-                maps.app.goo.gl/RSAKupEJX7d8tox9A
+                maps.app.goo.gl/wPyLd3S8NZJawDRNA
               </span>
               <Separator orientation="vertical" className="h-4 mx-2" />
               <CopyIcon className="w-3 h-3 text-muted-foreground" />
             </div>
             <div className="text-sm my-2">
               <span className="block text-justify whitespace-nowrap overflow-hidden text-ellipsis">
-                Dummy text about goa, beach, boys outing, party culture
+                One state, Mant Worlds
               </span>
             </div>
           </div>
