@@ -12,6 +12,14 @@ import { AddToyAction } from "@/components/add-toy-action";
 import { PostsList } from "@/components/posts-list";
 import { getProfileInfo, getSessionUser } from "@/lib/supabase/helpers";
 
+export function generateMetadata({ params }: { params: { username: string } }) {
+  const username = params.username;
+
+  return {
+    title: `Traveltree.co | ${username}`,
+  };
+}
+
 async function getProfileOfCurrentSession() {
   const sessionUser = await getSessionUser();
 

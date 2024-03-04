@@ -66,6 +66,7 @@ export function ToyShowCase({ item, isLoggedInUser }: ToyShowCaseProps) {
           alt={`${item.name} picture`}
           fill
           className="object-cover"
+          priority
         />
 
         <div className="absolute bottom-0 inset-x-0 w-full pt-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent">

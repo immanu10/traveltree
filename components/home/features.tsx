@@ -72,7 +72,7 @@ function GridItemOneFeature() {
             </div>
             <div className="text-sm my-2">
               <span className="block text-justify whitespace-nowrap overflow-hidden text-ellipsis">
-                One state, Mant Worlds
+                One state, Many Worlds
               </span>
             </div>
           </div>
