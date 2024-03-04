@@ -8,4 +8,5 @@ export const BLACKLISTED_USERNAME = [
   "signin",
   "traveltree",
   "api",
+  "privacy",
 ];

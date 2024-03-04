@@ -1,10 +1,9 @@
-import { Icons } from "@/components/icons";
 import Link from "next/link";
-import { Github, Linkedin } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BentroGridFeatures } from "@/components/home/features";
 import Image from "next/image";
+import Footer from "@/components/layout/footer";
 
 export default async function LandingPage() {
   return (
@@ -69,41 +68,7 @@ export default async function LandingPage() {
             </div>
           </main>
           <BentroGridFeatures className="my-14 mt-24" />
-          <footer className="mt-14 py-6 pb-8 px-4 flex flex-col space-y-4 items-center border-t border-border text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <p className="text-xs">
-                A side project by{" "}
-                <a
-                  href={"https://x.com/immanu10x"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-medium underline underline-offset-4"
-                >
-                  immanu10
-                </a>
-              </p>
-              <span className="text-xs">|</span>
-              <a
-                href={"https://github.com/immanu10"}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium underline"
-              >
-                <Github className="w-4 h-4" />
-              </a>
-              <a
-                href={"https://in.linkedin.com/in/immanu10"}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium underline"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-            </div>
-            <div className="text-xs">
-              &copy; {new Date().getFullYear()} traveltree.co
-            </div>
-          </footer>
+          <Footer />
         </div>
       </div>
     </>
