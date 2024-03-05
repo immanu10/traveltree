@@ -49,8 +49,16 @@ export default async function LandingPage() {
             </div>
           </header>
           <main className="mt-32 px-5 flex flex-col items-start">
-            <h1 className="max-w-2xl text-4xl sm:text-5xl md:text-6xl  font-bold  sm:text-left tracking-tight bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
-              Your travel bucketlist made easy.
+            <h1 className="max-w-2xl text-4xl sm:text-5xl md:text-6xl font-bold sm:text-left tracking-tight">
+              Your travel{" "}
+              <span className="bg-gradient-to-r from-pink-600 to-pink-300 bg-clip-text text-transparent">
+                bucketlist
+              </span>{" "}
+              and{" "}
+              <span className="bg-gradient-to-r from-pink-600 to-pink-300 bg-clip-text text-transparent">
+                profile
+              </span>{" "}
+              made easy.
             </h1>
             <p className="mt-4 md:text-lg text-muted-foreground sm:text-left font-medium">
               explore, achieve, share and track your travel dreams.

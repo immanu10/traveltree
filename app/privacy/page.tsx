@@ -1,6 +1,13 @@
 import Footer from "@/components/layout/footer";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+const title = "Traveltree.co | Privacy Policy";
+
+export const metadata: Metadata = {
+  title,
+};
 
 export default function PrivacyPage() {
   return (
