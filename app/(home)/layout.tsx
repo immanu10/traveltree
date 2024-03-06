@@ -62,7 +62,7 @@ export default async function HomeLayout({
     <div className={cn("max-w-2xl flex flex-col mx-auto")}>
       <header className="sticky border-b top-0 z-50 w-full  bg-background">
         <div className="flex items-center h-16 px-4 md:px-0">
-          <Link href="/">
+          <Link href="/explore">
             <Image
               src="/traveltree.svg"
               width={80}

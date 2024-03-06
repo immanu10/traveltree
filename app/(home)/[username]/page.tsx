@@ -11,6 +11,7 @@ import { ToysList } from "./toys-list";
 import { AddToyAction } from "@/components/add-toy-action";
 import { PostsList } from "@/components/posts-list";
 import { getProfileInfo, getSessionUser } from "@/lib/supabase/helpers";
+import { ProfileShareBtn } from "@/components/profile-share-btn";
 
 export function generateMetadata({ params }: { params: { username: string } }) {
   const username = params.username;
@@ -78,16 +79,18 @@ export default async function Page({
           <p className="text-sm ">{bio}</p>
         </div>
         {isLoggedInUser && (
-          <div className="w-full max-w-xs mt-3">
+          <div className="w-full max-w-xs flex items-center space-x-2 mt-3">
             <Link
               href="/profile"
               className={buttonVariants({
                 variant: "outline",
-                className: "w-full",
+                size: "sm",
+                className: "flex-1",
               })}
             >
               Edit Profile
             </Link>
+            <ProfileShareBtn username={username} />
           </div>
         )}
       </div>

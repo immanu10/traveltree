@@ -40,14 +40,16 @@ export default async function Page() {
 
   return (
     <div className="my-4">
-      <div className="border-l-4 border-gray-300 pl-2 ml-5 md:ml-0">
-        <h1 className="text-lg">My Bucketlist</h1>
+      <div className="border-l-4 border-muted-foreground/60 pl-2 ml-5 md:ml-0">
+        <h1 className="text-lg font-medium text-muted-foreground/90">
+          My Bucketlist
+        </h1>
       </div>
       <Separator className="my-4" />
 
       <div className="mt-4">
         <div className="border-l-4 border-green-500 pl-2 ml-5 md:ml-0">
-          <h2 className="text-sm font-light">Todo</h2>
+          <h2 className="text-sm font-medium text-green-600">Todo</h2>
         </div>
 
         <TodoBucketListView data={todoData} />
@@ -55,7 +57,7 @@ export default async function Page() {
 
       <div className="mt-4">
         <div className="border-l-4 border-blue-500 pl-2 ml-5 md:ml-0">
-          <h2 className="text-sm font-light">Visited</h2>
+          <h2 className="text-sm font-medium text-blue-600">Visited</h2>
         </div>
         <VisitiedBucketListView data={visitedData} />
       </div>
