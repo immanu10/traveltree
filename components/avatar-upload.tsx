@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { ChangeEvent, useRef, useState, useTransition } from "react";
 import { Dialog, DialogContent, DialogFooter } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, Pen, Pencil } from "lucide-react";
 import { uploadProfileAvatar } from "@/app/actions";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { toast } from "sonner";
@@ -60,9 +60,9 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
       <div>
         <Tooltip>
           <TooltipTrigger asChild>
-            <button
+            <div
               onClick={() => inputRef.current?.click()}
-              className="transition-colors hover:ring-2 hover:ring-muted-foreground hover:ring-offset-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="relative w-fit cursor-pointer transition-colors hover:ring-2 hover:ring-muted-foreground hover:ring-offset-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <Avatar className="h-20 w-20">
                 <AvatarImage src={url} alt={altText} />
@@ -70,7 +70,13 @@ export function AvatarUpload({ url, altText }: AvatarUploadProps) {
                   {altText ? getInitialFromFullName(altText) : ""}
                 </AvatarFallback>
               </Avatar>
-            </button>
+              <Button
+                variant="outline"
+                className="absolute bottom-1 -right-2 h-6 py-2 px-2 text-xs rounded-full"
+              >
+                <Pencil className="w-3 h-3" />
+              </Button>
+            </div>
           </TooltipTrigger>
           <TooltipContent>Change your avatar</TooltipContent>
         </Tooltip>
