@@ -39,7 +39,10 @@ export function BuyCoffeeDialog({ children }: { children: React.ReactNode }) {
         </div>
         <div>
           <p className="text-xs text-muted-foreground mt-0.5">
-            * Make sure to use same email id which is used in this platform
+            * Make sure to use same email id which is used in this platform.
+          </p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            * Refresh the page once done with the payment.
           </p>
         </div>
         <a

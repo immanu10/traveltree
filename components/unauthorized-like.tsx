@@ -1,4 +1,4 @@
-import { MountainIcon } from "lucide-react";
+import { Heart } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { AuthDialog } from "./auth-dialog";
@@ -11,7 +11,7 @@ export function UnAuthorizedLike({ count }: { count: number }) {
         className="flex items-center cursor-pointer group transition-colors w-fit"
       >
         <div className="w-[34px] h-[34px] flex items-center justify-center rounded-full group-hover:bg-pink-500/10">
-          <MountainIcon
+          <Heart
             className={cn(
               "text-muted-foreground w-[18px] h-[18px] group-hover:text-pink-500"
             )}

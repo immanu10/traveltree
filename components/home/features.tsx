@@ -5,7 +5,6 @@ import {
   CheckCheck,
   ChevronDown,
   CopyIcon,
-  MountainIcon,
   Trash2,
   Wifi,
 } from "lucide-react";

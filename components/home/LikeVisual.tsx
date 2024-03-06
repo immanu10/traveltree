@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { MountainIcon } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState } from "react";
 
 export function LikeVisual() {
@@ -41,14 +41,14 @@ export function LikeVisual() {
           />
         </svg>
         {isLiked ? (
-          <MountainIcon
+          <Heart
             className={cn(
               "w-[18px] h-[18px] fill-pink-500 text-pink-500",
               isLiked && animate && "animate-[scale_.35s_ease-in-out_forwards]"
             )}
           />
         ) : (
-          <MountainIcon
+          <Heart
             className={cn(
               "text-muted-foreground w-[18px] h-[18px] group-hover:text-pink-500",
               isLiked && animate && "animate-[scale_.35s_ease-in-out_forwards]"

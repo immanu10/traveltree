@@ -1,6 +1,6 @@
 "use client";
 
-import { MountainIcon } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useOptimistic, useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
@@ -81,7 +81,7 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
           />
         </svg>
         {optimisticLikeState.likedByCurrentUser ? (
-          <MountainIcon
+          <Heart
             className={cn(
               "w-[18px] h-[18px] fill-pink-500 text-pink-500",
               optimisticLikeState.likedByCurrentUser &&
@@ -90,7 +90,7 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
             )}
           />
         ) : (
-          <MountainIcon
+          <Heart
             className={cn(
               "text-muted-foreground w-[18px] h-[18px] group-hover:text-pink-500",
               optimisticLikeState.likedByCurrentUser &&
