@@ -70,7 +70,7 @@ export async function FeedCard({
               href={map_url}
               target="_blank"
               rel="noreferrer"
-              className="text-blue-500 hover:underline overflow-hidden text-ellipsis"
+              className="text-blue-600 hover:underline overflow-hidden text-ellipsis"
             >
               {map_url?.replace(/^https:\/\//i, "")}
             </a>
