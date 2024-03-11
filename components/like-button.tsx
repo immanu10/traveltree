@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { LikedByDrawer } from "./liked-by-drawer";
 
 type LikeProps = {
   count: number;
@@ -19,6 +20,7 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
   const router = useRouter();
   const [pending, startTransisition] = useTransition();
   const [animate, setAnimate] = useState(false);
+  const [showLikedBy, setShowLikedBy] = useState(false);
 
   //NOTE: useOptimistic is working correctly only when i revalidatePath in server action.
   const [optimisticLikeState, setOptimisticLikeState] = useOptimistic<
@@ -50,59 +52,68 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
   };
 
   return (
-    <button
-      onClick={handleLikeSubmit}
-      className="flex items-center cursor-pointer group transition-colors w-fit"
-    >
-      <div
-        className={cn(
-          "relative flex items-center justify-center w-10 h-10 cursor-pointer rounded-full hover:bg-pink-50"
-        )}
-      >
-        <svg
-          className="absolute overflow-visible"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+    <>
+      <div className="flex items-center transition-colors w-fit">
+        <button
+          onClick={handleLikeSubmit}
+          className={cn(
+            "relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-pink-50"
+          )}
         >
-          <circle
-            className={cn(
-              "text-pink-100 origin-center transition-all ease-in-out",
-              optimisticLikeState.likedByCurrentUser &&
-                animate &&
-                "animate-[circle_.3s_forwards]"
-            )}
-            cx="12"
-            cy="12"
-            r="11.5"
-            fill="transparent"
-            strokeWidth="0"
-            stroke="currentColor"
-          />
-        </svg>
-        {optimisticLikeState.likedByCurrentUser ? (
-          <Heart
-            className={cn(
-              "w-[18px] h-[18px] fill-pink-500 text-pink-500",
-              optimisticLikeState.likedByCurrentUser &&
-                animate &&
-                "animate-[scale_.35s_ease-in-out_forwards]"
-            )}
-          />
-        ) : (
-          <Heart
-            className={cn(
-              "text-muted-foreground w-[18px] h-[18px] group-hover:text-pink-500",
-              optimisticLikeState.likedByCurrentUser &&
-                animate &&
-                "animate-[scale_.35s_ease-in-out_forwards]"
-            )}
-          />
-        )}
+          <svg
+            className="absolute overflow-visible"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              className={cn(
+                "text-pink-100 origin-center transition-all ease-in-out",
+                optimisticLikeState.likedByCurrentUser &&
+                  animate &&
+                  "animate-[circle_.3s_forwards]"
+              )}
+              cx="12"
+              cy="12"
+              r="11.5"
+              fill="transparent"
+              strokeWidth="0"
+              stroke="currentColor"
+            />
+          </svg>
+          {optimisticLikeState.likedByCurrentUser ? (
+            <Heart
+              className={cn(
+                "w-[18px] h-[18px] fill-pink-500 text-pink-500",
+                optimisticLikeState.likedByCurrentUser &&
+                  animate &&
+                  "animate-[scale_.35s_ease-in-out_forwards]"
+              )}
+            />
+          ) : (
+            <Heart
+              className={cn(
+                "text-muted-foreground w-[18px] h-[18px] hover:text-pink-500",
+                optimisticLikeState.likedByCurrentUser &&
+                  animate &&
+                  "animate-[scale_.35s_ease-in-out_forwards]"
+              )}
+            />
+          )}
+        </button>
+        <div
+          className="text-xs  text-muted-foreground hover:text-pink-600 cursor-default select-none"
+          onClick={() => setShowLikedBy(true)}
+        >
+          <span>{optimisticLikeState.count} buckets</span>
+        </div>
       </div>
-      <div className="text-xs  text-muted-foreground group-hover:text-pink-500">
-        <span>{optimisticLikeState.count} buckets</span>
-      </div>
-    </button>
+      <LikedByDrawer
+        id={postId}
+        count={count}
+        open={showLikedBy}
+        setOpen={setShowLikedBy}
+      />
+    </>
   );
 }
