@@ -6,14 +6,7 @@ import { cn } from "@/lib/utils";
 import { addAndRemoveBucketList } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
+import { LikedByDrawer } from "./liked-by-drawer";
 
 type LikeProps = {
   count: number;
@@ -115,17 +108,12 @@ export function Like({ count, postId, likedByCurrentUser }: LikeProps) {
           <span>{optimisticLikeState.count} buckets</span>
         </div>
       </div>
-      <Sheet open={showLikedBy} onOpenChange={setShowLikedBy}>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Are you absolutely sure?</SheetTitle>
-            <SheetDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
+      <LikedByDrawer
+        id={postId}
+        count={count}
+        open={showLikedBy}
+        setOpen={setShowLikedBy}
+      />
     </>
   );
 }
