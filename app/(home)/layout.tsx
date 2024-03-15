@@ -1,8 +1,7 @@
-import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { UserNav } from "@/components/layout/user-nav";
 import { cn } from "@/lib/utils";
-import { PlusIcon } from "lucide-react";
+import { Crosshair, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { getSessionUser } from "@/lib/supabase/helpers";
 import { ClaimUserNameCheck } from "./claim-username";
@@ -64,9 +63,9 @@ export default async function HomeLayout({
         <div className="flex items-center h-16 px-4 md:px-0">
           <Link href="/explore">
             <Image
-              src="/traveltree.svg"
-              width={80}
-              height={40}
+              src="/favicon.svg"
+              width={30}
+              height={30}
               alt="traveltree logo"
               priority
             />
@@ -75,8 +74,19 @@ export default async function HomeLayout({
             {sessionUser ? (
               <>
                 <Link
+                  href="/log"
+                  className={cn(
+                    buttonVariants({ variant: "ghost", size: "sm" })
+                  )}
+                >
+                  <Crosshair className="mr-2 w-4 h-4" />
+                  Log
+                </Link>
+                <Link
                   href="/post/new"
-                  className={cn(buttonVariants({ variant: "ghost" }))}
+                  className={cn(
+                    buttonVariants({ variant: "ghost", size: "sm" })
+                  )}
                 >
                   <PlusIcon className="mr-2 w-4 h-4" />
                   Create Post
